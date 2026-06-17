@@ -1,0 +1,137 @@
+\section{Annexe}
+\subsection{Résolution intégrale des facteurs de vue}
+\label{method_integrale}
+On considère le facteur de vue entre deux faces opposées d'un cube unité : la face $z=0$ (surface $A_1$) et la face $z=1$ (surface $A_2$). Le facteur de vue est défini de manière générale par :
+\begin{equation}
+F_{16}=\frac{1}{A_1}\int_{A_1}\int_{A_2}\frac{\cos\theta_1 \cos\theta_2}{\pi R^2}\, dA_2\, dA_1.
+\end{equation}
+
+Dans le cas du cube unité, on a $A_1=A_2=1$. Les deux faces étant parallèles, on paramètre les surfaces par :
+\begin{align}
+P_1=(x,y,0), \quad (x,y)\in[0,1]^2,\\
+P_2=(x',y',1), \quad (x',y')\in[0,1]^2.
+\end{align}
+
+La distance entre deux éléments différentiels s'écrit :
+\begin{equation}
+R^2=(x'-x)^2+(y'-y)^2+1.
+\end{equation}
+
+\paragraph{Calcul des cosinus directionnels}
+
+Les normales aux surfaces sont :
+\begin{equation}
+\mathbf n_1=(0,0,1), \qquad \mathbf n_2=(0,0,-1).
+\end{equation}
+
+Le vecteur reliant les deux points est :
+\begin{equation}
+\mathbf r=(x'-x,\;y'-y,\;1), \qquad R=\|\mathbf r\|.
+\end{equation}
+
+On en déduit :
+\begin{equation}
+\cos\theta_1=\frac{1}{R}, \qquad \cos\theta_2=\frac{1}{R}, \qquad \Rightarrow \qquad \cos\theta_1\cos\theta_2=\frac{1}{R^2}.
+\end{equation}
+
+Ainsi, le noyau géométrique devient :
+\begin{equation}
+\frac{\cos\theta_1 \cos\theta_2}{\pi R^2}=\frac{1}{\pi R^4}=\frac{1}{\pi\left[1+(x'-x)^2+(y'-y)^2\right]^2}.
+\end{equation}
+
+\paragraph{Réduction par changement de variables et convolution}
+
+L'intégrande ne dépend que des différences de coordonnées. On introduit :
+\begin{equation}
+u=x'-x, \qquad v=y'-y.
+\end{equation}
+
+On utilise la propriété de convolution :
+\begin{equation}
+\int_0^1\int_0^1 f(x'-x)\,dx\,dx'=\int_{-1}^{1}(1-|u|)\,f(u)\,du.
+\end{equation}
+
+En deux dimensions, cela donne :
+\begin{equation}
+F_{16}=\frac{1}{\pi}\int_{-1}^{1}\int_{-1}^{1}\frac{(1-|u|)(1-|v|)}{(1+u^2+v^2)^2}\,du\,dv.
+\end{equation}
+
+Par symétrie :
+\begin{equation}
+F_{16}=\frac{4}{\pi}\int_0^1\int_0^1\frac{(1-u)(1-v)}{(1+u^2+v^2)^2}\,du\,dv.
+\end{equation}
+
+\paragraph{Interprétation}
+
+Le facteur $(1-|u|)(1-|v|)$ représente la densité de paires de points des deux surfaces ayant une séparation relative $(u,v)$. Cette transformation permet de passer d'une intégration sur toutes les paires de points à une intégration sur les distances relatives, ce qui est une étape clé en transfert radiatif et en géométrie intégrale.
+\begin{equation}
+F_{16}=\frac{4}{\pi}\int_0^1\int_0^1\frac{(1-u)(1-v)}{(1+u^2+v^2)^2}\,du\,dv.
+\end{equation}
+
+\paragraph{Introduction d'une fonction auxiliaire}
+
+Afin de traiter cette intégrale, on introduit la fonction paramétrée
+
+\begin{equation}
+J(a)=\int_0^1\int_0^1\frac{(1-u)(1-v)}{a+u^2+v^2},du,dv,\qquad a>0.
+\end{equation}
+
+Cette définition conserve le facteur de pondération géométrique $(1-u)(1-v)$ issu de la réduction par convolution. En dérivant sous le signe intégral, on obtient
+
+\begin{equation}
+\frac{dJ}{da}=-\int_0^1\int_0^1\frac{(1-u)(1-v)}{(a+u^2+v^2)^2},du,dv.
+\end{equation}
+
+Par conséquent,
+
+\begin{equation}
+\int_0^1\int_0^1\frac{(1-u)(1-v)}{(1+u^2+v^2)^2},du,dv=-\left.\frac{dJ}{da}\right|_{a=1}.
+\end{equation}
+
+Le facteur de vue s'écrit alors
+
+\begin{equation}
+F_{16}=-\frac{4}{\pi}\left.\frac{dJ}{da}\right|_{a=1}.
+\end{equation}
+
+\paragraph{Décomposition de l'intégrale}
+
+On développe le facteur de pondération :
+
+\begin{equation}
+(1-u)(1-v)=1-u-v+uv.
+\end{equation}
+
+Ainsi,
+
+\begin{equation}
+F_{16}=\frac{4}{\pi}(A-2B+C),
+\end{equation}
+
+où
+
+\begin{equation}
+A=\int_0^1\int_0^1\frac{du,dv}{(1+u^2+v^2)^2},
+\end{equation}
+
+\begin{equation}
+B=\int_0^1\int_0^1\frac{u,du,dv}{(1+u^2+v^2)^2},
+\end{equation}
+
+et
+
+\begin{equation}
+C=\int_0^1\int_0^1\frac{uv,du,dv}{(1+u^2+v^2)^2}.
+\end{equation}
+
+Le calcul de ces intégrales conduit finalement à l'expression analytique classique du facteur de vue entre deux faces opposées d'un cube unité :
+
+\begin{equation}
+F_{16}=\frac{2}{\pi} \left[ \ln(\frac{2}{\sqrt{3}}) +2\sqrt{2}arctan(\frac{1}{\sqrt{2}})-\frac{\pi}{2} \right]
+\end{equation}
+
+Numériquement,
+
+\begin{equation}
+F_{16}\simeq 0.1998249.
+\end{equation}

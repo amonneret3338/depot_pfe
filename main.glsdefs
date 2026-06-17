@@ -1,0 +1,28 @@
+\glsdefs@newdocentry{etr}%
+{%
+name={\acronymfont {\glsentryshort {etr}}},%
+sort={ETR},%
+type={acronym},%
+first={ETR},%
+firstplural={ETRs},%
+text={ETR},%
+plural={ETRs},%
+description={Équation de Transfert Radiatif},%
+descriptionplural={Équation de Transfert Radiatif},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Équation de Transfert Radiatif},%
+longplural={Équation de Transfert Radiatifs},%
+short={ETR},%
+shortplural={ETRs},%
+counter={page},%
+parent={},%
+%
+}%
+

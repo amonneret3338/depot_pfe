@@ -1,0 +1,193 @@
+ %Template by Nicolas RABREAU, Sarah PIERREL et Amélie AUDET,, modified by bibi
+
+ 
+\documentclass[a4paper, 11pt, english]{article}
+% -------------------------------------------------
+% Language and Encoding
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}       % UTF-8 encoding
+\usepackage[T1]{fontenc}          % Font encoding
+\usepackage[french]{babel}        % French language
+
+% -------------------------------------------------
+% Page Layout and Formatting
+% -------------------------------------------------
+\usepackage[left=2.5cm,right=2.5cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{fancyhdr}             % Header and footer customization
+\pagestyle{fancy}
+%\renewcommand\headrulewidth{1pt}
+\usepackage{parskip}              % Proper paragraph spacing
+\setlength{\parindent}{20pt}
+\setlength{\parskip}{15pt}
+\usepackage{lastpage}             % Reference to the last page
+\usepackage{titlesec}             % Section formatting
+\usepackage{datetime}             % Date and time
+
+% -------------------------------------------------
+% Math Packages
+% -------------------------------------------------
+\usepackage{amsmath,amssymb,amsfonts} % Core math support
+\usepackage{mathtools}                % Advanced math enhancements
+\usepackage{icomma}                   % Comma spacing in math
+\usepackage{esint}                    % Extended integral symbols
+\usepackage[separate-uncertainty=true, per-mode=fraction]{siunitx} % SI units
+
+% -------------------------------------------------
+% Tables
+% -------------------------------------------------
+\usepackage{tabularx}           % Flexible tables
+\usepackage{tabulary}           % Table width control
+\usepackage{booktabs}           % Professional-quality tables
+\usepackage{colortbl}           % Colored table rows
+\newcommand{\myrowcolour}{\rowcolor[gray]{0.925}}
+\usepackage{array, multirow}    % Advanced table formatting
+\setlength\extrarowheight{2pt}
+\usepackage{hhline}             % Horizontal lines
+\usepackage{adjustbox}          % Content resizing
+
+% -------------------------------------------------
+% Graphics and Figures
+% -------------------------------------------------
+\usepackage{graphicx}           % Include images
+\usepackage{caption}            % Caption customization
+\usepackage{subfig}             % Subfigures
+\usepackage{subcaption}         % Alternate subfigure support
+\usepackage{wrapfig}            % Text wrapping around figures
+\usepackage{tikz}               % Vector drawing
+\usetikzlibrary{calc,arrows.meta}
+\usetikzlibrary{decorations.pathmorphing} % pour zigzag
+\usetikzlibrary{shapes.geometric} % formes
+
+\usepackage[RPvoltages]{circuitikz} % Circuit diagrams
+\graphicspath{{Figures/},{equations/}} % Image search paths
+
+% -------------------------------------------------
+% Code Listings
+% -------------------------------------------------
+\usepackage{listings}           % Code listings
+%\usepackage{minted}             % Syntax highlighting
+\usepackage{xcolor}             % Custom colors
+%\definecolor{codegreen}{rgb}{0,0.6,0}
+%\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+%\definecolor{codepurple}{rgb}{0.58,0,0.82}
+%\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% -------------------------------------------------
+% Bibliography and Glossary
+% -------------------------------------------------
+\usepackage[nonumberlist,acronym]{glossaries}
+
+\makeglossaries
+\bibliographystyle{plain}       % Numeric reference style
+
+% -------------------------------------------------
+% Hyperlinks
+% -------------------------------------------------
+\usepackage{hyperref}           % Hyperlinks
+
+% -------------------------------------------------
+% Miscellaneous
+% -------------------------------------------------
+\usepackage{enumitem}           % List customization
+\usepackage{easylist}           % Simpler lists
+\usepackage{textcomp}           % Extra text symbols
+\usepackage{gensymb}            % Generic symbols
+\usepackage{verbatim}           % Verbatim blocks
+\usepackage{calligra}           % Calligraphy font
+\usepackage{url}                % URL typesetting
+\usepackage{placeins}           % Float placement control
+\usepackage{comment}            % Comment out large blocks
+
+% -------------------------------------------------
+% Custom Commands
+% -------------------------------------------------
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\NewDocumentCommand{\myrule}{O{1pt} O{2pt} O{black}}{%
+  \par\nobreak
+  \kern\the\prevdepth
+  \kern#2
+  {\color{#3}\hrule height #1 width\hsize}
+  \kern#2
+  \nointerlineskip
+}
+
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\ttt}{\texttt}
+\newcommand{\itt}{\textit}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%after usepackage commands
+%\bibliographystyle{ieeetr}
+
+%%%%%%%%%%%%%%%%% TABLE OF CONTENTS %%%%%%%%%%%%%%%%%
+
+\renewcommand{\listfigurename}{Table des figures} % Corrected label
+\renewcommand{\contentsname}{Sommaire}
+
+
+%%%%%%%%%%%%%%%%% HEADER / FOOTER CONFIGURATION %%%%%%%%%%%%%%%%%
+
+\fancyhead[L]{\textbf{Rapport Bibliographique}}
+\fancyhead[C]{}
+\fancyhead[R]{Antonin MONNERET}
+\renewcommand\footrulewidth{1pt}
+\fancyfoot[C]{\large Phelma - Septembre 2025}
+\fancyfoot[R]{\textbf{ \thepage}}
+
+
+\begin{document}
+    % Title page
+    %\input{PARTIES/page_de_garde}
+    \newpage 
+
+    % Meditation time
+    %\input{PARTIES/food_for_thougth}
+
+    % Sumario
+    \newpage
+    \tableofcontents
+
+    \newpage
+    %\addcontentsline{toc}{section}{Liste des acronymes}
+    \printglossary[type=\acronymtype, title=Liste des acronymes]%, toctitle=Liste des acronymes]
+
+    %\newpage
+    \addcontentsline{toc}{section}{Liste des figures}
+    \listoffigures
+
+    %\newpage
+    %\addcontentsline{toc}{section}{Liste des tableaux}
+    \listoftables
+
+    % End Sumario
+
+    \newpage
+    %
+    
+    
+    %\input{PARTIES/glossaire}
+
+    \input{PARTIES/Introduction}
+    \input{PARTIES/1_physique.tex}
+
+	\input{PARTIES/3_modele_fv}
+	
+	\input{PARTIES/4_methode_fv}
+	\input{PARTIES/5_ameliorations}
+
+    %\input{PARTIES/2_Couplage}
+
+    %\input{PARTIES/3_Perspectives}
+
+	\input{PARTIES/99_annexes}
+
+
+    %before \end{document}
+    \newpage
+    \addcontentsline{toc}{section}{Références}
+    \bibliography{biblio}
+
+\end{document}
+
+
+

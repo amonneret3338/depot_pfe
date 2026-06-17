@@ -1,0 +1,20 @@
+\newpage
+\section{Perspectives de travail}
+
+
+La prise en compte des phénomèmes radiatifs est un atout, par exemple pour la simulation d'accidents graves. Un première approche a été développée au CEA de Cadarache pour traiter le bilan radiatif des solides opaques en milieu transparent avec l'utilisation des facteurs de vue généré par une méthode Monte-Carlo de lancers de rayon. Ces facteurs sont utilisés par le logiciel \ttt{TrioCFD} pour simuler le couplage conduction/radiation. Pour l'instant, la génération des facteurs de vue par \ttt{embree2TRUST} n'est pas satisfaisante. La stage répond donc à trois enjeux : amélioration du code \ttt{embree2TRUST}, validation du module de rayonnement dans  \ttt{TrioCFD} et implémentation de nouveaux modèles.
+
+Le stage peut se décomposer en deux grandes parties qui correspondent aux types de milieu considérés pour le rayonnement. D’abord, on s’intéressera au rayonnement entre solides (aux surfaces grises, opaques et diffuses) au travers d’un milieu transparent. Dans ce cadre, la résolution du problème couplé de conduction-rayonnement met en jeu la plateforme \ttt{TRUST} (conduction dans les solides et résolution du problème couplé dans ce cas) et la maquette logicielle \ttt{embree2TRUST} (calculs des facteurs de vue entre surfaces). Dans cette phase, on peut distinguer les étapes suivantes :
+\begin{itemize}
+    \item prise en main de \ttt{TRUST} pour ce type de calcul couplé (voir, dans le cadre applicatif des accidents de réacteurs à eau légère, les calculs 2D réalisés dans \cite{Romain25,Romain26} avec \ttt{TRUST} et un calcul des facteurs de vue avec la maquette pyMCRAD)
+    \item prise en main et état des lieux de la maquette logicielle incomplète \ttt{embree2TRUST} et, plus largement de la méthode Monte-Carlo par lancer de rayons sous-jacente pour le calcul des facteurs de vue. En particulier, mise en place de tests de vérification unitaire plus complets (e.g. condition de symétrie avec réflexion spéculaire)
+    \item développement dans \ttt{embree2TRUST} pour compléter et améliorer cet outil selon les axes suivants :
+    \begin{itemize}
+        \item algorithmes de correction de facteurs de vue pour imposer les relations de réciprocité (voir \cite{Romain25} pour l’algorithme considéré dans le cas 2D et \cite{renforcement} pour une comparaison de divers algorithmes)
+        \item utilisation directe des maillages des surfaces sans passer par le maillage volumique du milieu transparent
+    \end{itemize}
+    \item mise en place et réalisation de cas tests en 2D et 3D pour tester les performances de \ttt{embree2TRUST} et des calculs couplés avec \ttt{TRUST}
+    
+\end{itemize}
+
+Ensuite, on s’intéressera au rayonnement au travers d’un milieu semi-transparent en considérant d’abord à un modèle diffusif (dit “P1”) pour rayonnement gris au travers d’un milieu optiquement épais. Un tel modèle existe dans le logiciel TrioCFD (qui s’appuie sur la plateforme \ttt{TRUST}) et on le prendra comme premier modèle pour opérer une ré-ingénierie logicielle dans \ttt{TRUST} vis-à-vis de l’interfacage des modèles de rayonnement. Ce travail devra permettre d’aboutir à une interface propre et générale qui permettra ensuite s’intéresser au couplage à d’autres modèles de rayonnement via le couplage avec des codes externes. Dans le temps qu’il restera du stage, dans la perspective d’un tel couplage, le travail portera sur le code donut de résolution de l’équation de Boltzmann (par une méthode aux ordonnées discrètes) que l’on veut développer pour permettre de traiter le rayonnement en milieu participatif (dans le cadre d'une thèse qui fera suite à ce stage).

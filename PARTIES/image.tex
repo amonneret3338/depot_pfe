@@ -1,0 +1,116 @@
+\begin{figure}
+\centering
+
+\begin{minipage}{0.48\textwidth}
+\centering
+
+\begin{tikzpicture}[scale=1]
+
+% ===== PARAMÈTRES =====
+\def\N{1}
+\def\L{1.5}
+\def\opa{0.6}
+
+% --- Surface 1 ---
+\coordinate (A) at (0,0);
+\coordinate (B) at (\L,0);
+\coordinate (C) at (\L,\L);
+\coordinate (D) at (0,\L);
+
+\fill[orange!30] (A)--(B)--(C)--(D)--cycle;
+\node at ($(A)!0.5!(C) + (D)$) {Surface i};
+
+% --- Surface 2 ---
+\coordinate (E) at (4,-2);
+\coordinate (F) at (6,-2);
+\coordinate (G) at (7,-1);
+\coordinate (H) at (5,-1);
+
+\fill[blue!20] (E)--(F)--(G)--(H)--cycle;
+\draw[thick] (E)--(F)--(G)--(H)--cycle;
+\node at ($(E)!0.5!(G) - (D)$) {Surface j};
+
+% --- Subdivision ---
+\foreach \i in {0,...,\numexpr\N-1} {
+  \foreach \j in {0,...,\numexpr\N-1} {
+
+    \pgfmathsetmacro{\ti}{\L*\i/\N}
+    \pgfmathsetmacro{\tj}{\L*\j/\N}
+    \pgfmathsetmacro{\tip}{\L*(\i+1)/\N}
+    \pgfmathsetmacro{\tjp}{\L*(\j+1)/\N}
+
+    \coordinate (P1) at (\ti,\tj);
+    \coordinate (P2) at (\tip,\tj);
+    \coordinate (P3) at (\tip,\tjp);
+    \coordinate (P4) at (\ti,\tjp);
+
+    \fill[orange!30] (P1)--(P2)--(P3)--(P4)--cycle;
+    \draw (P1)--(P2)--(P3)--(P4)--cycle;
+
+    \fill[red!50,opacity={\opa/(\N*\N)}]
+      (P1)--(E)--(F)--(G)--(P3)--(P4)--cycle;
+  }
+}
+
+\end{tikzpicture}
+
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+
+\begin{tikzpicture}[scale=1]
+
+% ===== PARAMÈTRES =====
+\def\Nbis{5}
+\def\L{1.5}
+\def\opa{0.4}
+
+% --- Surface 1 ---
+\coordinate (A) at (0,0);
+\coordinate (B) at (\L,0);
+\coordinate (C) at (\L,\L);
+\coordinate (D) at (0,\L);
+
+\fill[orange!30] (A)--(B)--(C)--(D)--cycle;
+\node at ($(A)!0.5!(C) + (D)$) {Surface i};
+
+% --- Surface 2 ---
+\coordinate (E) at (4,-2);
+\coordinate (F) at (6,-2);
+\coordinate (G) at (7,-1);
+\coordinate (H) at (5,-1);
+
+\fill[blue!20] (E)--(F)--(G)--(H)--cycle;
+\draw[thick] (E)--(F)--(G)--(H)--cycle;
+\node at ($(E)!0.5!(G) - (D)$) {Surface j};
+
+% --- Subdivision ---
+\foreach \i in {0,...,\numexpr\Nbis-1} {
+  \foreach \j in {0,...,\numexpr\Nbis-1} {
+
+    \pgfmathsetmacro{\ti}{\L*\i/\Nbis}
+    \pgfmathsetmacro{\tj}{\L*\j/\Nbis}
+    \pgfmathsetmacro{\tip}{\L*(\i+1)/\Nbis}
+    \pgfmathsetmacro{\tjp}{\L*(\j+1)/\Nbis}
+
+    \coordinate (P1) at (\ti,\tj);
+    \coordinate (P2) at (\tip,\tj);
+    \coordinate (P3) at (\tip,\tjp);
+    \coordinate (P4) at (\ti,\tjp);
+
+    \fill[orange!30] (P1)--(P2)--(P3)--(P4)--cycle;
+    \draw (P1)--(P2)--(P3)--(P4)--cycle;
+
+    \fill[red!50,opacity={\opa/(\Nbis)}]
+      (P1)--(E)--(F)--(G)--(P3)--(P4)--cycle;
+  }
+}
+
+\end{tikzpicture}
+
+\end{minipage}
+
+\caption{Illustration de la subdivision de la face émettrice dans le cas de radiosité uniforme}
+\label{fig:sub}
+\end{figure}

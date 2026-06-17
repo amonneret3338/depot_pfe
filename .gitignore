@@ -1,0 +1,18 @@
+# Fichiers LaTeX temporaires
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.glo
+*.ist
+*.dvi
+*.acn
+*.synctex.gz
+
+# Répertoires
+../Tools/
+meshes/
+../utils/
+../tutoTRUST/
