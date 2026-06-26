@@ -22,7 +22,7 @@ F_{12}\simeq 0.1998.
 
 Ce résultat montre qu'une résolution intégrale directe est réalisable pour des géométries simples et fortement symétriques. Néanmoins, la complexité des manipulations analytiques nécessaires, même dans le cas élémentaire du cube, illustre les difficultés d'une telle approche pour des géométries plus générales. Cette observation justifie le recours à des méthodes numériques dédiées au calcul des facteurs de vue dans les configurations complexes.
 
-\subsection{Méthode algébrique : utilisation des propriétés géométrique}
+\subsection{Méthode algébrique : utilisation des propriétés géométriques}
 Une version aussi élégante que limitée permet de trouver les facteurs de vue en utilisant la réciprocité, la complémentarité et la symétrie de ces derniers.
 \subsubsection*{Utilisation de la réciprocité}
 Les facteurs de vue pour deux sphères concentriques sont se retrouvent de manière assez directes. La face intérieur éclaire complètement la face extérieur. Par réciprocité, on obtient $ F_{out->in} = \frac{S_{in}}{S_{out}} \times F_{in -> out}= \frac{S_{in}}{S_{out}}$  
@@ -60,7 +60,7 @@ Enfin,
 Cette méthode est très efficace pour trouver des facteurs de vue à partir de ceux déjà connus. Toutefois là aussi, la diversité et la compléxité des géométries étudiées requiert une méthode indépendante de la géométrie.
 
 
-\section{Méthode d'estimation des facteurs de vue par "Monte Carlo Ray Tracing"}
+\subsection{Méthode d'estimation des facteurs de vue par "Monte Carlo Ray Tracing"}
 La méthode d'intégration par Monte-Carlo de lancer de rayons permet d'obtenir une approximation numérique des facteurs de vue pour des géométries complexes. Cette méthode consiste à lancer un grand nombre de rayons depuis chaque surface, et à compter le nombre de rayons qui interceptent les autres surfaces. La fraction de rayons qui interceptent une surface $j$ à partir d'une surface $i$ donne une approximation du facteur de vue $F_{ij}$.
 
 On considère un hémisphère $HS(\vec{r_i}, \vec{n_i})$ autour du point $\vec{r_i}$, orienté selon le vecteur $\vec{n_i}$ normal à la surface $A_i$ en $\vec{r_i}$. Cette manipulation permet de reformuler la partie intersection géométrique. L'équation \ref{eq:dvf} peut être ainsi modifiée en \red{schéma} :

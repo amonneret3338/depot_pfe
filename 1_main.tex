@@ -1,7 +1,7 @@
  %Template by Nicolas RABREAU, Sarah PIERREL et Amélie AUDET,, modified by bibi
 
  
-\documentclass[a4paper, 11pt, english]{article}
+\documentclass[a4paper, 11pt, english]{report}
 % -------------------------------------------------
 % Language and Encoding
 % -------------------------------------------------
@@ -115,6 +115,7 @@
 \newcommand{\blue}{\textcolor{blue}}
 \newcommand{\ttt}{\texttt}
 \newcommand{\itt}{\textit}
+\newcommand{\ETT}{\texttt{embree2TRUST}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %after usepackage commands
 %\bibliographystyle{ieeetr}
@@ -147,7 +148,6 @@
     \newpage
     \tableofcontents
 
-    \newpage
     %\addcontentsline{toc}{section}{Liste des acronymes}
     \printglossary[type=\acronymtype, title=Liste des acronymes]%, toctitle=Liste des acronymes]
 
@@ -166,21 +166,20 @@
     
     
     %\input{PARTIES/glossaire}
-
     \input{PARTIES/Introduction}
-    \input{PARTIES/1_physique.tex}
-
-	\input{PARTIES/3_modele_fv}
-	
-	\input{PARTIES/4_methode_fv}
-	\input{PARTIES/5_ameliorations}
+	%\input{chapter1}
 
     %\input{PARTIES/2_Couplage}
 
     %\input{PARTIES/3_Perspectives}
-
-	\input{PARTIES/99_annexes}
-
+	\input{chapter2}
+	
+	
+	\renewcommand{\thechapter}{}
+	\renewcommand{\thesection}{\Alph{section}}
+	\setcounter{section}{0}
+	\input{chapterAnnexe}
+	
 
     %before \end{document}
     \newpage

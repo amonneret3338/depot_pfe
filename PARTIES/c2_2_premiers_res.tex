@@ -1,0 +1,54 @@
+Toutes les études réalisées dans cette section reposent sur la même méthodologie. Les facteurs de vue théoriques sont établis à partir de la littérature \cite{Howell} et sont disponibles en Annexe \ref{anx:fv}. 
+
+Afin d’évaluer quantitativement la qualité des matrices de facteurs de vue obtenues par le code de Monte Carlo Ray Tracing, celles-ci sont comparées à une matrice de référence $F^{\mathrm{ref}}$. L’écart est mesuré via une erreur quadratique moyenne relative (Relative Root Mean Square Error, RRMSE), définie à partir de l’erreur relative élémentaire.
+
+Pour chaque coefficient non négligeable de la matrice de référence, l’erreur relative est définie par :
+
+\begin{equation}
+\varepsilon_{ij} =
+\frac{
+F_{ij}^{\mathrm{calc}} - F_{ij}^{\mathrm{ref}}
+}{
+F_{ij}^{\mathrm{ref}}
+}.
+\end{equation}
+
+Afin d’éviter les divisions par des valeurs nulles ou numériquement négligeables, seuls les coefficients vérifiant :
+
+\begin{equation}
+\left|F_{ij}^{\mathrm{ref}}\right| > \varepsilon_{\mathrm{th}},
+\qquad \text{avec } \varepsilon_{\mathrm{th}} = 10^{-15},
+\end{equation}
+
+sont retenus dans le calcul. L’ensemble des indices satisfaisant cette condition est noté $\Omega$.
+
+La métrique globale est ensuite définie comme la racine de la moyenne des carrés des erreurs relatives :
+
+\begin{equation}
+\mathrm{RRMSE}
+=
+\sqrt{
+\frac{1}{|\Omega|}
+\sum_{(i,j)\in \Omega}
+\varepsilon_{ij}^{2}
+}.
+\end{equation}
+
+Cette grandeur fournit une mesure globale, sans dimension, de l’écart entre la matrice calculée et la matrice de référence. Une valeur nulle correspond à une concordance exacte, tandis qu’une augmentation de cette métrique traduit une dégradation progressive de l’accord entre les deux solutions. Cette grandeur est utilisée par la suite pour analyser la convergence et la qualité des résultats en fonction des paramètres de simulation.
+
+\subsection{Simulation MCRT en 3D}
+Comme expliqué précemment, le cas d'une géométrie 3D est le plus simple pour \ETT. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.8\linewidth]{PICTURES/VERIF/rms_convergence_para_fine_112.pdf}
+    \caption{Facteurs de vue estimés par E2T pour un parallélépipède}
+    \label{fig:fij_schema}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.8\linewidth]{PICTURES/VERIF/rms_convergence_concentric_sphere_fine.pdf}
+    \caption{Facteurs de vue estimés par E2T pour deux sphères concentriques}
+    \label{fig:fij_schema}
+\end{figure}
