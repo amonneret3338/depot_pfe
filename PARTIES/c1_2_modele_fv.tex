@@ -1,23 +1,24 @@
 
 \subsection{Le modèle des facteurs de vue d'ordre 1}
-Les facteurs de vue d'ordre 1 repose sur l'hypothèse d'\textbf{uniformité de la radiosité et de la température sur une surface}. Cette hypothèse permet d'introduire des $\overline{J_i^1} \; [W/m^2]$, et de découpler le terme géométrique $f_{ij}$ de la radiosité dans la formule \ref{def:irra}.  On a alors pour $\forall i$:
-\red{partir de l'équation précédente}
+Les facteurs de vue sont introduit dans le but de simplifier l'écriture de \ref{def:irra}. L'intérêt est d'identifier des facteurs géométriques qui décrivent le couplage. d'ordre 1 repose sur l'hypothèse d'\textbf{uniformité de la radiosité sur une surface}. Cette hypothèse permet d'introduire des $\overline{J_i^1} \; [W/m^2]$, et de faire apparaître un terme géométrique $f_{ij}$ dans la Formule \ref{def:irra}. On a alors pour $\forall i$:
+
 \begin{equation}
     G_i(\vec{r_i}) = \sum_{j = 1}^{n} \overline{J_j}^1 f_{ij}(\vec{r_i}) \quad \text{avec } f_{ij}(\vec{r_i}) =\frac{1}{\pi} \int_{A_i} d^2(\vec{r_j})\bigg[\frac{cos(\theta_{ij})cos(\theta_{ji})}{||\vec{r_i}-\vec{r_j}||^2} \chi{(\vec{r_i},\vec{r_j})}\bigg] 
 \end{equation}
 
-L'intégration sur la surface $i$ permet enfin d'obtenir une approximation à l'ordre 1 la fraction de radiation quittant la surface $i$ intercepté par la surface $j$ appelée facteur de vue.
+L'intégration sur la surface $i$ permet d'obtenir une approximation à l'ordre 1 de la fraction de radiation quittant la surface $i$ intercepté par la surface $j$. Cette quantité est appelée facteur de vue (\textit{les termes de facteurs de forme ou facteurs de configuration sont aussi trouvés dans la littérature}).
 
 \begin{equation}
-    \label{fv}
+    \label{def:fv}
     F_{ij} = \frac{1}{A_i} \int_{A_i} \int_{A_j} d^2(\vec{r_i}) d^2(\vec{r_j})\bigg[\frac{cos(\theta_{ij})cos(\theta_{ji})}{\pi ||\vec{r_i}-\vec{r_j}||^2} \chi(\vec{r_i},\vec{r_j})\bigg] 
 \end{equation}
 
 
-Les hypothèses faites reviennent à considérer un problème d'éclairement entre différentes surface couplées. La connaissance des facteurs de vue permet alors de reformuler l'équation \ref{def:radiosite} pour exprimer les radiosités en fonction de la variable température : 
+Les hypothèses faites reviennent à considérer un problème d'éclairement entre différentes surface. La connaissance des facteurs de vue permet alors de reformuler l'équation \ref{def:radiosite} pour exprimer les radiosités en fonction de la variable température : 
 
 \begin{equation}
     \overline{J_i^1} = \epsilon_i \sigma \overline{T}^4_i  + \rho_i \sum_{j=1}^{n} \overline{J_j^1} F_{ij}
+    \label{def:radio}
 \end{equation}
 
 

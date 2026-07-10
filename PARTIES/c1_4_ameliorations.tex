@@ -1,9 +1,14 @@
 \subsection{Motivations: les problèmes hyper-sensibles}
-L'article de Robert P. Taylor, R.Luck et B. K. Hedge \cite{hypersensitive} met en lumière des problèmes hyper-sensibles, c'est à dire des problèmes pour lesquels une petite erreur dans les facteurs de vue peut engendrer une grande erreur lorsqu'elle est propagée dans l'équation de la chaleur. En effet, leur étude de propagation d'incertitude montre une sensibilité extrême de flux de chaleur avec les facteurs de vue. Dans le cas d'une géométrie pourtant simple d'un parallélépipède traité dans \cite{incro}, une précision de $5$ ~\% sur le flux de chaleur nécéssite une précision de $10^{-4}$ sur les facteurs de vue.
-Il devient donc évident qu'une méthode Monte-Carlo naïve doit être complétées par des méthodes complémentaires.
+L'article de Robert P. Taylor, R.Luck et B. K. Hedge \cite{hypersensitive} met en lumière des problèmes hyper-sensibles, c'est à dire des problèmes pour lesquels une petite erreur dans les facteurs de vue peut engendrer une grande erreur lorsqu'elle est propagée au flux radiatif. En effet, leur étude de propagation d'incertitude montre une sensibilité extrême de flux de chaleur avec les facteurs de vue. Dans le cas d'une géométrie pourtant simple d'un parallélépipède traité dans \cite{incro}, une précision de $5$ ~\% sur le flux de chaleur nécéssite une précision de $10^{-4}$ sur les facteurs de vue.
+Il devient donc nécessaires de connaître la précision des résultats.
 
 \subsection{Algorithmes de renforcement}
-Les résultats obtenus par la méthode de lancer de rayon permettent une bonne approximation des facteurs de vue avec une précision statistique en $\frac{1}{\sqrt{N}}$ caractéristique des méthodes Monte-Carlo. Or une approximation trop grossière peut s'avérer critique. Des méthodes de corrections \cite{renforcement95} qui reposent sur les propriétés géométriques des facteurs de vue permettent d'améliorer la convergence de la matrice vers la matrice théorique. L'enjeu est donc d'utiliser une méthode de correction des facteurs de vue moins coûteuse en temps de calcul qu'une augmentation du nombre de tirages.
+Les résultats obtenus par la méthode de lancer de $N$ rayons permettent une bonne approximation des facteurs de vue avec une précision liée à l'estimateur en $\frac{1}{\sqrt{N}}$ caractéristique des méthodes Monte-Carlo. Des méthodes de corrections \cite{renforcement95} qui reposent sur les propriétés géométriques des facteurs de vue permettent d'améliorer la convergence de la matrice vers la matrice théorique. Même si nous disposons d'une plus grande puissance de calcul qu'à l'époque où ces études ont été menées, l'enjeu reste toujours d'utiliser la méthode la moins coûteuse en temps de calcul.
+
+\red{à rédiger brièvement}
+
+
+L'algorithme de correction (en anglais "enforcement algorithm") est une méthode qui permet d'obtenir une matrice de facteurs de vue contrainte par les propriétés physiques. Trois méthodes de correction sont présentées et étudiées dans \cite{renforcement} qui aborde une méthode naïve, la méthode de Leersom, et la méthode de l'optimisation des moindres carrés. Les comparaisons en terme de précision et variance montrent que la dernière est la plus performante, et permet d'obtenir une matrice de facteurs de vue qui approxime le mieux les propriétés physique du problème.
 \subsubsection{Algorithme naïf}
      
 $\begin{bmatrix}
@@ -26,8 +31,9 @@ $\begin{bmatrix}
 
 \subsubsection{Algorithme de Leersum}
 \subsubsection{Algorithme des moindres carrés}
-\subsection{Stratégie d'échantionnage}
-
+\subsection{Stratégie d'échantillonnage}
+\red	{stade de brouillon, malheureusement n on nécessaire pou l'instant}
+\label{part:echanti}
 \begin{equation}
     \hat{F_{ij}}^{N_i, N_\theta, N_\varphi, N} =  \sum_{h = 1}^{N_i} \frac{A_{i,h}}{A_i} \sum_{l = 1}^{N_{\theta}} \sum_{m = 1}^{N_{\varphi}} \alpha_{l,m} \hat{F}_{ij}^{h,l,m, N} \quad \text{avec } \hat{F}_{ij}^{h,l,m, N} = \frac{1}{N} \sum_{k = 1}^{N} 1_{A_j}(\vec{r_i}^{(h,l,m,k)}, \vec{\Omega_i}^{(h,l,m,k)}) 
     \label{eq:fv1}
@@ -51,29 +57,34 @@ avec    $\alpha_{l,m}= \frac{\big(\varphi_{m+1}- \varphi_{m} \big)\big(sin^2(\th
 \end{equation}
 
 
-\subsubsection{Algorithme de renforcement et relation de fermeture}
 
-L'algorithme de renforcement (en anglais "enforcement algorithm") est une méthode de correction qui permet d'obtenir une matrice de facteurs contrainte par les propriétés physiques de ces derniers. Trois méthodes de correction sont présentées et étudiées dans \cite{renforcement} qui aborde une méthode naïve, la méthode de Leersom, et la méthode de l'optimisation des moindres carrés. Les comparaisons en terme de précision et variance montrent que la dernière est la plus performante, et permet d'obtenir une matrice de facteurs de vue qui approxime le mieux les propriétés physique du problème.
 
 \subsection{Méthode complémentaire: Facteurs de vue d'ordre 2}
-
+\red	{ est-ce utile ? on verra plus tard}
 La méthode des \textbf{facteurs de vue d'ordre 2} permet d'obtenir une approximation plus précise des facteurs de vue en prenant en compte la première interraction indirecte entre les surfaces. Cette amélioration est très utile lorsque les surfaces sont très grossièrement discrétisées. Elle repose sur l'introduction de facteurs de vue d'ordre 2, $\overline{J^2}$, qui prennent en compte la première interaction indirecte entre les surfaces et qui reposent sur les facteurs de vue d'ordre 1 :  $ \forall i, \quad J_i(\vec{r_i}) = J^1_i(\vec{r_i}) + \overline{J^2}_i - \overline{J^1_i} $. L'article \cite{Romain25} montre de la même manière que pour l'ordre 1 comment obtenir la formulation suivante :
 \begin{equation}
     \overline{J^2_i} - \overline{J^1_i} - \rho_i \sum_{j=1}^{n} F_{ij}  \bigg(\overline{J^2_j} - \overline{J^1_j}\bigg) = \rho_i \sum_{j=1}^{n}  F_{ij} \epsilon_j \sigma \overline{T^4_j} + \rho_i \sum_{j = 1}^{n} \rho_j \sum_{k=1}^{n} F_{ijk} \overline{J^1_k} - \rho_i \sum_{j=1}^{n} F_{ij} \overline{J^1_j}
 \end{equation}
 avec $F_{ijk}$ le facteur de vue d'ordre 2, qui correspond à la fraction de radiation quittant la surface $i$ qui est intercepté par la surface $j$ après une première interraction avec la surface $k$. $F_{ijk} = \sum_{l=1}^{N} \frac{A_{i,l}}{A_i} \int_{A_{i,l}} \frac{1}{A_{i,h}} d^2r_i f_{ijk}(\vec{r_i})$. On construit enfin l'estimateur de Monte-Carlo de l'espérance pour les facteurs de vue d'ordre 2 $\forall \alpha = (h,l,m,l',m')$ :
+%\begin{equation}
+%    \hat{F}_{ijk}^{N_i, N_\theta, N_\varphi, N} = \sum_{h=1}^{N_i} \frac{A_{i,h}}{A_i} \sum_{l=1}^{N_\theta} \sum_{m=1}%^{N_\varphi} \alpha_{l,m} \sum_{l'=1}^{N_\theta} \sum_{m'=1}^{N_\varphi} \alpha_{l',m'} \hat{F}^{\alpha,N}_{ijk}
+%\end{equation}
+
 \begin{equation}
-    \hat{F}_{ijk}^{N_i, N_\theta, N_\varphi, N} = \sum_{h=1}^{N_i} \frac{A_{i,h}}{A_i} \sum_{l=1}^{N_\theta} \sum_{m=1}^{N_\varphi} \alpha_{l,m} \sum_{l'=1}^{N_\theta} \sum_{m'=1}^{N_\varphi} \alpha_{l',m'} \hat{F}^{\alpha,N}_{ijk}
+    \hat{F}_{ijk}^N = \frac{1}{N} \sum_{n=1}^N \hat{F}^n_{ijk}
 \end{equation}
 avec, toujours pour des poids unitaires sur les angles :
+%\begin{equation}
+%    \hat{F}_{ijk}^{\alpha,N} = \frac{1}{N} \sum_{n=1}^{N} 1_{A_j}\big(\vec{r}_i^{\alpha,n}, \vec{\Omega}_{ij}^{\alpha,n}\big) 1_{A_k} \big(\vec{r}_j^{\alpha,n}(\vec{r_i}, \vec{\Omega}_i), \vec{\Omega}_{jk}^{\alpha,n} \big)
+%\end{equation} 
 \begin{equation}
-    \hat{F}_{ijk}^{\alpha,N} = \frac{1}{N} \sum_{n=1}^{N} 1_{A_j}\big(\vec{r}_i^{\alpha,n}, \vec{\Omega}_{ij}^{\alpha,n}\big) 1_{A_k} \big(\vec{r}_j^{\alpha,n}(\vec{r_i}, \vec{\Omega}_i), \vec{\Omega}_{jk}^{\alpha,n} \big)
+    \hat{F}_{ijk}^n =  1_{A_j}\big(\vec{r}_i^{\alpha,n}, \vec{\Omega}_{ij}^{\alpha,n}\big) 1_{A_k} \big(\vec{r}_j^{\alpha,n}(\vec{r_i}, \vec{\Omega}_i), \vec{\Omega}_{jk}^{\alpha,n} \big)
 \end{equation} 
 
-
-D'autres pistes d'amélioration peuvent être empruntées. L'objectif ici est de se concentrer sur les facteurs de vue d'ordre deux. Mais une liste non exhaustive de méthodes complémentaires est faite dans \cite{Romain25}. Elles ont pour but de compenser certaines approximations que peuvent engendrer les facteurs de vue. La méthode de Gebhart \cite{gebhart} permet notamment de s'affranchir du biais introduit par la subdivision des facteurs de vue sur les surfaces. 
+D'autres pistes d'amélioration peuvent être empruntées. L'objectif ici est de se concentrer sur les facteurs de vue d'ordre 1. Mais une liste non exhaustive de méthodes complémentaires est faite dans \cite{Romain25}. Elles ont pour but de compenser certaines approximations que peuvent engendrer les facteurs de vue. La méthode de Gebhart \cite{gebhart} permet notamment de corriger le biais introduit par l'hypothèse de radiosité uniforme. 
 
 \subsection{Gabhart}
+\red{ ça serait bien que j'ai le temps de l'implementer dans E2T, pour l'instant ça reste comme ça...}
 \begin{equation}
 B_{ij} = F_{ij} \epsilon_j + \sum_{k=1}^n F_{ik} (1 - \epsilon_k) B_{kj}
 \end{equation}
