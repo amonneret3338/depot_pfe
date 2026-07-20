@@ -97,7 +97,7 @@
 \usepackage{url}                % URL typesetting
 \usepackage{placeins}           % Float placement control
 \usepackage{comment}            % Comment out large blocks
-
+\usepackage{float}
 % -------------------------------------------------
 % Custom Commands
 % -------------------------------------------------
@@ -166,15 +166,16 @@
     
     
     %\input{PARTIES/glossaire}
-    \input{PARTIES/Introduction}
-	%\input{chapter1}
+    \section*{Introduction}
+    %\input{PARTIES/Introduction}
+	
+	\input{chapter1}
 
-    %\input{PARTIES/2_Couplage}
-
-    %\input{PARTIES/3_Perspectives}
 	\input{chapter2}
 	
+	\input{chapter3}
 	
+	\input{chapter4}
 	\renewcommand{\thechapter}{}
 	\renewcommand{\thesection}{\Alph{section}}
 	\setcounter{section}{0}
