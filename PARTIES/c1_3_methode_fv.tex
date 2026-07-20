@@ -85,6 +85,7 @@ où $\vec{\Omega_i} \in HS(\vec{r_i}, \vec{n_i})$ et les angles associés $\thet
 La première étape est de faire un tirage naïf de la position et de la direction du rayon. Les stratégies d'échantillonage et de stratification seront dévelopées dans la Partie \ref{part:echanti}. L'estimateur naïf est donc construit comme suit :
 \begin{equation}
     \hat{F_{ij}}^N =   \frac{1}{N} \sum_{n = 1}^{N} \hat{F}_{ij}^{n} \quad \text{avec } \hat{F}_{ij}^{n} = 1_{A_j}(\vec{r_i}^{n}, \vec{\Omega_i}^{n}) 
+\label{def:fv_mc}
 \end{equation}
 
 Une variance non biaisé de l'estimateur se construit de la même manière : 
