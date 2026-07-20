@@ -1,22 +1,15 @@
-\subsection*{Contexte scientifique}
+\subsection*{Contexte technologique}
 
-Les transferts radiatifs sont très fortement lié à la température du système considéré. En effet, la loi de Stefan Boltzmann rappelle la dépendance en $T⁴$ de la puissance radiative émise par un corps noir: de 420~W/m$^2$ à température ambiante à 75~kW/m$^2$ à 800°C. La grande majorité des technologies de centrales nucléaires sont conçues avec un attention particulière pour ces phénomènes. De manière évidentes, les HTR
+Les transferts radiatifs présentent une forte dépendance à la température. La loi de Stefan-Boltzmann montre que la puissance surfacique émise par un corps noir est proportionnelle à la quatrième puissance de sa température absolue. À titre d'exemple, cette puissance passe d'environ 420~W\,m$^{-2}$ à température ambiante à près de 75~kW\,m$^{-2}$ pour une température de 800~°C. Le rayonnement thermique constitue ainsi un mode de transfert de chaleur prépondérant dès lors que les températures deviennent élevées.
 
+Ces phénomènes interviennent dans de nombreuses technologies nucléaires. Les réacteurs à très haute température (VHTR) et les réacteurs refroidis au gaz en sont des exemples emblématiques, le rayonnement participant de manière significative aux échanges thermiques au sein du cœur. Cette problématique est au cœur de plusieurs développements récents, depuis la mise en service de la centrale \textit{Shidao Bay} en Chine jusqu'au développement du concept de micro-réacteur calogène \textit{Jimmy}. 
+Le rayonnement thermique joue également un rôle essentiel dans l'analyse des situations accidentelles des réacteurs à eau sous pression (REP) et des réacteurs à eau bouillante (REB). Lors d'un accident de perte de réfrigérant primaire, la température du cœur peut atteindre plusieurs milliers de kelvins. De telles conditions conduisent à une dégradation progressive des matériaux, depuis l'oxydation des gaines jusqu'à la fusion du combustible et à la formation de corium.
 
-
-
-
-Le rayonnement thermique, souvent négligé en fonctionnement nominal pour un REP peut vite être crucial pour d'autres points de fonctionnement ou scénarios physiques.. Ce mode de transfert de chaleur peut ainsi s'avérer important dans le cas d'une perte de réfrigérant primaire pour les réacteurs à eau légère. En l'absence de refroidissement efficace par le fluide caloporteur, le transfert thermique par rayonnement devient un mécanisme dominant, en particulier pour les réacteurs de faible puissance où la fusion du cœur reste limitée et où une grande partie des matériaux demeure à l’état solide.
-
-Dans les petits réacteurs modulaires refroidis à l’eau, les transitoires accidentels sont généralement plus lents. Toutefois, la dégradation du cœur reste fortement dépendante de la température, notamment en raison de l’oxydation du gainage en Zircaloy, qui s’accélère fortement au-delà de 1800~K. Ainsi, l’évacuation de la chaleur par rayonnement et convection naturelle du gaz joue un rôle clé et peut, dans certains cas, limiter l’élévation de température et prévenir un emballement exothermique.
-
+L'étude de ces phénomènes repose sur une complémentarité entre les approches expérimentales et la simulation numérique. Cette dernière mobilise des modèles physiques adaptés à la diversité des milieux rencontrés, qu'il s'agisse de milieux transparents, semi-transparents ou participants.
 
 \subsection*{Enjeu du stage}
 
-La modélisation du transfert radiatif dans le cœur est complexe en raison de l’évolution de sa géométrie au cours de l’accident. Les codes de simulation utilisent donc des modèles approchés, combinant des méthodes d’échange radiatif global entre surfaces et des modèles de conductivité effective basés sur une approche de milieu poreux. Un autre approche, adaptée elle aux milieux optiquement épais, repose sur une approximation de l'Equation du Transport Radiatif en une équation de la diffusion.
+Le présent stage s'inscrit dans le cadre du transfert radiatif entre surfaces opaques séparées par un milieu transparent. Cette configuration constitue une hypothèse classique dans de nombreux modèles de milieux poreux, notamment ceux proposés dans \cite{Romain25} et \cite{chahlafi}. Les travaux réalisés reposent sur un code de Monte Carlo par lancer de rayons (\textit{Monte Carlo Ray Tracing}, MCRT). Ils ont consisté à reprendre une première maquette développée lors d'un précédent stage, à en consolider les fondements numériques et logiciels, puis à utiliser un module permettant son couplage avec les autres modes de transfert de chaleur au sein de la plateforme TRUST \cite{saikali2025trust}.
 
-
-
-
-
+Ce rapport est organisé de la manière suivante. Le premier chapitre présente les fondements physiques du transfert radiatif dans les hypothèses retenues (Section~\ref{part:c1}). Le deuxième chapitre décrit le développement du code de calcul ainsi que les méthodes numériques mises en œuvre (Section~\ref{part:c2}). Le troisième chapitre est consacré à la vérification du module développé au moyen de solutions analytiques (Section~\ref{part:q}) et de comparaisons avec le code de référence PyMCRad (Section~\ref{part:pymcrad}). Enfin, le dernier chapitre étudie l'influence de la discrétisation géométrique sur la précision des flux themiques (Section~\ref{part:c4}).
 
