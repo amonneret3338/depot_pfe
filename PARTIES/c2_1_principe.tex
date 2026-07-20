@@ -1,1 +1,75 @@
-PRincipe de fonctionnement de \texttt{embree}
+Le code développé fonctionne en deux temps: la lecture d'un maillage puis le lancer de rayon. La première étape se fait à partir d'un \ttt{.med}, traduit dans l'API de \ttt{EMBREE} grâce à la librairie \ttt{MEDCOUPLING} qui appartient à la plateforme \ttt{Salome} \cite{salome}. La seconde étape est explicitée dans cette partie. Elle correspond à un algorithme de Monte Carlo parallélisé grâce à la librairie \texttt{TBB}.
+
+\subsection{Échantillonnage des rayons}
+
+L'estimateur de Monte Carlo utilisé dans cette étude repose sur un échantillonnage direct des variables aléatoires intervenant dans la définition du facteur de vue. Les lois de probabilité sont choisies de manière à reproduire les distributions physiques de l'émission diffuse tout en conservant un poids unitaire pour chaque rayon. Cette stratégie correspond à l'approche dite de \textit{Monte Carlo analogique} (\textit{analog Monte Carlo}) couramment utilisée pour le calcul des facteurs de vue et des échanges radiatifs \cite{howell}.
+
+L'émission d'un rayon est définie par le tirage de son point d'origine sur la surface émettrice, puis de sa direction dans l'hémisphère orienté par la normale locale.
+
+\paragraph{Échantillonnage de la position}
+
+Chaque surface est discrétisée par un ensemble de triangles. Afin d'obtenir une densité uniforme sur l'ensemble de la surface, le triangle $T_i$ est sélectionné avec une probabilité proportionnelle à son aire,
+
+\begin{equation}
+P(T_i)=\frac{A_i}{A_{\mathrm{tot}}},
+\end{equation}
+
+où $A_i$ est l'aire du triangle $T_i$ et $A_{\mathrm{tot}}$ l'aire totale de la surface.
+
+Une fois le triangle sélectionné, le point d'émission est généré uniformément à l'intérieur de celui-ci au moyen de coordonnées barycentriques. La densité conditionnelle vaut alors
+
+\begin{equation}
+p(\mathbf{x}\mid T_i)=\frac{1}{A_i}.
+\end{equation}
+
+La densité de probabilité globale est donc
+
+\begin{equation}
+p(\mathbf{x})
+=
+P(T_i)\,
+p(\mathbf{x}\mid T_i)
+=
+\frac{A_i}{A_{\mathrm{tot}}}
+\frac{1}{A_i}
+=
+\frac{1}{A_{\mathrm{tot}}},
+\end{equation}
+
+ce qui garantit une distribution uniforme sur l'ensemble de la surface indépendamment de la discrétisation du maillage. L'utilisation des coordonnées barycentriques constitue une méthode classique pour réaliser cet échantillonnage uniforme sur des maillages triangulaires \cite{Pharr2018}.
+
+\paragraph{Échantillonnage de la direction}
+
+Sous l'hypothèse de surfaces diffuses grises, les rayons sont émis suivant une loi de Lambert. L'angle azimutal $\varphi$ est ainsi tiré uniformément dans l'intervalle $[0,2\pi]$,
+
+\begin{equation}
+\varphi \sim \mathcal{U}(0,2\pi),
+\end{equation}
+
+tandis que l'angle polaire $\theta$ suit une distribution cosinus dont la densité de probabilité par unité d'angle solide est
+
+\begin{equation}
+p(\omega)=\frac{\cos\theta}{\pi},
+\qquad
+0 \leq \theta \leq \frac{\pi}{2}.
+\end{equation}
+
+Cette distribution reproduit la loi d'émission lambertienne et constitue le choix naturel pour le calcul Monte Carlo des facteurs de vue, puisqu'elle est directement compatible avec les hypothèses physiques retenues dans cette étude \cite{Howell}. Son échantillonnage est réalisé selon la méthode classique par inversion de la fonction de répartition \cite{Pharr2018}.
+
+\red	{faut-il être plus explicite dans le code implémenté et mettre les coordonnées ainsi générées à partir des nombres àléatoires ?}
+
+\subsection{Traitement des géométries en deux dimensions}
+La librairie \ttt{EMBREE} n'est valable que pour des géométries tridimensionnelles. Deux stratégies permettent d'estimer les facteurs de vue pour une géométrie en deux dimensions. D'une part la géométrie est extrudée, puis le Monte-carlo est effectué dans un plan perpendiculaire à la direction d'extrusion. D'autre part, des conditions de réflexions spéculaires sont imposées afin de simuler une géométrie infiniment longue dans une direction. Une comparaison approfondie est faite dans la partie \ref{part:2Dcomp}.
+
+
+\section{Point de départ et cahier des charges}
+
+
+\subsection{Etat du code à mon arrivée}
+
+\subsection{Attentes}
+
+
+
+
+
