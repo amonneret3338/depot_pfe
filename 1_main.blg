@@ -2,45 +2,64 @@ This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: 1_main.aux
 The style file: plain.bst
+Case mismatch error between cite keys howell and Howell
+---line 89 of file 1_main.aux
+ : \citation{howell
+ :                 }
+I'm skipping whatever remains of this command
 Database file #1: biblio.bib
-You've used 5 entries,
+Warning--I didn't find a database entry for "renforcement"
+Warning--I didn't find a database entry for "salome"
+Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
+while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
+while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
+while executing---line 1090 of file plain.bst
+Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
+while executing---line 1090 of file plain.bst
+Warning--empty journal in hypersensitive
+Warning--can't use both author and editor fields in incro
+Warning--empty publisher in incro
+You've used 18 entries,
             2118 wiz_defined-function locations,
-            536 strings with 4926 characters,
-and the built_in function-call counts, 1803 in all, are:
-= -- 171
-> -- 105
-< -- 0
-+ -- 41
-- -- 36
-* -- 146
-:= -- 317
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 31
+            619 strings with 7338 characters,
+and the built_in function-call counts, 5762 in all, are:
+= -- 546
+> -- 313
+< -- 1
++ -- 125
+- -- 104
+* -- 422
+:= -- 1011
+add.period$ -- 56
+call.type$ -- 18
+change.case$ -- 100
 chr.to.int$ -- 0
-cite$ -- 5
-duplicate$ -- 56
-empty$ -- 127
-format.name$ -- 36
-if$ -- 357
+cite$ -- 21
+duplicate$ -- 207
+empty$ -- 422
+format.name$ -- 104
+if$ -- 1164
 int.to.chr$ -- 0
-int.to.str$ -- 5
-missing$ -- 6
-newline$ -- 28
-num.names$ -- 10
-pop$ -- 28
+int.to.str$ -- 18
+missing$ -- 21
+newline$ -- 94
+num.names$ -- 38
+pop$ -- 102
 preamble$ -- 1
-purify$ -- 27
+purify$ -- 86
 quote$ -- 0
-skip$ -- 36
+skip$ -- 135
 stack$ -- 0
-substring$ -- 112
-swap$ -- 5
-text.length$ -- 0
+substring$ -- 292
+swap$ -- 25
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 18
-warning$ -- 0
-while$ -- 17
-width$ -- 6
-write$ -- 56
+type$ -- 64
+warning$ -- 3
+while$ -- 52
+width$ -- 20
+write$ -- 196
+(There were 5 error messages)

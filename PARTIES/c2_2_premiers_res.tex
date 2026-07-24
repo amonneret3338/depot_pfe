@@ -37,26 +37,82 @@ La métrique globale est ensuite définie comme la racine de la moyenne des carr
 Cette grandeur fournit une mesure globale, sans dimension, de l’écart entre la matrice calculée et la matrice de référence. Une valeur nulle correspond à une concordance exacte, tandis qu’une augmentation de cette métrique traduit une dégradation progressive de l’accord entre les deux solutions. Cette grandeur est utilisée par la suite pour analyser la convergence et la qualité des résultats en fonction des paramètres de simulation.
 
 \subsection{Simulation MCRT en 3D}
-Comme expliqué précemment, le cas d'une géométrie 3D est le plus simple pour \ETT. 
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.8\linewidth]{PICTURES/c2/rms_convergence_para_fine_112.png}
-    \caption{Facteurs de vue estimés par E2T pour un parallélépipède}
-    \label{fig:}
+\centering
+
+\begin{minipage}{0.45\textwidth}
+\centering
+
+\includegraphics[width = 1\linewidth]{PICTURES/c2/VERIF/rms_convergence_para_fine_112.png}
+\small\textbf{(a) Cas d'un parallélépipède}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\includegraphics[width = 1\linewidth]{PICTURES/c2/VERIF/convergence_cs_f.pdf}
+
+
+\small\textbf{(b) Cas de deux sphères concentriques}
+\end{minipage}
+
+\caption{Convergence des facteurs de vue pour des géométries en 3D.}
+\label{fig:verif3D}
+
 \end{figure}
+\subsection{Simulation MCRT avec des géométries 2D}
+\label{part:2Dcomp}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.8\linewidth]{PICTURES/VERIF/rms_convergence_concentric_sphere_fine.pdf}
-    \caption{Facteurs de vue estimés par E2T pour deux sphères concentriques}
-    \label{fig:}
+\centering
+
+\begin{minipage}{0.45\textwidth}
+\centering
+
+\includegraphics[width = 1\linewidth]{PICTURES/c2/VERIF/convergence_h7.pdf}
+\small\textbf{(a) Cas de deux arrêtes adjacentes d'un carré}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\includegraphics[width = 1\linewidth]{PICTURES/c2/VERIF/convergence_cc_fine.png}
+
+
+\small\textbf{(b) Cas de deux cercles concentriques}
+\end{minipage}
+
+\caption{Convergence des facteurs de vue pour des géométries en 2D.}
+\label{fig:verif3D}
+
 \end{figure}
+
+
+
+
 
 
 
 \subsection{Simulation MCRT avec des faces miroires}
+\begin{figure}[H]
+\centering
+
+\begin{minipage}{0.45\textwidth}
+\centering
+
+\includegraphics[width = 1\linewidth]{PICTURES/c2/VERIF/convergence_cube_sym_coarse.pdf}
+\small\textbf{(a) Cas d'un cube avec une face miroire}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\includegraphics[width = 1\linewidth]{PICTURES/c2/VERIF/convergence_h5_22_sym_Fine.pdf}
 
 
-\subsection{Simulation MCRT avec des géométries 2D}
-\label{part:2Dcomp}
+\small\textbf{(b) Cas d'une rangée infinie de cercle}
+\end{minipage}
+
+\caption{Convergence des facteurs de vue pour des géométries avec faces réflectives.}
+\label{fig:verif3Dmiror}
+
+\end{figure}
+

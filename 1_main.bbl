@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Brun1997ROOT}
 Ren{\'e} Brun and Fons Rademakers.
@@ -6,10 +6,47 @@ Ren{\'e} Brun and Fons Rademakers.
 \newblock {\em Nuclear Instruments and Methods in Physics Research A},
   389(1--2):81--86, 1997.
 
+\bibitem{chahlafi}
+M.~Chahlafi.
+\newblock {\em Modélisation du rayonnement thermique dans un coeur de
+  réacteur nucléaire dégradé en présence de vapeur et de gouttes d’eau.}
+\newblock PhD thesis, École Centrale Paris, 2011.
+
+\bibitem{gebhart}
+B.~Gebhart.
+\newblock Surface temperature calculations in radiant surroundings of arbitrary
+  complexity – for gray, diffuse radiation.
+\newblock {\em Journal of Heat Transfer}, 3(341–346), 1961.
+
+\bibitem{pbr9}
+Kook Han, Y.~Feng, and D.R.J. Owen.
+\newblock An accurate algorithm for evaluating radiative heat transfer in a
+  randomly packed bed.
+\newblock {\em CMES - Computer Modeling in Engineering and Sciences},
+  49:143--161, 08 2009.
+
+\bibitem{Howell185}
+J.~R. Howell, M.~P. Menguc, K.~Daun, and R.~Siegel.
+\newblock {\em Thermal Radiation Heat Transfer (7th ed.)}.
+\newblock CRC Press, 2020.
+
 \bibitem{Howell}
 J.~R. Howell, M.~P. Menguc, K.~Daun, and R.~Siegel.
 \newblock {\em Thermal Radiation Heat Transfer (7th ed.)}.
 \newblock CRC Press, 2020.
+
+\bibitem{methods_fv}
+HA. Shukla Pranav Patel Ziauddin~Khan Manoj Kumar~Gupta, Kuldip J~Bumtariya.
+\newblock Methods for evaluation of radiation view factor: A review.
+\newblock {\em Materials Today: Proceedings}, 4(2, Part A):1236--1243, 2017.
+\newblock 5th International Conference of Materials Processing and
+  Characterization (ICMPC 2016).
+
+\bibitem{Hajji2015}
+M.~Mirhosseini, A.~Saboonchi, and A.~Moosavi.
+\newblock Different methods for calculating a view factor in radiative
+  applications: Strip to in-plane parallel semi-cylinder.
+\newblock {\em Journal of Engineering Thermophysics}, 24(2):169--180, 2015.
 
 \bibitem{Okumura2016}
 Akira Okumura, Koji Noda, and Cameron Rulten.
@@ -17,15 +54,56 @@ Akira Okumura, Koji Noda, and Cameron Rulten.
   cosmic-ray telescopes and its applications in the cherenkov telescope array.
 \newblock {\em Astroparticle Physics}, 76:38--47, 2016.
 
+\bibitem{Pharr2018}
+Matt Pharr, Wenzel Jakob, and Greg Humphreys.
+\newblock {\em Physically Based Rendering: From Theory to Implementation}.
+\newblock Morgan Kaufmann, 3 edition, 2018.
+
 \bibitem{Qi2019HybridScene}
 Ji~Qi, Eric Chavanon, Fr{\'e}d{\'e}ric Gastellu-Etchegorry, et~al.
 \newblock Hybrid scene structuring for accelerating 3d radiative transfer
   simulations.
 \newblock {\em Remote Sensing}, 11(22):2637, 2019.
 
+\bibitem{Romain25}
+J.~Costa~Sallés R.~Le~Tellier and C.~Brayer.
+\newblock A comprehensive analysis of lumped enclosure models’ biases for
+  evaluating inter-assembly radiative heat transfer in accident simulation.
+\newblock {\em Nuclear Engineering and Design}, 433(433), 2025.
+
+\bibitem{renforcement95}
+Robert Taylor, B.~Hodge, Rogelio Luck, and W.~Steele.
+\newblock Uncertainty analysis of diffuse-gray radiation enclosure problems.
+\newblock {\em Journal of Thermophysics and Heat Transfer - J THERMOPHYS HEAT
+  TRANSFER}, 9:63--69, 01 1995.
+
+\bibitem{hypersensitive}
+Robert Taylor, Rogelio Luck, B.~Hodge, and W.~Steele.
+\newblock Uncertainty analysis of diffuse-gray radiation enclosure problems: A
+  hypersensitive case study.
+\newblock 01 1993.
+
+\bibitem{incro}
+Adrienne S.~Lavine Theodore L.~Bergman.
+\newblock {\em Fundamentals of Heat and Mass Transfer (8th ed.}
+\newblock 1985.
+
+\bibitem{partition}
+Pierre Vueghs, Hans~Peter de~Koning, O~Pin, and Pierre Beckers.
+\newblock Random hemisphere method for radiation ray tracing computations.
+\newblock {\em 5th European Thermal-Sciences Conference, The Netherlands},
+  2008.
+
 \bibitem{Wald2014Embree}
 Ingo Wald, Sven Woop, Carsten Benthin, Gregory~S. Johnson, and Manfred Ernst.
 \newblock Embree: A kernel framework for efficient cpu ray tracing.
 \newblock {\em ACM Transactions on Graphics}, 33(4):143:1--143:8, 2014.
+
+\bibitem{Wachter2019}
+Carsten Wächter and Nikolaus Binder.
+\newblock A fast and robust method for avoiding self-intersection.
+\newblock In Eric Haines and Tomas Akenine-Möller, editors, {\em Ray Tracing
+  Gems: High-Quality and Real-Time Rendering with DXR and Other APIs}, pages
+  77--85. Apress, 2019.
 
 \end{thebibliography}

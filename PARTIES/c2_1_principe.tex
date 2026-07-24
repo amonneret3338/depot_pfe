@@ -58,6 +58,9 @@ Cette distribution reproduit la loi d'émission lambertienne et constitue le cho
 
 \red	{faut-il être plus explicite dans le code implémenté et mettre les coordonnées ainsi générées à partir des nombres àléatoires ?}
 
+
+
+
 \subsection{Traitement des géométries en deux dimensions}
 La librairie \ttt{EMBREE} n'est valable que pour des géométries tridimensionnelles. Deux stratégies permettent d'estimer les facteurs de vue pour une géométrie en deux dimensions. D'une part la géométrie est extrudée, puis le Monte-carlo est effectué dans un plan perpendiculaire à la direction d'extrusion. D'autre part, des conditions de réflexions spéculaires sont imposées afin de simuler une géométrie infiniment longue dans une direction. Une comparaison approfondie est faite dans la partie \ref{part:2Dcomp}.
 

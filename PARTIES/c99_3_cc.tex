@@ -1,0 +1,53 @@
+Le contour de chaque cercle est discrétisé par un polygone régulier inscrit. La longueur d'un côté de ce polygone est donnée par
+
+\begin{equation}
+l = 2R\sin\left(\frac{\pi}{N}\right),
+\end{equation}
+
+où $R$ désigne le rayon du cercle et $N$ le nombre de sommets. Le périmètre du polygone s'écrit alors
+
+\begin{equation}
+P_N
+=
+2NR\sin\left(\frac{\pi}{N}\right).
+\label{eq:perimetre_poly}
+\end{equation}
+
+Considérons à présent deux cercles concentriques de rayons $R$ et $2R$, discrétisés respectivement par des polygones réguliers comportant $N_1$ et $N_2$ sommets. Le rapport des périmètres obtenus après discrétisation vaut
+
+\begin{equation}
+\frac{P_1^{(N)}}{P_2^{(N)}}
+=
+\frac{N_1\sin\left(\pi/N_1\right)}
+     {2N_2\sin\left(\pi/N_2\right)}.
+\label{eq:ratio_perimetres}
+\end{equation}
+
+Le rapport exact des périmètres des deux cercles est quant à lui égal à
+
+\begin{equation}
+\frac{P_1}{P_2}
+=
+\frac{2\pi R}{4\pi R}
+=
+\frac{1}{2}.
+\end{equation}
+
+L'erreur relative introduite par cette approximation géométrique est donc
+
+\begin{equation}
+\varepsilon_P
+=
+\frac{
+\dfrac{P_1}{P_2}
+-
+\dfrac{P_1^{(N)}}{P_2^{(N)}}
+}{
+\dfrac{P_1}{P_2}
+}
+=
+1-
+\frac{N_1\sin\left(\pi/N_1\right)}
+     {N_2\sin\left(\pi/N_2\right)}.
+\label{eq:err_ratio_perimetre}
+\end{equation}

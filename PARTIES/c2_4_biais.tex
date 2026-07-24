@@ -1,12 +1,43 @@
+\subsection{Approximation par le maillage des géométries courbes}
+\ETT  fonctionne à partir d'un maillage, et non pas de la géométrie exacte du système modélisé. Ce qui est une source non négligeable d'erreur pour des géométries courbées. L'exemple développé dans cette sous partie est celui de deux cercles concentriques, de rayons de 100~$u.a.$ et 200~$u.a.$. Il a été choisi car il permet de voir directement l'erreur commise sur les facteurs de vue. En effet, d'une manière analgoue à celle développée plus tôt dans la Section \ref{part:calcul_anal}, le ratio les facteurs de vue sont directement liés au ratio des périmètres: $F_{outer -> inner}= \frac{P_{inner}}{P_{outer}}$. 
+
+
+Le Tableau~\ref{tab:err_ratio_perimeter} présente les erreurs relatives obtenues pour les trois niveaux de discrétisation des cercles utilisés dans cette étude. La formule de l'erreur géométrique est développée dans l'Annexe \ref{anx:cc}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+$N_{inner}$ & $N_{outer}$ &
+$P_ {inner}^{(N)}/P_{outer}^{(N)}$ &
+Erreur géométrique (\%) &
+Erreur observée \\
+\midrule
+12  & 14   & 0.488793 & $2.2\times10^{-2}$ & $2.8\times10^{-3}$ \\
+79  & 157  & 0.499934 & $1.3\times10^{-4}$ & $2.0\times10^{-4}$ \\
+628 & 1000 & 0.499997 & $6.3\times10^{-6}$ & $2.5\times10^{-6}$ \\
+\bottomrule
+\end{tabular}
+\caption{Comparaison entre l'erreur géométrique sur le rapport des périmètres et l'erreur observée sur les facteurs de vue.}
+\label{tab:err_ratio_perimeter}
+\end{table}
+
+
+Ces résultats montrent que l'erreur géométrique induite par la discrétisation du contour décroît rapidement avec le raffinement du maillage. Alors que le maillage le plus grossier conduit à une erreur de l'ordre de $2\,\%$ sur le rapport des périmètres, celle-ci devient inférieure à $10^{-4}$ dès le second niveau de discrétisation et devient satisfaisant pour le maillage le plus fin. Il faut garder en tête le problème d'hyper sensibilité évoqué au Paragraphe \ref{part:hypersens} et insister sur l'importance de la précision des facteurs de vue.
+
+
+
+
 \subsection{Approximation flottante sur l'origine du point}
-Afin d'éviter les auto-intersections (\textit{self-intersections}) lors de l'émission d'un nouveau rayon depuis un point d'impact, il est nécessaire de décaler légèrement son origine le long de la normale géométrique à la surface. Une approche couramment employée consiste à appliquer un décalage de longueur fixe $\varepsilon$. Cependant, cette méthode dépend de l'échelle géométrique du problème et ne garantit pas une élimination robuste des auto-intersections. Wächter et Binder \cite{Wachter2019} montrent qu'un décalage adaptatif obtenu en modifiant directement la représentation en virgule flottante des coordonnées du point d'intersection permet de produire un déplacement proportionnel à la précision numérique locale. Cette approche est ainsi pratiquement invariante vis-à-vis de l'échelle de la scène, ne nécessite aucun réglage de paramètre et limite efficacement les artefacts numériques tout en conservant un surcoût de calcul négligeable.
+\subsubsection{De manière systématique}
+Afin d'éviter les auto-intersections lors de l'émission d'un nouveau rayon depuis un point d'impact, il est nécessaire de décaler légèrement son origine le long de la normale géométrique à la surface. Une approche couramment employée consiste à appliquer un décalage de longueur fixe $\varepsilon$. Cependant, cette méthode dépend de l'échelle géométrique du problème et ne garantit pas une élimination robuste des auto-intersections. Wächter et Binder \cite{Wachter2019} montrent qu'un décalage adaptatif obtenu en modifiant directement la représentation en virgule flottante des coordonnées du point d'intersection permet de produire un déplacement proportionnel à la précision numérique locale. Cette approche est ainsi pratiquement invariante vis-à-vis de l'échelle de la scène, ne nécessite aucun réglage de paramètre et limite efficacement les artefacts numériques tout en conservant un surcoût de calcul négligeable.
 
-La Figure \ref{fig:offset} illustre le décalage potentielle entre la position calculée $p_{calc}$ et la position théorique $p_{th}$. Dans cet exemple, la position corrigée $p_{cor}$ est bien positionée par rapport à l'orientation de la surface.
+La Figure \ref{fig:offset} illustre le cas où la position calculée $p_{calc}$ est en "dehors" de la géométrie. La position théorique $p_{th}$ étant pile à l'interface. La position corrigée $p_{cor}$ est bien un décalage dans la direction de la normale de la surface.
 
-Ces obversations ne sont pas présentées dans ce rapport. Mais l'approximation flottante des points d'intersection a notamment pu être mise à jour lors de rotation d'une même géométrie. Les auto-inserections pouvant atteindre $75$~\% des rayons émis sur une face. Il est important que cette correction est bien plus robuste que l'outils inhérent à la librairie \ttt{EMBREE}.
+Ces obversations ne sont pas présentées dans ce rapport. Mais l'approximation flottante des points d'intersection a notamment peut être mis à jour sur des géométries très simples. Les auto-inserections pouvant atteindre $75$~\% des rayons émis sur une face. Il est important de noter que cette correction est bien plus robuste que l'outils inhérent à la librairie \ttt{EMBREE}.
 
-\subsection{Cas pathologique de tirage aux intersections de deux groupes}
-De la même manière, un rayon peut être échantilloné sortant de la géométrie. Ce cas n'a lieu que lorsque le point est suffisamment proche d'une arrête d'un triangle, et que la frontière correspond à l'extérieur de la géométrie. La solution trouvée décale le rayon vers l'opposé la projection de la direction dans le plan d'émission (voir Figure \ref{fig:offset}). Si la situation précédente est omniprésente, celle-ci est du à un tirage de probablité faible, dans des configurations géométriques particulières. De plus, la correction est minime et ne change pas l'identité de la face récéptrice dans les conditions normales d'utilisation\footnote{La taille caratéristique du système doit être plus grande que le $\micro m$} de \ETT.
+\subsubsection{Cas pathologique de tirage aux intersections de deux groupes}
+De la même manière, un rayon peut être échantilloné sortant de la géométrie. Ce cas n'a lieu que lorsque le point est suffisamment proche d'une arrête d'un triangle, et que la frontière correspond à l'extérieur de la géométrie. La solution trouvée décale le rayon vers l'opposé la projection de la direction dans le plan d'émission (voir Figure \ref{fig:offset}). La probablité d'un tel tirage est extrêment faible. De plus, la correction est minime et ne change pas l'identité de la face récéptrice dans les conditions normales d'utilisation\footnote{La taille caratéristique du système doit être plus grande que le $\micro m$} de \ETT.
 \begin{figure}[H]
 \centering
 
@@ -23,7 +54,7 @@ De la même manière, un rayon peut être échantilloné sortant de la géométr
 \includegraphics[width = 1\linewidth]{PICTURES/c2/offset_physic.png}
 
 \vspace{0.3em}
-\small\textbf{(b) Décalage aux arrêtes}
+\small\textbf{(b) Décalage des rayons sortants}
 \end{minipage}
 
 \caption{Illustration en 2D des décalages nécessaires pour corriger l'imprécision flottante de la position calculée .}

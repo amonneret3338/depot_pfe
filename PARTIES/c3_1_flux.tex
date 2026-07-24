@@ -1,0 +1,95 @@
+\subsection{Calcul des flux radiatifs}
+
+Une fois les facteurs de vue calculés, ceux-ci sont utilisés pour déterminer les flux radiatifs échangés entre les différentes surfaces. Le calcul repose sur la méthode des radiosités, adaptée dans notre cas d'échanges radiatifs entre surfaces opaques, diffuses et grises \cite{howell}.
+
+On peut reformuler l'Equation \ref{def:radio} pour obtenir le système d'équation suivant:
+
+\begin{equation}
+J_i
+=
+\varepsilon_i \sigma T_i^4
++
+(1-\varepsilon_i)
+\sum_{j=1}^{N}
+F_{ij}J_j,
+\label{eq:radiosity}
+\end{equation}
+
+où $\varepsilon_i$ est l'émissivité de la surface, $T_i$ sa température, $\sigma$ la constante de Stefan-Boltzmann et $F_{ij}$ le facteur de vue entre les surfaces $i$ et $j$.
+
+En introduisant le vecteur des radiosités $\mathbf{J}$, le vecteur des températures élevées à la puissance quatre $\mathbf{T}^4$ ainsi que la matrice diagonale des émissivités
+
+\begin{equation}
+\mathbf{E}
+=
+\mathrm{diag}(\varepsilon_1,\ldots,\varepsilon_N),
+\end{equation}
+
+le système peut être réécrit sous forme matricielle :
+
+\begin{equation}
+\left[
+\mathbf{I}
+-
+(\mathbf{I}-\mathbf{E})\mathbf{F}
+\right]
+\mathbf{J}
+=
+\mathbf{E}\sigma\mathbf{T}^4.
+\label{eq:systeme_radiosite}
+\end{equation}
+
+La matrice
+
+\begin{equation}
+\mathbf{A}
+=
+\mathbf{I}
+-
+(\mathbf{I}-\mathbf{E})\mathbf{F}
+\end{equation}
+
+est construite à partir des facteurs de vue et des émissivités. Le système linéaire est ensuite résolu afin de déterminer les radiosités de l'ensemble des surfaces.
+
+Le flux radiatif net quittant chaque surface est finalement obtenu par
+
+\begin{equation}
+q_i
+=
+J_i
+-
+\sum_{j=1}^{N}
+F_{ij}J_j,
+\end{equation}
+
+soit, sous forme matricielle,
+
+\begin{equation}
+\mathbf{q}
+=
+(\mathbf{I}-\mathbf{F})\mathbf{J},
+\end{equation}
+
+ce qui conduit à l'expression finale
+
+\begin{equation}
+\mathbf{q}
+=
+(\mathbf{I}-\mathbf{F})
+\left[
+\mathbf{I}
+-
+(\mathbf{I}-\mathbf{E})\mathbf{F}
+\right]^{-1}
+\mathbf{E}\sigma\mathbf{T}^4.
+\label{eq:q_final}
+\end{equation}
+
+Cette formulation montre que les flux radiatifs sont entièrement déterminés par les facteurs de vue, les émissivités des surfaces et leurs températures. Elle constitue l'approche classique retenue pour le calcul des échanges radiatifs en enceinte fermée \cite{howell}.
+
+\subsection{Comparaison avec la littérature}
+
+
+Exemple 5.5 p210 -> on retrouve le bon flux pour la température calculée, système fermé à $1.10^{-4}$~W/m² près
+
+Exercice 5.22 p 256 -> on retrouve le bon flux pour la température calculée, système fermé à $1.10^{-4}$~W/m² près
