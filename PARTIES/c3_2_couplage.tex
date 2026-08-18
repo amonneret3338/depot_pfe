@@ -1,36 +1,18 @@
-\subsection{Couplage conduction-rayonnement en milieu transparent}
-\red{ à réécrire et reformuler}
-\section{Couplage rayonnement conduction thermique pour un milieu transparent}
-La plateforme TRUST (\textit{TRio\_U Software for Thermal-hydraulics})  \cite{saikali2025trust}, développée par le CEA, est un environnement de simulation numérique dédié à la modélisation des écoulements fluides et des transferts thermiques. Basée sur une architecture modulaire en C++, elle permet l’intégration et la modification de modèles physiques complexes, tels que les phénomènes de turbulence, de convection ou encore de rayonnement thermique. TRUST s’appuie sur des méthodes de discrétisation de type volumes finis et est conçue pour le calcul haute performance, notamment via des capacités de parallélisation. Dans ce cadre, la modification de la librairie dédiée au rayonnement thermique s’inscrit dans la logique d’extension des modèles physiques existants afin d’améliorer la prise en compte des échanges radiatifs dans les simulations couplées. On s'intéresse plus particulièrement au logiciel \texttt{TrioCFD}, basé sur \texttt{TRUST}.
-
-Des premiers travaux ont été réalisés autour du couplage conduction/rayonnement en milieu transparent avec la maquette python \texttt{pyMCRAD} développées par Romain Le Tellier. Cette maquette permet de générer les facteurs de vue à partir d'un maillage. Ce que \texttt{TrioCFD} n'est pas encore capable de faire. C'est donc pour cela que Lorenzo Bulgarelli, ancien stagiaire du laboratoire, a développé \texttt{embree2TRUST} \cite{lorenzo} afin d'obtenir la matrice des facteurs de vue.
+\section{Couplage conduction-rayonnement dans TRUST}
 
 
-\subsection{Génération des facteurs de vue par la maquette  \texttt{embree2TRUST}}
-Le point de départ est un fichier de maillage \textit{.med}. Ce fichier est ensuite lu et préparé afin de correspondre à une géométrie lisible pour \texttt{Intel Embree}, une librairie de lancer de rayon haute performance. Cette librairie ne fonctionne que pour des géométries 3D. A donc été ajouté dans la maquette \texttt{embree2TRUST} une partie qui permet d'extruder une géométrie 2D en géométrie 3D. 
+Les chapitres précédents ont permis de vérifier le calcul des facteurs de vue ainsi que le calcul des échanges radiatifs entre surfaces diffuses grises. L'objectif est désormais d'intégrer ce modèle au sein d'un code de calcul thermique afin de simuler le couplage entre la conduction dans les solides et les échanges radiatifs en milieu transparent.
 
-L'objectif principal de cette préparation des données, expliqué dans \cite{lorenzo}, est d'éviter des triangles dégénérés. Une fois que le maillage est lisible par les fonctions d'\texttt{Intel Embree}, la méthode d'intégration par Monte-Carlo est réalisée conformément à l'équation \ref{eq:fv1}.
+La plateforme \textsc{TRUST} (\textit{TRio\_U Software for Thermal-hydraulics}) \cite{saikali2025trust}, \url{(https://cea-trust-platform.github.io/} développée par le CEA, est un environnement de simulation multiphysique reposant sur une discrétisation par volumes finis. Initialement conçue pour la thermohydraulique, elle permet également de résoudre des problèmes de conduction thermique, de convection et de transferts couplés sur des géométries complexes. Son architecture modulaire facilite l'ajout de nouveaux modèles physiques, ce qui en fait un support adapté au développement d'un modèle de rayonnement thermique en milieu transparent.
+
+Des travaux préliminaires ont été réalisés au CEA autour du couplage conduction-rayonnement à l'aide de la maquette Python \texttt{pyMCRAD}, développée par Romain Le Tellier. Cette maquette a permis de démontrer la faisabilité du couplage entre le calcul des facteurs de vue et la résolution thermique. En revanche, elle repose sur des facteurs de vue préalablement connus et reste limitée à des géométries bidimensionnelles simples. L'objectif du présent travail est de lever ces limitations en intégrant directement le calcul des facteurs de vue à partir du maillage utilisé par \textsc{TRUST}, afin de permettre la simulation de géométries tridimensionnelles quelconques.
 
 
-\subsubsection{Paramétrisation des angles et de la position générés par Monte-Carlo}
-Le rayon estimé est caractérisé par sa position de départ $\vec{r_i}$, et sa direction $\vec{\Omega_i}$. Un tirage est donc constitué de plusieurs paramètres expliqués en détails dans \cite{lorenzo}:
-\begin{itemize}
-    \item La subdivision de départ, relative au ratio surfacique de la sous-surface $A_{i,h}$.
-    \item La position de départ $\vec{r_i}$ dans la sous-surface $A_{i,h}$, qui est choisie selon une distribution uniforme sur la surface, en utlisant les coordonnées barycentriques de la surface (deux tirages de variables aléatoires uniformes suffisent pour faire un tirage uniforme sur la surface d'un triangle).
-    \item L'angle azimuthal $\varphi_i$ est tiré selon une distribution uniforme sur $[0, 1] \times 2\pi$.
-    \item L'angle de zenith $\theta_i$ est tiré selon la fonction de densité de probabilité $p_\theta = 2sin(\theta)cos(\theta)$, qui correspond à une distribution uniforme sur l'hémisphère orienté selon le vecteur normal de la surface $A_i$. Et qui donne le tirage en fonction d'une variable aléatoire uniforme $U$ sur $[0, 1]$ : $\theta_i = arccos(\sqrt{1- U})$.
-\end{itemize}
 
-\textit{Il est intéressant que dans le cadre d'une vérification du code, avoir une suite de nombre aléatoires reproductible aide à repérer des erreurs d'implémentation}
 
-\subsubsection{Premiers résultats avec \ttt{embree2TRUST}}
-Dans le cas d'un géométrie 3D, un simulation d'un cube dans un cube a montré un résultat cohérent avec la précision du Monte-Carlo \cite{lorenzo}. Les facteurs de vue obtenus sont suffisemment proches de leur solution analytique et respectent les proriétés physiques définies dans \ref{def:fv}, à la précision de la simulation près.
+\section{Problème physique étudié}
 
-Le vrai défi est pour l'utilisation du module d'extrusion pour les géométries 2D. La géométrie à tester est tirée du travail de Le Tellier et al. \cite{Romain25}. Par manque de temps, l'analyse des résultats dans \cite{lorenzo} porte principalement sur la convergence de l'algorithme Monte Carlo et la précision des facteurs de vue obtenus. Chercher à savoir si ils sont correct fait parti de l'enjeu de ce stage.
-
-\subsection{Simulation avec le logiciel \ttt{trioCFD} de la plateforme \ttt{TRUST}}
-L'utilisation des facteurs de vue dans cette plateforme ce fait via un fichier d'entrée de type texte. Avant de comparer les résultats obtenus dans \cite{lorenzo}, il faut comprendre le principe du couplage rayonnement conduction dans \ttt{TrioCFD}.
-\subsubsection{Problème physique étudié}
+Le domaine étudié est constitué de plusieurs solides séparés par un milieu transparent, comme illustré Figure~\ref{fig:domaine}. Les échanges thermiques dans les solides sont gouvernés par la conduction, tandis que les surfaces en contact avec le milieu transparent échangent de l'énergie par rayonnement. Le milieu transparent n'absorbe ni n'émet de rayonnement ; il constitue uniquement le support de propagation des rayons entre les surfaces.
 
 \begin{figure}[H]
 
@@ -59,52 +41,103 @@ L'utilisation des facteurs de vue dans cette plateforme ce fait via un fichier d
 \label{fig:domaine}
 \end{figure}
 
+Dans chaque domaine solide $\Omega_s^i$, la température est obtenue par résolution de l'équation de la chaleur
 
-Le problème revient à considérer l'équation de la chaleur dans les différents domaines.
-Pour les solides :
 \begin{equation}
-    \forall i, \in \lbrace 1,2,3 \rbrace,\quad \forall \vec{r} \in  \Omega_s^i\quad \rho_s^i C_p^i \frac{\partial T(\vec{r})}{\partial t} =   -\lambda_{s}^i \Delta T(\vec{r}) + \dot{q}_{vol}(\vec{r})  
-\end{equation}
-Pour le fluide :
-\begin{equation}
-    \forall \vec{r}, \in  \Omega_s \quad \rho_f C_{p,f} \frac{\partial T(\vec{r})}{\partial t} =   -\lambda_f \Delta T(\vec{r}) + \dot{q}_{vol}(\vec{r})  
-\end{equation}
-Pour l'interface solide-fluide :
-\begin{equation}
-    \forall i, \in \lbrace 1,2,3 \rbrace,\quad \forall \vec{r} \in  \Gamma_s^i  , \left \lbrace
-    \begin{array}{r c c c c}
-      \vec{\phi}_s^i (\vec{r}) \cdot \vec{n}(\vec{r}) & = & \vec{\phi}_f (\vec{r}) \cdot \vec{n}(\vec{r}) + q_r(\vec{r}) & ,\text{avec}  & \vec{\phi}^i = -\lambda^i_s \nabla(T) \\
-      T_s(\vec{r}) & = & T_f(\vec{r}) & 
-    \end{array}\right.
+\rho_s^i C_p^i
+\frac{\partial T}{\partial t}
+=
+\nabla\cdot
+\left(
+\lambda_s^i
+\nabla T
+\right)
++
+\dot q_{\mathrm{vol}}.
 \end{equation}
 
-L'absence de terme source permet de trouver facilement l'allure de la température pour des géométries simples. On obtient en effet un profil linéaire (resp. logarithmique) en cartésien (resp. cylindrique).
+Dans cette étude, le milieu transparent n'intervient pas directement dans le transport radiatif. Lorsque sa résolution thermique est nécessaire, sa température est obtenue à partir de l'équation classique de diffusion
 
-\subsubsection{Premiers résultats du couplage en 2D avec \ttt{TrioCFD}}
-Dans cet exemple précis, la solution de l'équation de la chaleur converge vers le résultat attendu. On peut extraire de \ttt{TrioCFD} les Figures \ref{fig:maillage2D} et \ref{fig:plot2D} qui montrent le bon accord de la simulation avec la théorie.
+\begin{equation}
+\rho_f C_{p,f}
+\frac{\partial T}{\partial t}
+=
+\nabla\cdot
+\left(
+\lambda_f
+\nabla T
+\right)
++
+\dot q_{\mathrm{vol}}.
+\end{equation}
+
+Le couplage entre les domaines solides et le milieu transparent est assuré aux interfaces $\Gamma_{s,f}^i$. La température est supposée continue et le bilan des flux s'écrit
+
+\begin{equation}
+\left\{
+\begin{aligned}
+T_s &= T_f,\\
+-\lambda_s\nabla T_s\cdot\mathbf n
+&=
+-\lambda_f\nabla T_f\cdot\mathbf n
++
+q_r,
+\end{aligned}
+\right.
+\end{equation}
+
+où $q_r$ désigne le flux radiatif net calculé à partir des facteurs de vue présentés au chapitre précédent.
+
+Dans le cadre de ce stage, l'étude se limite au couplage entre la conduction dans les solides et les échanges radiatifs de surface à surface. Les simulations sont réalisées sous les hypothèses de surfaces opaques, diffuses grises, d'un milieu transparent et de propriétés thermophysiques constantes.
+
+	
+	
+	\section{Cas de vérification sur une géométrie bidimensionnelle infinie}
+
+Afin de vérifier le couplage entre le solveur thermique \trust et le module de calcul radiatif développé au cours de ce stage, les résultats obtenus sont comparés à ceux de la maquette de référence \texttt{pyMCRAD}. Cette dernière constitue un cas de validation pertinent puisqu'elle implémente le même modèle physique de conduction-rayonnement en milieu transparent pour des géométries bidimensionnelles.
+
+Le cas considéré représente une rangée infinie de crayons combustibles modélisée par un motif élémentaire de dix crayons. Les conditions de périodicité suivant la direction verticale permettent de reproduire un milieu infini, le motif étant illustré à la Figure~\ref{fig:domaine}. Les facteurs de vue sont cette fois calculés directement à partir du maillage par le module MCRT, puis utilisés dans la résolution thermique sous \trust.
 
 \begin{figure}[H]
-\begin{minipage}{0.49\linewidth}
 
+\begin{minipage}{0.2\textwidth}
     \centering
-    \includegraphics[width = \linewidth]{PICTURES/2D_VEF.png}
-    \caption{Maillage pour la simulation en 2D}
-    \label{fig:maillage2D}
+    \includegraphics[width=\linewidth]{PICTURES/c5couplage/legend.png}
 \end{minipage}
 \hfill
-\begin{minipage}{0.49\linewidth}
-
+\begin{minipage}{0.75\linewidth}
     \centering
-    \includegraphics[width = 0.9\linewidth]{PICTURES/2D_VEF_plot.png}
-    \caption{Courbe de température pour la simulation 2D}
-    \label{fig:plot2D}
+    \includegraphics[width=\linewidth]{PICTURES/c5couplage/mesh.png}
 \end{minipage}
+
+\caption{Motif élémentaire de dix crayons répété périodiquement suivant les directions $y^+$ et $y^-$.}
+\label{fig:domaine}
+
 \end{figure}
 
-La même conclusion est dressée pour une géométrie 3D ou cylindrique. L'important est plutôt de montrer que le module de rayonnement en milieu transparent de \ttt{TrioCFD} est fonctionnel. Par ailleurs, un travail d'amélioration d'une fiche de validation sur ce module de couplage est attendu.
+La comparaison est réalisée au travers de la conductivité thermique équivalente apparente $K_a$, grandeur classiquement utilisée pour caractériser les transferts thermiques dans les milieux poreux \cite{romain26}. Celle-ci est définie par
 
+\begin{equation}
+K_a(T_0)=
+\frac{R}{2L_Y\Delta T}
+\int_{\Gamma_L\cup\Gamma_R}
+\left|\mathbf q\cdot\mathbf n\right|
+\,\mathrm dS,
+\end{equation}
 
-\subsection{Combinaison \ttt{embree2TRUST} et \ttt{TrioCFD}}
-Alors que la section précédente montre un bon accord entre la simulation couplée et le résultat attendu, la simulation faite dans \cite{lorenzo} (le travail de Lorezno) montre des écarts avec la simulation de \cite{Romain25} (code de référence). Il est intéressant de noter que la principale différence entre les deux simulations vient de la génération des facteurs de vue. Un travail plus approndi de vérification et validation du code \ttt{embree2TRUST} est donc attendu pour le stage.
+où $\mathbf q$ désigne le flux thermique total traversant les frontières latérales du domaine.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\linewidth]{PICTURES/c5couplage/Ka_vs_T.pdf}
+\caption{Comparaison de la conductivité thermique équivalente obtenue avec \textsc{TRUST} et \texttt{pyMCRAD}.}
+\label{fig:ka}
+\end{figure}
+
+La Figure~\ref{fig:ka} met en évidence un bon accord entre les deux approches sur l'ensemble de la plage de températures étudiée. Les deux modèles reproduisent la même évolution de la conductivité équivalente lorsque la température augmente, ce qui confirme la bonne intégration du calcul radiatif au sein de \textsc{TRUST}.
+
+Les écarts les plus importants apparaissent aux températures les plus élevées. Ce comportement est attendu puisque la contribution du rayonnement devient alors prépondérante, les échanges radiatifs évoluant comme la quatrième puissance de la température. Dans ces conditions, une faible variation des facteurs de vue se traduit directement par une variation plus importante des flux radiatifs.
+
+L'écart maximal observé reste inférieur à 5~\%. Il est principalement attribué aux différences de représentation géométrique entre les deux modèles. Dans le cas présent, les crayons combustibles sont discrétisés par des polygones réguliers de 64 côtés. Comme discuté en Annexe~\ref{annexe:geom}, cette approximation modifie légèrement les facteurs de vue géométriques. Or, l'étude de sensibilité présentée en Section~\ref{part:hypersens} a montré que les flux radiatifs sont particulièrement sensibles à de faibles variations des facteurs de vue. Les écarts observés restent néanmoins compatibles avec cette approximation géométrique et valident le couplage conduction-rayonnement développé dans \textsc{TRUST}.
 
 

@@ -6,12 +6,6 @@ Ren{\'e} Brun and Fons Rademakers.
 \newblock {\em Nuclear Instruments and Methods in Physics Research A},
   389(1--2):81--86, 1997.
 
-\bibitem{chahlafi}
-M.~Chahlafi.
-\newblock {\em Modélisation du rayonnement thermique dans un coeur de
-  réacteur nucléaire dégradé en présence de vapeur et de gouttes d’eau.}
-\newblock PhD thesis, École Centrale Paris, 2011.
-
 \bibitem{gebhart}
 B.~Gebhart.
 \newblock Surface temperature calculations in radiant surroundings of arbitrary
@@ -25,18 +19,14 @@ Kook Han, Y.~Feng, and D.R.J. Owen.
 \newblock {\em CMES - Computer Modeling in Engineering and Sciences},
   49:143--161, 08 2009.
 
-\bibitem{Howell185}
-J.~R. Howell, M.~P. Menguc, K.~Daun, and R.~Siegel.
-\newblock {\em Thermal Radiation Heat Transfer (7th ed.)}.
-\newblock CRC Press, 2020.
-
-\bibitem{Howell}
+\bibitem{howell}
 J.~R. Howell, M.~P. Menguc, K.~Daun, and R.~Siegel.
 \newblock {\em Thermal Radiation Heat Transfer (7th ed.)}.
 \newblock CRC Press, 2020.
 
 \bibitem{methods_fv}
-HA. Shukla Pranav Patel Ziauddin~Khan Manoj Kumar~Gupta, Kuldip J~Bumtariya.
+HA. Shukla Pranav~Patel Manoj Kumar~Gupta, Kuldip J~Bumtariya and Ziauddin
+  Khan.
 \newblock Methods for evaluation of radiation view factor: A review.
 \newblock {\em Materials Today: Proceedings}, 4(2, Part A):1236--1243, 2017.
 \newblock 5th International Conference of Materials Processing and
@@ -65,11 +55,23 @@ Ji~Qi, Eric Chavanon, Fr{\'e}d{\'e}ric Gastellu-Etchegorry, et~al.
   simulations.
 \newblock {\em Remote Sensing}, 11(22):2637, 2019.
 
-\bibitem{Romain25}
+\bibitem{romain26}
+E.~Saïkali R.~Le~Tellier and A.~Calloo.
+\newblock Direct numerical evaluation of core equivalent conductivity: a
+  comparative analysis of open rod and flat plate assemblies.
+\newblock {\em Proc. of the 12th European Review Meeting on Severe Accident
+  Research ERMSAR2026}, 2026.
+
+\bibitem{romain25}
 J.~Costa~Sallés R.~Le~Tellier and C.~Brayer.
 \newblock A comprehensive analysis of lumped enclosure models’ biases for
   evaluating inter-assembly radiative heat transfer in accident simulation.
 \newblock {\em Nuclear Engineering and Design}, 433(433), 2025.
+
+\bibitem{saikali2025trust}
+Elie Saikali, Adrien Bruneton, Pierre Ledac, and Remi Bourgeois.
+\newblock Trust: the hpc open-source cfd platform--from cpu to gpu.
+\newblock {\em EPJ Nuclear Sciences and Technologies}, 11:53, 2025.
 
 \bibitem{renforcement95}
 Robert Taylor, B.~Hodge, Rogelio Luck, and W.~Steele.
@@ -105,5 +107,12 @@ Carsten Wächter and Nikolaus Binder.
 \newblock In Eric Haines and Tomas Akenine-Möller, editors, {\em Ray Tracing
   Gems: High-Quality and Real-Time Rendering with DXR and Other APIs}, pages
   77--85. Apress, 2019.
+
+\bibitem{shidao}
+Zuoyi Zhang, Zongxin Wu, Dazhong Wang, Yuanhui Xu, Yuliang Sun, Fu~Li, and
+  Yujie Dong.
+\newblock Current status and technical description of chinese 2×250mwth htr-pm
+  demonstration plant.
+\newblock {\em Nuclear Engineering and Design}, 239(7):1212--1219, 2009.
 
 \end{thebibliography}

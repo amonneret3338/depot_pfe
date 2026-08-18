@@ -1,97 +1,99 @@
-\subsection{Motivations: les problèmes hyper-sensibles}
+\subsection{Motivations: un problème hyper-sensible}
 \label{part:hypersens}
-L'article de Robert P. Taylor, R.Luck et B. K. Hedge \cite{hypersensitive} met en lumière des problèmes hyper-sensibles, c'est à dire des problèmes pour lesquels une petite erreur dans les facteurs de vue peut engendrer une grande erreur lorsqu'elle est propagée au flux radiatif. En effet, leur étude de propagation d'incertitude montre une sensibilité extrême de flux de chaleur avec les facteurs de vue. Dans le cas d'une géométrie pourtant simple d'un parallélépipède traité dans \cite{incro}, une précision de $5$ ~\% sur le flux de chaleur nécéssite une précision de $10^{-4}$ sur les facteurs de vue.
-Il devient donc nécessaires de connaître la précision des résultats.
+
+L'article de Robert P. Taylor, R.~Luck et B.~K. Hedge~\cite{hypersensitive} met en lumière des problèmes hyper-sensibles, c'est-à-dire des problèmes pour lesquels une petite erreur dans les facteurs de vue peut engendrer une grande erreur lorsqu'elle est propagée au flux radiatif. En effet, leur étude de propagation d'incertitude montre une sensibilité extrême du flux de chaleur aux facteurs de vue. Dans le cas d'une géométrie pourtant simple d'un parallélépipède, traité dans~\cite{incro}, une précision de $5\,\%$ sur le flux de chaleur nécessite une précision de $10^{-4}$ sur les facteurs de vue.
+
+Il devient donc nécessaire de maîtriser la précision des facteurs de vue calculés, et non uniquement de disposer d'une estimation ponctuelle : c'est cet enjeu qui motive le recours à des algorithmes de renforcement, présentés dans la section suivante.
 
 \subsection{Algorithmes de renforcement}
-Les résultats obtenus par la méthode de lancer de $N$ rayons permettent une bonne approximation des facteurs de vue avec une précision liée à l'estimateur en $\frac{1}{\sqrt{N}}$ caractéristique des méthodes Monte-Carlo. Des méthodes de corrections \cite{renforcement95} qui reposent sur les propriétés géométriques des facteurs de vue permettent d'améliorer la convergence de la matrice vers la matrice théorique. Même si nous disposons d'une plus grande puissance de calcul qu'à l'époque où ces études ont été menées, l'enjeu reste toujours d'utiliser la méthode la moins coûteuse en temps de calcul.
 
-\red{à rédiger brièvement}
+Les résultats obtenus par la méthode de lancer de $N$ rayons permettent une bonne approximation des facteurs de vue, avec une précision liée à l'estimateur en $\frac{1}{\sqrt{N}}$ caractéristique des méthodes de Monte Carlo. Des méthodes de correction~\cite{renforcement95}, qui reposent sur les propriétés géométriques des facteurs de vue, permettent d'améliorer la convergence de la matrice vers la matrice théorique. Même si nous disposons aujourd'hui d'une plus grande puissance de calcul qu'à l'époque où ces études ont été menées, l'enjeu reste toujours d'utiliser la méthode la moins coûteuse en temps de calcul, en particulier pour des géométries comportant un grand nombre de surfaces, où la matrice des facteurs de vue devient rapidement volumineuse.
 
+L'algorithme de correction (\textit{enforcement algorithm}) permet de corriger la matrice de facteurs de vue obtenue par le calcul Monte Carlo afin qu'elle satisfasse les propriétés physiques de réciprocité et de fermeture présentées précédemment. Plusieurs stratégies de correction sont étudiées dans \cite{renforcement}, notamment une approche directe et une méthode fondée sur l'optimisation au sens des moindres carrés. Les auteurs montrent que cette dernière offre les meilleurs résultats en termes de précision tout en limitant la variance introduite par la correction. Elle est donc retenue dans ce travail pour construire une matrice de facteurs de vue respectant au mieux les contraintes physiques du problème.
 
-L'algorithme de correction (en anglais "enforcement algorithm") est une méthode qui permet d'obtenir une matrice de facteurs de vue contrainte par les propriétés physiques. Trois méthodes de correction sont présentées et étudiées dans \cite{renforcement} qui aborde une méthode naïve, la méthode de Leersom, et la méthode de l'optimisation des moindres carrés. Les comparaisons en terme de précision et variance montrent que la dernière est la plus performante, et permet d'obtenir une matrice de facteurs de vue qui approxime le mieux les propriétés physique du problème.
 \subsubsection{Algorithme naïf}
-     
-$\begin{bmatrix}
+
+L'algorithme naïf procède en deux étapes successives, appliquées à la matrice brute des facteurs de vue $F_{ij}$ issue du calcul Monte Carlo.
+
+La première étape impose la relation de réciprocité $A_i F_{ij} = A_j F_{ji}$. Les termes hors diagonale étant a priori estimés indépendamment pour chaque paire $(i,j)$, rien ne garantit que $A_i F_{ij}$ et $A_j F_{ji}$ coïncident. On corrige alors chaque paire de termes symétriques par leur moyenne pondérée par les aires, de sorte que la matrice corrigée vérifie exactement la réciprocité :
+
+$$\begin{bmatrix}
                 ... & F_{12} & F_{13}\\
                 ... & ... & F_{23} \\
                 ... & ... & ... 
-        \end{bmatrix}$
-        -> réciprocité
-        $\begin{bmatrix}
+        \end{bmatrix}
+        \xrightarrow{\text{réciprocité}}
+        \begin{bmatrix}
                 ... & F_{12} & F_{13}\\
                 F_{21} & ... & F_{23} \\
                 F_{31} & F_{32} & ... 
-        \end{bmatrix}$
-        -> fermeture
-        $\begin{bmatrix}
+        \end{bmatrix}$$
+
+La seconde étape impose la relation de fermeture $\sum_{j=1}^n F_{ij} = 1$ pour chaque surface $i$. Une fois la réciprocité assurée, chaque ligne de la matrice est normalisée de sorte que sa somme vaille exactement 1, ce qui permet également de faire apparaître les termes diagonaux $F_{ii}$ (non nuls dans le cas de surfaces non convexes) :
+
+$$\begin{bmatrix}
+                ... & F_{12} & F_{13}\\
+                F_{21} & ... & F_{23} \\
+                F_{31} & F_{32} & ... 
+        \end{bmatrix}
+        \xrightarrow{\text{fermeture}}
+        \begin{bmatrix}
                 F_{11} & F_{12} & F_{13}\\
                 F_{21} & F_{22} & F_{23} \\
                 F_{31} & F_{32} & F_{33} 
-        \end{bmatrix}$
+        \end{bmatrix}$$
 
-\subsubsection{Algorithme de Leersum}
+Cette méthode a l'avantage de la simplicité et d'un faible coût de calcul, mais elle ne garantit pas que la matrice obtenue soit optimale au sens d'un critère de distance à la matrice brute initiale : les deux corrections successives (réciprocité puis fermeture) peuvent se contredire partiellement, la seconde étape pouvant dégrader la réciprocité fraîchement imposée par la première.
+
 \subsubsection{Algorithme des moindres carrés}
-\subsection{Stratégie d'échantillonnage}
-\red	{stade de brouillon, malheureusement n on nécessaire pou l'instant}
-\label{part:echanti}
+
+La méthode des moindres carrés reformule la correction des facteurs de vue comme un problème d'optimisation sous contraintes. On cherche la matrice corrigée $F$ qui minimise l'écart quadratique pondéré à la matrice brute $F^0$ issue du calcul Monte Carlo :
+
 \begin{equation}
-    \hat{F_{ij}}^{N_i, N_\theta, N_\varphi, N} =  \sum_{h = 1}^{N_i} \frac{A_{i,h}}{A_i} \sum_{l = 1}^{N_{\theta}} \sum_{m = 1}^{N_{\varphi}} \alpha_{l,m} \hat{F}_{ij}^{h,l,m, N} \quad \text{avec } \hat{F}_{ij}^{h,l,m, N} = \frac{1}{N} \sum_{k = 1}^{N} 1_{A_j}(\vec{r_i}^{(h,l,m,k)}, \vec{\Omega_i}^{(h,l,m,k)}) 
-    \label{eq:fv1}
+    y = \sum_{i=1}^{n} \sum_{j=1}^{n} w_{ij} \left(F_{ij} - F_{ij}^0\right)^2
+    \label{eq:moindre_carre}
 \end{equation}
 
-Un estimateur Monte-Carlo de la variance se construit de la même manière.
-
-
-Le choix de partionner l'hémisphère en $N_\theta \times N_\varphi$ directions de lancement, motivé par \cite{partition} et mise en place dans \cite{Romain25} permet d'aboutir à une décomposition comme la suivante :
-
-
-La tâche ici n'est pas d'étudier différentes constructions d'estimateurs. La fonction densité de probalilité choisie apparaît natuellement dans la définition de \ref{eq:MCfij}. On introduit donc $p_X = \frac{cos(X)sin(X)}{\pi}$, associée à la constante de normalisation $ \alpha_{l,m} $ conformément à \cite{Romain25}. Cet échantillonage uniforme sur la surface et sur les angles permet d'avoir une fonction poids associée unitaire. On fait donc $N$ tirages pour $(\vec{r_i}^{(l,m,k)}, \vec{\varphi_i}^{(l,m,k)}, \vec{\theta_i}^{(l,m,k)})$. L'estimateur Monte-Carlo de l'espérance :
-
-
-des stratégies de stratifications seront discutées ultérièrement et donnent de meilleurs résultats de convergence qu'un échantillonage uniforme sur les deux angles \cite{Romain25}.
-avec    $\alpha_{l,m}= \frac{\big(\varphi_{m+1}- \varphi_{m} \big)\big(sin^2(\theta_{l+1})-sin^2(\theta_{l})\big)}{2\pi}$.
+où les poids $w_{ij}$ permettent de pondérer chaque terme selon l'incertitude associée à son estimation Monte Carlo (les facteurs de vue estimés à partir d'un plus grand nombre de rayons pouvant par exemple se voir attribuer un poids plus élevé). Cette minimisation est soumise aux contraintes de fermeture et de réciprocité, qui s'écrivent sous forme d'égalités linéaires :
 
 \begin{equation}
-    F_{ij} = \frac{1}{A_i} \int_{A_i} d^2\vec{r}_i \sum_{l = 1}^{N_{\theta}} \sum_{m = 1}^{N_{\varphi}} \int_{\theta_{l}}^{\theta_{l+1}} \int_{\varphi_{m}}^{\varphi_{m+1}} \bigg[\frac{cos(\theta_i) sin(\theta_i)}{\pi} 1_{A_j}(\vec{r_i}, \vec{\Omega_i})\bigg] d\varphi_i d\theta_i
-\label{eq:MCfij}
+    \forall i, \quad \sum_{j=1}^{n} F_{ij} = 1 
+    \label{eq:contrainte_fermeture}
 \end{equation}
 
-
-
-
-\subsection{Méthode complémentaire: Facteurs de vue d'ordre 2}
-\red	{ est-ce utile ? on verra plus tard}
-La méthode des \textbf{facteurs de vue d'ordre 2} permet d'obtenir une approximation plus précise des facteurs de vue en prenant en compte la première interraction indirecte entre les surfaces. Cette amélioration est très utile lorsque les surfaces sont très grossièrement discrétisées. Elle repose sur l'introduction de facteurs de vue d'ordre 2, $\overline{J^2}$, qui prennent en compte la première interaction indirecte entre les surfaces et qui reposent sur les facteurs de vue d'ordre 1 :  $ \forall i, \quad J_i(\vec{r_i}) = J^1_i(\vec{r_i}) + \overline{J^2}_i - \overline{J^1_i} $. L'article \cite{Romain25} montre de la même manière que pour l'ordre 1 comment obtenir la formulation suivante :
 \begin{equation}
-    \overline{J^2_i} - \overline{J^1_i} - \rho_i \sum_{j=1}^{n} F_{ij}  \bigg(\overline{J^2_j} - \overline{J^1_j}\bigg) = \rho_i \sum_{j=1}^{n}  F_{ij} \epsilon_j \sigma \overline{T^4_j} + \rho_i \sum_{j = 1}^{n} \rho_j \sum_{k=1}^{n} F_{ijk} \overline{J^1_k} - \rho_i \sum_{j=1}^{n} F_{ij} \overline{J^1_j}
-\end{equation}
-avec $F_{ijk}$ le facteur de vue d'ordre 2, qui correspond à la fraction de radiation quittant la surface $i$ qui est intercepté par la surface $j$ après une première interraction avec la surface $k$. $F_{ijk} = \sum_{l=1}^{N} \frac{A_{i,l}}{A_i} \int_{A_{i,l}} \frac{1}{A_{i,h}} d^2r_i f_{ijk}(\vec{r_i})$. On construit enfin l'estimateur de Monte-Carlo de l'espérance pour les facteurs de vue d'ordre 2 $\forall \alpha = (h,l,m,l',m')$ :
-%\begin{equation}
-%    \hat{F}_{ijk}^{N_i, N_\theta, N_\varphi, N} = \sum_{h=1}^{N_i} \frac{A_{i,h}}{A_i} \sum_{l=1}^{N_\theta} \sum_{m=1}%^{N_\varphi} \alpha_{l,m} \sum_{l'=1}^{N_\theta} \sum_{m'=1}^{N_\varphi} \alpha_{l',m'} \hat{F}^{\alpha,N}_{ijk}
-%\end{equation}
-
-\begin{equation}
-    \hat{F}_{ijk}^N = \frac{1}{N} \sum_{n=1}^N \hat{F}^n_{ijk}
-\end{equation}
-avec, toujours pour des poids unitaires sur les angles :
-%\begin{equation}
-%    \hat{F}_{ijk}^{\alpha,N} = \frac{1}{N} \sum_{n=1}^{N} 1_{A_j}\big(\vec{r}_i^{\alpha,n}, \vec{\Omega}_{ij}^{\alpha,n}\big) 1_{A_k} \big(\vec{r}_j^{\alpha,n}(\vec{r_i}, \vec{\Omega}_i), \vec{\Omega}_{jk}^{\alpha,n} \big)
-%\end{equation} 
-\begin{equation}
-    \hat{F}_{ijk}^n =  1_{A_j}\big(\vec{r}_i^{\alpha,n}, \vec{\Omega}_{ij}^{\alpha,n}\big) 1_{A_k} \big(\vec{r}_j^{\alpha,n}(\vec{r_i}, \vec{\Omega}_i), \vec{\Omega}_{jk}^{\alpha,n} \big)
-\end{equation} 
-
-D'autres pistes d'amélioration peuvent être empruntées. L'objectif ici est de se concentrer sur les facteurs de vue d'ordre 1. Mais une liste non exhaustive de méthodes complémentaires est faite dans \cite{Romain25}. Elles ont pour but de compenser certaines approximations que peuvent engendrer les facteurs de vue. La méthode de Gebhart \cite{gebhart} permet notamment de corriger le biais introduit par l'hypothèse de radiosité uniforme. 
-
-\subsection{Gabhart}
-\red{ ça serait bien que j'ai le temps de l'implementer dans E2T, pour l'instant ça reste comme ça...}
-\begin{equation}
-B_{ij} = F_{ij} \epsilon_j + \sum_{k=1}^n F_{ik} (1 - \epsilon_k) B_{kj}
+    \forall i \neq j, \quad A_j F_{ji} - A_i F_{ij} = 0
+    \label{eq:contrainte_reciprocite}
 \end{equation}
 
+Une contrainte de positivité $F_{ij} \geq 0$ peut également être ajoutée si nécessaire, transformant le problème en un programme quadratique sous contrainte d'inégalité.
+
+Plutôt que de résoudre ce problème par des méthodes générales de programmation non linéaire, \cite{renforcement95} propose une résolution reposant sur une interprétation géométrique du problème. Les facteurs de vue sont réorganisés sous la forme d'un vecteur colonne $f$ (obtenu en empilant les lignes de la matrice $F^0$), ce qui permet de réécrire les contraintes de fermeture et de réciprocité~\ref{eq:contraintes} sous la forme d'un système linéaire :
 
 \begin{equation}
-Q_i = q_i A_i = A_i \epsilon_i \sigma T_i^4 - \sum_{j=1}^nA_j\epsilon_j \sigma T_j^4 B_{ij}
+    R \cdot f = c
+    \label{eq:systeme_contraintes}
 \end{equation}
 
+La solution de ce système peut être décomposée en deux composantes orthogonales : une solution particulière $f_{row}$, appartenant à l'espace ligne de $R$ et de norme minimale, donnée par
+
+\begin{equation}
+    f_{row} = R^T (R R^T)^{-1} c
+    \label{eq:solution_particuliere}
+\end{equation}
+
+et une composante homogène appartenant au noyau de $R$, qui s'exprime comme une combinaison linéaire des vecteurs d'une base $N_b$ de ce noyau :
+
+\begin{equation}
+    f - f_{row} = N_b x
+    \label{eq:solution_homogene}
+\end{equation}
+
+Les facteurs de vue bruts $f^0$ ne vérifiant pas exactement les contraintes, l'équation~\eqref{eq:solution_homogene} n'admet pas de solution exacte : le vecteur de poids $x$ est alors déterminé au sens des moindres carrés, en projetant l'écart $(f^0 - f_{row})$ sur le noyau de $R$ :
+
+\begin{equation}
+    x = (N_b^T N_b)^{-1} N_b^T (f^0 - f_{row})
+    \label{eq:solution_x}
+\end{equation}
+
+Le vecteur des facteurs de vue corrigés $f$, reconstruit à partir des équations~\eqref{eq:solution_particuliere}, \eqref{eq:solution_homogene} et \eqref{eq:solution_x}, constitue alors la projection de $f^0$ sur l'espace des solutions vérifiant exactement les contraintes de fermeture et de réciprocité. Contrairement à l'algorithme naïf, cette approche traite l'ensemble des $n^2$ facteurs de vue de façon symétrique et cohérente, sans privilégier arbitrairement une partie de la matrice (comme le fait l'algorithme naïf en ne conservant que les termes au-dessus de la diagonale) ni recourir à un processus itératif de convergence incertaine (comme l'algorithme de Leersum).

@@ -2,64 +2,100 @@ This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: 1_main.aux
 The style file: plain.bst
-Case mismatch error between cite keys howell and Howell
----line 89 of file 1_main.aux
- : \citation{howell
+Case mismatch error between cite keys Howell and howell
+---line 62 of file 1_main.aux
+ : \citation{Howell
  :                 }
 I'm skipping whatever remains of this command
+Case mismatch error between cite keys Howell and howell
+---line 65 of file 1_main.aux
+ : \citation{Howell
+ :                 }
+I'm skipping whatever remains of this command
+Case mismatch error between cite keys Howell and howell
+---line 132 of file 1_main.aux
+ : \citation{Howell
+ :                 }
+I'm skipping whatever remains of this command
+Case mismatch error between cite keys Howell and howell
+---line 143 of file 1_main.aux
+ : \citation{Howell
+ :                 }
+I'm skipping whatever remains of this command
+Case mismatch error between cite keys Romain25 and romain25
+---line 317 of file 1_main.aux
+ : \citation{Romain25
+ :                   }
+I'm skipping whatever remains of this command
+Case mismatch error between cite keys Romain25 and romain25
+---line 326 of file 1_main.aux
+ : \citation{Romain25
+ :                   }
+I'm skipping whatever remains of this command
+Case mismatch error between cite keys Romain25 and romain25
+---line 329 of file 1_main.aux
+ : \citation{Romain25
+ :                   }
+I'm skipping whatever remains of this command
+Case mismatch error between cite keys Romain25 and romain25
+---line 330 of file 1_main.aux
+ : \citation{Romain25
+ :                   }
+I'm skipping whatever remains of this command
+Case mismatch error between cite keys Romain25 and romain25
+---line 331 of file 1_main.aux
+ : \citation{Romain25
+ :                   }
+I'm skipping whatever remains of this command
 Database file #1: biblio.bib
+Warning--I didn't find a database entry for "Howell185"
 Warning--I didn't find a database entry for "renforcement"
-Warning--I didn't find a database entry for "salome"
-Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
+Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel and Ziauddin Khan" for entry methods_fv
 while executing---line 1049 of file plain.bst
-Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
-while executing---line 1049 of file plain.bst
-Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
-while executing---line 1090 of file plain.bst
-Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel, Ziauddin Khan" for entry methods_fv
+Too many commas in name 1 of "Manoj Kumar Gupta, Kuldip J Bumtariya, HA. Shukla, Pranav Patel and Ziauddin Khan" for entry methods_fv
 while executing---line 1090 of file plain.bst
 Warning--empty journal in hypersensitive
 Warning--can't use both author and editor fields in incro
 Warning--empty publisher in incro
-You've used 18 entries,
+You've used 19 entries,
             2118 wiz_defined-function locations,
-            619 strings with 7338 characters,
-and the built_in function-call counts, 5762 in all, are:
-= -- 546
-> -- 313
+            627 strings with 7792 characters,
+and the built_in function-call counts, 6356 in all, are:
+= -- 599
+> -- 363
 < -- 1
-+ -- 125
-- -- 104
-* -- 422
-:= -- 1011
-add.period$ -- 56
-call.type$ -- 18
-change.case$ -- 100
++ -- 144
+- -- 122
+* -- 482
+:= -- 1113
+add.period$ -- 59
+call.type$ -- 19
+change.case$ -- 114
 chr.to.int$ -- 0
-cite$ -- 21
-duplicate$ -- 207
-empty$ -- 422
-format.name$ -- 104
-if$ -- 1164
+cite$ -- 22
+duplicate$ -- 218
+empty$ -- 453
+format.name$ -- 122
+if$ -- 1280
 int.to.chr$ -- 0
-int.to.str$ -- 18
-missing$ -- 21
-newline$ -- 94
-num.names$ -- 38
-pop$ -- 102
+int.to.str$ -- 19
+missing$ -- 22
+newline$ -- 99
+num.names$ -- 40
+pop$ -- 107
 preamble$ -- 1
-purify$ -- 86
+purify$ -- 97
 quote$ -- 0
-skip$ -- 135
+skip$ -- 146
 stack$ -- 0
-substring$ -- 292
-swap$ -- 25
+substring$ -- 330
+swap$ -- 26
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 64
+type$ -- 70
 warning$ -- 3
-while$ -- 52
-width$ -- 20
-write$ -- 196
-(There were 5 error messages)
+while$ -- 56
+width$ -- 21
+write$ -- 207
+(There were 11 error messages)

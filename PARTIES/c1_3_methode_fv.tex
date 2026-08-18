@@ -1,17 +1,17 @@
-\section{Méthodes de résolution des facteurs de vue}
+\section{Méthodes de calcul des facteurs de vue}
 
-Une grande diversité des méthodes de résolution des facteurs de vue existe. L'objectif de cette étude n'est pas de comparer les méthodes, mais d'utiliser les plus efficaces dans un contexte de géométries complexes. Ainsi le travail de synthèse de Manoj Kumar Gupta et al. \cite{methods_fv} souligne l'incompatibilité des méthodes de \itt{Hottel's cross string} et \itt{Unit Sphere and Hemicube Method} développée dans \cite{Howell185} dans un contexte de réacteurs français ou européens. La première méthode est utile en cas de milieu semi infini \cite{Hajji2015} ou par exemple pour des géométries caractéristiques des réacteurs à lit de boulets (\itt{Pebled Bed Reactor}) \cite{pbr9}. La deuxième méthode de sphère unité a la belle charactéristique de pouvoir être évaluée expérimentalement mais n'atteint pas des seuils de précision nécessaires à notre étude. 
+Une grande diversité de méthodes de résolution des facteurs de vue existe. L'objectif de cette étude n'est pas de les comparer entre elles, mais de retenir la plus adaptée à un contexte de géométries complexes. Le travail de synthèse de Manoj Kumar Gupta et al.~\cite{methods_fv} souligne ainsi l'incompatibilité des méthodes de \itt{Hottel's cross string} et \itt{Unit Sphere and Hemicube Method}, développée dans~\cite{howell}, avec un contexte de réacteurs français ou européens. La première méthode est utile en cas de milieu semi-infini~\cite{Hajji2015}, ou par exemple pour des géométries caractéristiques des réacteurs à lit de boulets (\itt{Pebble Bed Reactor})~\cite{pbr9}. La seconde, la méthode de la sphère unité, présente quant à elle la particularité notable de pouvoir être évaluée expérimentalement -- une propriété assez rare parmi les méthodes de calcul de facteurs de vue pour mériter d'être soulignée -- mais elle n'atteint pas les seuils de précision requis pour la présente étude.
+\red{faut-il décrire plus les méthodes ci dessus ? je ne les utiliseraint pas mais sont aussi pas mal étudiées}
 
-La diversité des méthodes restantes, développées dans \cite{Howell} ne sera pas abordées en profondeur. La méthode retenue est la méthode de Monte Carlo Ray Tracing. Deux autres méthodes sont présentées afin de comprendre comment sont établis des facteurs de vue pour des géométries simples.
+La diversité des méthodes restantes ne sera pas abordée en profondeur. La méthode retenue pour ce travail est la méthode de Monte Carlo Ray Tracing. Deux autres méthodes sont néanmoins présentées dans la suite de cette section, afin de comprendre comment sont établis les facteurs de vue pour des géométries simples.
 
-La première sous partie développe un exemple de résolution directe de l'intégrale et montre la limitation de cette méthode bien qu'elle soit la plus précise. La seconde sous partie donne les grandes lignes d'une résolution astucieuse des facteurs de vue dans des géométries arrageantes. Enfin la dernière sous partie insistera sur la méthode Monte-Carlo comme méthode de référence pour une géométrie complexe. 
-
+La première sous-partie développe un exemple de résolution directe de l'intégrale et montre les limites de cette méthode, bien qu'elle soit la plus précise. La seconde sous-partie donne les grandes lignes d'une résolution astucieuse des facteurs de vue pour des géométries arrangeantes. Enfin, la dernière sous-partie insiste sur la méthode de Monte Carlo comme méthode de référence pour les géométries complexes.
 \subsection{Méthode d'intégration directe : résolution de l'intégrale}
 Afin d'évaluer la faisabilité d'une résolution intégrale directe des facteurs de vue, le cas du facteur de vue entre deux faces opposées d'un cube unité est développée en Annexe \ref{anx:int}. À partir de la définition intégrale du facteur de vue, le problème conduit initialement à une intégrale quadruple portant sur l'ensemble des paires de points appartenant aux deux surfaces.
 
 L'exploitation de la géométrie du problème permet toutefois de simplifier significativement cette expression. En introduisant les coordonnées relatives entre les deux faces et en utilisant une propriété de convolution, l'intégrale quadruple est ramenée à une intégrale double sur les distances relatives. Cette transformation met en évidence un facteur de pondération géométrique représentant la densité des paires de points associées à une même séparation.
 
-L'intégrale obtenue est ensuite traitée analytiquement par introduction d'une fonction auxiliaire dépendant d'un paramètre, puis par décomposition du terme de pondération en contributions élémentaires. Cette démarche conduit à une expression analytique fermée du facteur de vue entre deux faces opposées du cube :
+L'intégrale obtenue est ensuite traitée analytiquement par introduction d'une fonction auxiliaire dépendant d'un paramètre, puis par décomposition du terme de pondération en contributions élémentaires. Cette démarche conduit à une expression analytique du facteur de vue entre deux faces opposées du cube :
 
 \begin{equation}
 F_{16}=\frac{2}{\pi} \left[ \ln(\frac{2}{\sqrt{3}}) +2\sqrt{2}arctan(\frac{1}{\sqrt{2}})-\frac{\pi}{2} \right]
@@ -28,10 +28,10 @@ Ce résultat montre qu'une résolution intégrale directe est réalisable pour d
 \label{part:calcul_anal}
 Une version aussi élégante que limitée permet de trouver les facteurs de vue en utilisant la réciprocité, la complémentarité et la symétrie de ces derniers.
 \subsubsection*{Utilisation de la réciprocité}
-Les facteurs de vue pour deux sphères concentriques sont se retrouvent de manière assez directes. La face intérieure éclaire complètement la face extérieur. Par réciprocité, on obtient $ F_{out->in} = \frac{S_{in}}{S_{out}} \times F_{in -> out}= \frac{S_{in}}{S_{out}}$  
+Les facteurs de vue pour deux cylindres concentriques se retrouvent de manière assez directes. La face intérieure éclaire complètement la face extérieur. Par réciprocité, on obtient $ F_{out\rightarrow in} = \frac{P_{in}}{P_{out}} \times F_{in \rightarrow out}= \frac{P_{in}}{P_{out}}$  
 
 \subsubsection*{Utilisation de la symétrie et de la relation de fermeture}
-Prennons un parallélépipède à base carré de côté 1, et de hauteur 2. La littérature \cite{Howell} nous donne le facteur de vue d'une face à son opposée, valant $F_{16} = 0.0686$ et $F_{24} = 0.2859$ . Les facteurs de vue d'une base vers une faces adjacentes se retrouvent par symétrie et relation de fermeture :
+Prennons un parallélépipède à base carré de côté 1, et de hauteur 2 dont la numérotation est représentée sur la Figure~\ref{fig:para_notation}. La Référence \cite{Howell} nous donne le facteur de vue d'une face à son opposée, valant $F_{16} = 0.0686$ et $F_{24} = 0.2859$ . Les facteurs de vue d'une base vers une faces adjacentes se retrouvent par symétrie et relation de fermeture :
 \begin{equation}
 F_{11} + \sum_{j=2}^5 F_{1j} + F_{16} = 1, \quad \text{avec}  F_{12} =  F_{13} = F_{14} = F_{15}
 \end{equation}
@@ -61,16 +61,21 @@ Enfin,
 \]
 
 Cette méthode est très efficace pour trouver des facteurs de vue à partir de ceux déjà connus. Toutefois là aussi, la diversité et la compléxité des géométries étudiées requiert une méthode indépendante de la géométrie.
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.66\linewidth]{PICTURES/c1/para.png}
+	\caption{Convention de la numérotation des faces du parallélépipède et de son patron.}   
+	\label{fig:para_notation}
+\end{figure}
 
 \subsection{Méthode d'estimation des facteurs de vue par "Monte Carlo Ray Tracing"}
 La méthode d'intégration par Monte-Carlo de lancer de rayons permet d'obtenir une approximation numérique des facteurs de vue pour des géométries complexes. Cette méthode consiste à lancer un grand nombre de rayons depuis chaque surface, et à compter le nombre de rayons qui interceptent les autres surfaces. La fraction de rayons qui interceptent une surface $j$ à partir d'une surface $i$ donne une approximation du facteur de vue $F_{ij}$.
 
-On considère un hémisphère $HS(\vec{r_i}, \vec{n_i})$ autour du point $\vec{r_i}$, orienté selon le vecteur $\vec{n_i}$ normal à la surface $A_i$ en $\vec{r_i}$. Cette manipulation permet de reformuler la partie intersection géométrique. L'équation \ref{def:fv} peut être ainsi modifiée en:
+On considère un hémisphère $HS(\vec{r_i}, \vec{n_i})$, conformément à la Figure~\ref{fig:fij_schema} du point $\vec{r_i}$, orienté selon le vecteur $\vec{n_i}$ normal à la surface $A_i$ en $\vec{r_i}$. Cette manipulation permet de reformuler la partie intersection géométrique. L'équation \ref{def:fv} peut être ainsi modifiée en:
 
 \begin{equation}
     \label{def:fv_mcrt}
-    F_{ij} = \frac{1}{A_i} \int_{A_i} d^2\vec{r}_i \int_{\varphi = 0}^{2\pi} d\varphi_i \int_{\theta = 0}^{\pi/2} d\theta_i \bigg[cos(\theta_i) sin(\theta_i) 1_{A_j}(\vec{r_i}, \vec{\Omega_i})\bigg]
+    F_{ij} = \frac{1}{A_i} \int_{A_i} d^2\vec{r}_i \int_{\varphi = 0}^{2\pi} d\varphi_i \int_{\theta = 0}^{\pi/2} d\theta_i \bigg[\cos(\theta_i) \sin(\theta_i) 1_{A_j}(\vec{r_i}, \vec{\Omega_i})\bigg]
 \end{equation}
 
 
@@ -79,17 +84,17 @@ où $\vec{\Omega_i} \in HS(\vec{r_i}, \vec{n_i})$ et les angles associés $\thet
 \begin{figure}[h]
     \centering
     \includegraphics[width = 0.3\linewidth]{PICTURES/HS_schema.png}
-    \caption{Illustration des notations géométriques introduites à l'Eq \ref{def:fv_mcrt}}
+    \caption{Illustration des notations géométriques introduites à l'Équation \ref{def:fv_mcrt}}
     \label{fig:fij_schema}
 \end{figure}
 
-La première étape est de faire un tirage naïf de la position et de la direction du rayon. Les stratégies d'échantillonage et de stratification seront dévelopées dans la Partie \ref{part:echanti}. L'estimateur naïf est donc construit comme suit :
+Un tirage naïf de la position et de la direction du rayon permet d'avoir des poids unitaires pour chaque rayon. L'estimateur associé est :
 \begin{equation}
     \hat{F_{ij}}^N =   \frac{1}{N} \sum_{n = 1}^{N} \hat{F}_{ij}^{n} \quad \text{avec } \hat{F}_{ij}^{n} = 1_{A_j}(\vec{r_i}^{n}, \vec{\Omega_i}^{n}) 
 \label{def:fv_mc}
 \end{equation}
 
-Une variance non biaisé de l'estimateur se construit de la même manière : 
+Une variance non biaisée de l'estimateur se construit de la même manière : 
 \begin{equation}
     \hat{V_{ij}}^N =   \frac{1}{N-1} \Big( \frac{1}{N} \sum_{n = 1}^{N}   [ \hat{F}_{ij}^{n} - \hat{F}_{ij}^N]^2    \Big)
 \end{equation}

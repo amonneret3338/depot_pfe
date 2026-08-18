@@ -8,7 +8,7 @@
 \usepackage[utf8]{inputenc}       % UTF-8 encoding
 \usepackage[T1]{fontenc}          % Font encoding
 \usepackage[french]{babel}        % French language
-
+	
 % -------------------------------------------------
 % Page Layout and Formatting
 % -------------------------------------------------
@@ -22,6 +22,7 @@
 \usepackage{lastpage}             % Reference to the last page
 \usepackage{titlesec}             % Section formatting
 \usepackage{datetime}             % Date and time
+
 
 % -------------------------------------------------
 % Math Packages
@@ -84,7 +85,7 @@
 % Hyperlinks
 % -------------------------------------------------
 \usepackage{hyperref}           % Hyperlinks
-
+\usepackage{cleveref}
 % -------------------------------------------------
 % Miscellaneous
 % -------------------------------------------------
@@ -98,6 +99,8 @@
 \usepackage{placeins}           % Float placement control
 \usepackage{comment}            % Comment out large blocks
 \usepackage{float}
+
+%\usepackage{textcomp}
 % -------------------------------------------------
 % Custom Commands
 % -------------------------------------------------
@@ -116,6 +119,11 @@
 \newcommand{\ttt}{\texttt}
 \newcommand{\itt}{\textit}
 \newcommand{\ETT}{\texttt{embree2TRUST}}
+\newcommand{\trust}{\texttt{TRUST}}
+\newcommand{\pcr}{\texttt{pyMCRAD}}
+\newcommand{\emb}{\texttt{INTEL EMBREE}\textsuperscript{\textcopyright}}
+\newcommand{\mcrt}{Monte Carlo Ray Tracing}
+\newcommand{\salome}{\texttt{SALOME}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %after usepackage commands
 %\bibliographystyle{ieeetr}
@@ -138,11 +146,11 @@
 
 \begin{document}
     % Title page
-    %\input{PARTIES/page_de_garde}
+    \input{PARTIES/page_de_garde}
     \newpage 
 
     % Meditation time
-    %\input{PARTIES/food_for_thougth}
+    \input{PARTIES/food_for_thougth}
 
     % Sumario
     \newpage
@@ -166,19 +174,23 @@
     
     
     %\input{PARTIES/glossaire}
-    \section*{Introduction}
     \input{PARTIES/Introduction}
 	
-	\input{chapter1}
+	%\input{chapter1}
 
 	\input{chapter2}
 	
-	\input{chapter3}
+	%\input{chapter3}
 	
-	\input{chapter4}
-	\renewcommand{\thechapter}{}
+	%\input{chapter5}
+	
+
+	\input{PARTIES/conclusion.tex}
+	
+		\renewcommand{\thechapter}{}
 	\renewcommand{\thesection}{\Alph{section}}
-	\setcounter{section}{0}
+	\setcounter{section}{0}	
+
 	\input{chapterAnnexe}
 	
 

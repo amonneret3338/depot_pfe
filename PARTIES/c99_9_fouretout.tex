@@ -1,0 +1,66 @@
+
+\subsection{Méthode complémentaire: Facteurs de vue d'ordre 2}
+\red	{ est-ce utile ? on verra plus tard}
+La méthode des \textbf{facteurs de vue d'ordre 2} permet d'obtenir une approximation plus précise des facteurs de vue en prenant en compte la première interraction indirecte entre les surfaces. Cette amélioration est très utile lorsque les surfaces sont très grossièrement discrétisées. Elle repose sur l'introduction de facteurs de vue d'ordre 2, $\overline{J^2}$, qui prennent en compte la première interaction indirecte entre les surfaces et qui reposent sur les facteurs de vue d'ordre 1 :  $ \forall i, \quad J_i(\vec{r_i}) = J^1_i(\vec{r_i}) + \overline{J^2}_i - \overline{J^1_i} $. L'article \cite{Romain25} montre de la même manière que pour l'ordre 1 comment obtenir la formulation suivante :
+\begin{equation}
+    \overline{J^2_i} - \overline{J^1_i} - \rho_i \sum_{j=1}^{n} F_{ij}  \bigg(\overline{J^2_j} - \overline{J^1_j}\bigg) = \rho_i \sum_{j=1}^{n}  F_{ij} \epsilon_j \sigma \overline{T^4_j} + \rho_i \sum_{j = 1}^{n} \rho_j \sum_{k=1}^{n} F_{ijk} \overline{J^1_k} - \rho_i \sum_{j=1}^{n} F_{ij} \overline{J^1_j}
+\end{equation}
+avec $F_{ijk}$ le facteur de vue d'ordre 2, qui correspond à la fraction de radiation quittant la surface $i$ qui est intercepté par la surface $j$ après une première interraction avec la surface $k$. $F_{ijk} = \sum_{l=1}^{N} \frac{A_{i,l}}{A_i} \int_{A_{i,l}} \frac{1}{A_{i,h}} d^2r_i f_{ijk}(\vec{r_i})$. On construit enfin l'estimateur de Monte-Carlo de l'espérance pour les facteurs de vue d'ordre 2 $\forall \alpha = (h,l,m,l',m')$ :
+%\begin{equation}
+%    \hat{F}_{ijk}^{N_i, N_\theta, N_\varphi, N} = \sum_{h=1}^{N_i} \frac{A_{i,h}}{A_i} \sum_{l=1}^{N_\theta} \sum_{m=1}%^{N_\varphi} \alpha_{l,m} \sum_{l'=1}^{N_\theta} \sum_{m'=1}^{N_\varphi} \alpha_{l',m'} \hat{F}^{\alpha,N}_{ijk}
+%\end{equation}
+
+\begin{equation}
+    \hat{F}_{ijk}^N = \frac{1}{N} \sum_{n=1}^N \hat{F}^n_{ijk}
+\end{equation}
+avec, toujours pour des poids unitaires sur les angles :
+%\begin{equation}
+%    \hat{F}_{ijk}^{\alpha,N} = \frac{1}{N} \sum_{n=1}^{N} 1_{A_j}\big(\vec{r}_i^{\alpha,n}, \vec{\Omega}_{ij}^{\alpha,n}\big) 1_{A_k} \big(\vec{r}_j^{\alpha,n}(\vec{r_i}, \vec{\Omega}_i), \vec{\Omega}_{jk}^{\alpha,n} \big)
+%\end{equation} 
+\begin{equation}
+    \hat{F}_{ijk}^n =  1_{A_j}\big(\vec{r}_i^{\alpha,n}, \vec{\Omega}_{ij}^{\alpha,n}\big) 1_{A_k} \big(\vec{r}_j^{\alpha,n}(\vec{r_i}, \vec{\Omega}_i), \vec{\Omega}_{jk}^{\alpha,n} \big)
+\end{equation} 
+
+D'autres pistes d'amélioration peuvent être empruntées. L'objectif ici est de se concentrer sur les facteurs de vue d'ordre 1. Mais une liste non exhaustive de méthodes complémentaires est faite dans \cite{Romain25}. Elles ont pour but de compenser certaines approximations que peuvent engendrer les facteurs de vue. La méthode de Gebhart \cite{gebhart} permet notamment de corriger le biais introduit par l'hypothèse de radiosité uniforme. 
+
+
+
+\subsection{Stratégie d'échantillonnage}
+\red	{stade de brouillon, malheureusement non nécessaire pou l'instant}
+\label{part:echanti}
+\begin{equation}
+    \hat{F_{ij}}^{N_i, N_\theta, N_\varphi, N} =  \sum_{h = 1}^{N_i} \frac{A_{i,h}}{A_i} \sum_{l = 1}^{N_{\theta}} \sum_{m = 1}^{N_{\varphi}} \alpha_{l,m} \hat{F}_{ij}^{h,l,m, N} \quad \text{avec } \hat{F}_{ij}^{h,l,m, N} = \frac{1}{N} \sum_{k = 1}^{N} 1_{A_j}(\vec{r_i}^{(h,l,m,k)}, \vec{\Omega_i}^{(h,l,m,k)}) 
+    \label{eq:fv1}
+\end{equation}
+
+Un estimateur Monte-Carlo de la variance se construit de la même manière.
+
+
+Le choix de partionner l'hémisphère en $N_\theta \times N_\varphi$ directions de lancement, motivé par \cite{partition} et mise en place dans \cite{Romain25} permet d'aboutir à une décomposition comme la suivante :
+
+
+La tâche ici n'est pas d'étudier différentes constructions d'estimateurs. La fonction densité de probalilité choisie apparaît natuellement dans la définition de \ref{eq:MCfij}. On introduit donc $p_X = \frac{cos(X)sin(X)}{\pi}$, associée à la constante de normalisation $ \alpha_{l,m} $ conformément à \cite{Romain25}. Cet échantillonage uniforme sur la surface et sur les angles permet d'avoir une fonction poids associée unitaire. On fait donc $N$ tirages pour $(\vec{r_i}^{(l,m,k)}, \vec{\varphi_i}^{(l,m,k)}, \vec{\theta_i}^{(l,m,k)})$. L'estimateur Monte-Carlo de l'espérance :
+
+
+des stratégies de stratifications seront discutées ultérièrement et donnent de meilleurs résultats de convergence qu'un échantillonage uniforme sur les deux angles \cite{Romain25}.
+avec    $\alpha_{l,m}= \frac{\big(\varphi_{m+1}- \varphi_{m} \big)\big(sin^2(\theta_{l+1})-sin^2(\theta_{l})\big)}{2\pi}$.
+
+\begin{equation}
+    F_{ij} = \frac{1}{A_i} \int_{A_i} d^2\vec{r}_i \sum_{l = 1}^{N_{\theta}} \sum_{m = 1}^{N_{\varphi}} \int_{\theta_{l}}^{\theta_{l+1}} \int_{\varphi_{m}}^{\varphi_{m+1}} \bigg[\frac{cos(\theta_i) sin(\theta_i)}{\pi} 1_{A_j}(\vec{r_i}, \vec{\Omega_i})\bigg] d\varphi_i d\theta_i
+\label{eq:MCfij}
+\end{equation}
+
+
+
+
+\subsection{Gabhart}
+\red{ ça serait bien que j'ai le temps de l'implementer dans E2T, pour l'instant ça reste comme ça...}
+\begin{equation}
+B_{ij} = F_{ij} \epsilon_j + \sum_{k=1}^n F_{ik} (1 - \epsilon_k) B_{kj}
+\end{equation}
+
+
+\begin{equation}
+Q_i = q_i A_i = A_i \epsilon_i \sigma T_i^4 - \sum_{j=1}^nA_j\epsilon_j \sigma T_j^4 B_{ij}
+\end{equation}
+

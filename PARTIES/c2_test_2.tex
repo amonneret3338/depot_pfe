@@ -1,0 +1,269 @@
+
+
+\section{Vérification des facteurs de vue}
+
+\subsection{Méthodologie}
+
+Toutes les études réalisées dans ce chapitre reposent sur la même méthodologie. Les facteurs de vue théoriques sont établis à partir de la littérature \cite{Howell} et sont disponibles en Annexe~\ref{anx:fv}.
+
+Afin d'évaluer quantitativement la qualité des matrices de facteurs de vue obtenues par le code de Monte Carlo Ray Tracing, celles-ci sont comparées à une matrice de référence $F^{\mathrm{ref}}$. L'écart est mesuré via une erreur quadratique moyenne relative (\textit{Relative Root Mean Square Error}, RRMSE), définie à partir de l'erreur relative élémentaire.
+
+Pour chaque coefficient non négligeable de la matrice de référence, l'erreur relative est définie par :
+
+\begin{equation}
+\varepsilon_{ij} =
+\frac{
+F_{ij}^{\mathrm{calc}} - F_{ij}^{\mathrm{ref}}
+}{
+F_{ij}^{\mathrm{ref}}
+}.
+\end{equation}
+
+Afin d'éviter les divisions par des valeurs nulles ou numériquement négligeables, seuls les coefficients vérifiant
+
+\begin{equation}
+\left|F_{ij}^{\mathrm{ref}}\right| > \varepsilon_{\mathrm{th}},
+\qquad \text{avec } \varepsilon_{\mathrm{th}} = 10^{-15},
+\end{equation}
+
+sont retenus dans le calcul. L'ensemble des indices satisfaisant cette condition est noté $\Omega$.
+
+La métrique globale est ensuite définie comme la racine de la moyenne des carrés des erreurs relatives :
+
+\begin{equation}
+\mathrm{RRMSE}
+=
+\sqrt{
+\frac{1}{|\Omega|}
+\sum_{(i,j)\in \Omega}
+\varepsilon_{ij}^{2}
+}.
+\end{equation}
+
+Cette grandeur fournit une mesure globale, sans dimension, de l'écart entre la matrice calculée et la matrice de référence. Une valeur nulle correspond à une concordance exacte, tandis qu'une augmentation de cette métrique traduit une dégradation progressive de l'accord entre les deux solutions. Cette grandeur est utilisée dans la suite du chapitre pour analyser la convergence et la qualité des résultats en fonction des paramètres de simulation, pour trois familles de géométries : des configurations tridimensionnelles (Section~\ref{part:verif3D}), des configurations bidimensionnelles (Section~\ref{part:2Dcomp}), et des configurations comportant des faces réflectives (Section~\ref{part:verifmiroir}).
+
+\subsection{Résultats}
+
+La vérification du code de lancer de rayons repose sur l'étude de la convergence statistique des facteurs de vue estimés par Monte Carlo. Pour un estimateur non biaisé, le théorème central limite prédit que l'erreur statistique décroît comme $N^{-1/2}$, où $N$ désigne le nombre de rayons simulés. Cette loi constitue la référence attendue pour la convergence de l'erreur.
+
+Trois indicateurs sont suivis au cours des simulations :
+
+\begin{itemize}
+    \item la droite de référence de pente $N^{-1/2}$, représentée en noir, qui matérialise le taux de convergence théorique d'un estimateur Monte Carlo ;
+    \item la variance moyenne de l'estimateur, représentée en orange, obtenue à partir du moment d'ordre deux des facteurs de vue estimés. Elle caractérise l'incertitude statistique intrinsèque de l'estimation ;
+    \item la RRMSE (\emph{Relative Root Mean Square Error}), représentée en bleu, calculée par rapport à la solution de référence. Cet indicateur quantifie simultanément les erreurs statistiques et les éventuelles erreurs numériques liées à la discrétisation géométrique ou à l'algorithme.
+\end{itemize}
+
+Les Figures~\ref{fig:verif3D_3D} à~\ref{fig:verifmiroir} présentent l'évolution de ces trois quantités en fonction du nombre de rayons simulés par face pour l'ensemble des cas de validation considérés.
+
+\subsubsection{Simulation MCRT en 3D}
+\label{part:verif3D}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/VERIF/rms_convergence_para_fine_112.png}
+\small\textbf{(a) Cas d'un parallélépipède}
+\end{minipage}
+\hfill
+\begin{minipage}{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/VERIF/convergence_cs_f.pdf}
+\small\textbf{(b) Cas de deux sphères concentriques}
+\end{minipage}
+\caption{Convergence des facteurs de vue pour deux géométries tridimensionnelles.}
+\label{fig:verif3D_3D}
+\end{figure}
+
+\subsubsection{Simulation MCRT avec des géométries 2D}
+\label{part:2Dcomp}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/VERIF/convergence_h7.pdf}
+\small\textbf{(a) Deux arêtes adjacentes d'un carré}
+\end{minipage}
+\hfill
+\begin{minipage}{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/VERIF/convergence_cc_fine.png}
+\small\textbf{(b) Deux cercles concentriques}
+\end{minipage}
+\caption{Convergence des facteurs de vue pour deux géométries bidimensionnelles.}
+\label{fig:verif2D}
+\end{figure}
+
+\subsubsection{Simulation MCRT avec des faces réfléchissantes}
+\label{part:verifmiroir}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/VERIF/convergence_cube_sym_coarse.pdf}
+\small\textbf{(a) Cube comportant une face réfléchissante}
+\end{minipage}
+\hfill
+\begin{minipage}{0.49\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/VERIF/convergence_h5_22_sym_Fine.pdf}
+\small\textbf{(b) Rangée infinie de cylindres}
+\end{minipage}
+\caption{Convergence des facteurs de vue pour des configurations comportant des surfaces réfléchissantes.}
+\label{fig:verifmiroir}
+\end{figure}
+
+Pour les six cas de vérification des facteurs de vue présentés dans le rapport, la décroissance de la RRMSE est globalement conforme à la loi théorique en $N^{-1/2}$. Les fluctuations observées pour les faibles nombres de rayons sont caractéristiques de la variance inhérente aux méthodes de Monte Carlo et diminuent progressivement lorsque le nombre d'échantillons augmente. Dans tous les cas, la RRMSE se rapproche de la variance estimée lorsque le nombre de rayons devient suffisamment grand, ce qui indique que l'erreur est alors principalement gouvernée par les fluctuations statistiques de l'estimateur. Ces résultats montrent que l'implémentation du MCRT présente le comportement de convergence attendu et vérifie son utilisation pour le calcul des facteurs de vue sur l'ensemble des géométries considérées.
+
+
+
+\section{Vérifications des flux radiatifs}
+\subsection{Calcul des flux radiatifs}
+
+Une fois les facteurs de vue calculés, ceux-ci sont utilisés pour déterminer les flux radiatifs échangés entre les différentes surfaces. Le calcul repose sur la méthode expliquée plus tôt dans \ref{eq:systeme_radiosite}.
+
+On peut reformuler l'Equation \ref{def:radio} pour obtenir le système d'équation suivant:
+
+\begin{equation}
+J_i
+=
+\varepsilon_i \sigma T_i^4
++
+(1-\varepsilon_i)
+\sum_{j=1}^{N}
+F_{ij}J_j,
+\label{eq:radiosity}
+\end{equation}
+
+où $\varepsilon_i$ est l'émissivité de la surface, $T_i$ sa température, $\sigma$ la constante de Stefan-Boltzmann et $F_{ij}$ le facteur de vue entre les surfaces $i$ et $j$.
+
+En introduisant le vecteur des radiosités $\mathbf{J}$, le vecteur des températures élevées à la puissance quatre $\mathbf{T}^4$ ainsi que la matrice diagonale des émissivités
+
+\begin{equation}
+\mathbf{E}
+=
+\mathrm{diag}(\varepsilon_1,\ldots,\varepsilon_N),
+\end{equation}
+
+le système peut être réécrit sous forme matricielle :
+
+\begin{equation}
+\left[
+\mathbf{I}
+-
+(\mathbf{I}-\mathbf{E})\mathbf{F}
+\right]
+\mathbf{J}
+=
+\mathbf{E}\sigma\mathbf{T}^4.
+\label{eq:systeme_radiosite}
+\end{equation}
+
+La matrice
+
+\begin{equation}
+\mathbf{A}
+=
+\mathbf{I}
+-
+(\mathbf{I}-\mathbf{E})\mathbf{F}
+\end{equation}
+
+est construite à partir des facteurs de vue et des émissivités. Le système linéaire est ensuite résolu afin de déterminer les radiosités de l'ensemble des surfaces.
+
+Le flux radiatif net quittant chaque surface est finalement obtenu par
+
+\begin{equation}
+q_i
+=
+J_i
+-
+\sum_{j=1}^{N}
+F_{ij}J_j,
+\end{equation}
+
+soit, sous forme matricielle,
+
+\begin{equation}
+\mathbf{q}
+=
+(\mathbf{I}-\mathbf{F})\mathbf{J},
+\end{equation}
+
+ce qui conduit à l'expression finale
+
+\begin{equation}
+\mathbf{q}
+=
+(\mathbf{I}-\mathbf{F})
+\left[
+\mathbf{I}
+-
+(\mathbf{I}-\mathbf{E})\mathbf{F}
+\right]^{-1}
+\mathbf{E}\sigma\mathbf{T}^4.
+\label{eq:q_final}
+\end{equation}
+
+
+\subsection{Vérification du calcul des flux radiatifs}
+
+La méthode de calcul des flux radiatifs a été vérifiée à partir de deux cas de référence issus de \cite{howell}. Ces exemples permettent de vérifier l'utilisation des facteurs de vue calculés par le MCRT dans la résolution des échanges radiatifs entre surfaces diffuses grises.
+
+\subsubsection{Deux cylindres concentriques infinis}
+
+Le premier cas correspond à l'exemple 5.5 de \cite{howell}. Il s'agit de deux cylindres concentriques infinis, le cylindre extérieur étant divisé en deux demi-cylindres maintenus à des températures différentes.
+
+Les températures imposées sont
+
+\[
+T_{\mathrm{int}}=1700~\mathrm{K}, \qquad
+T_{\mathrm{ext},1}=1207~\mathrm{K}, \qquad
+T_{\mathrm{ext},2}=1415~\mathrm{K}.
+\]
+
+Le calcul fournit les flux radiatifs suivants :
+
+\begin{table}[H]
+\centering
+\caption{Flux radiatifs obtenus pour l'exemple 5.5 de \cite{howell}.}
+\label{tab:flux_howell55}
+\begin{tabular}{lc}
+\toprule
+Surface & Flux radiatif (W.m$^{-2}$) \\
+\midrule
+Cylindre intérieur & $2.9976\times10^{5}$ \\
+Demi-cylindre extérieur 1 & $-1.9994\times10^{5}$ \\
+Demi-cylindre extérieur 2 & $-9.9792\times10^{4}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Les flux obtenus sont en accord avec la solution de référence de \cite{howell}. Le bilan énergétique est vérifié avec une erreur inférieure à $10^{-4}$~W.m$^{-2}$, ce qui confirme la conservation de l'énergie lors du calcul.
+
+\subsubsection{Pastille combustible dans une cavité carrée}
+
+Le second cas correspond à l'exercice 5.22 de \cite{howell}. Il représente une pastille cylindrique placée au centre d'une cavité carrée. Trois parois de la cavité sont maintenues à température nulle tandis que les surfaces rayonnantes possèdent une émissivité de 0,5.
+
+Les températures imposées sont
+
+\[
+T_{\mathrm{fuel}}=1000~\mathrm{K}, \qquad
+T_{\mathrm{parois}}=674~\mathrm{K},\,0~\mathrm{K},\,0~\mathrm{K},\,0~\mathrm{K}.
+\]
+
+Le flux radiatif calculé pour la pastille est
+
+\[
+q_{\mathrm{fuel}}
+=
+8.4473\times10^{4}
+~\mathrm{W.m^{-1}},
+\]
+
+en accord avec la valeur de référence donnée par \cite{howell}. Les flux nets obtenus sur les différentes surfaces satisfont également le bilan énergétique, l'écart sur la fermeture du système restant inférieur à $10^{-4}$~W.m$^{-1}$.
+
+Ces deux autres cas de vérification montrent que la résolution du système de radiosités permet de retrouver les flux radiatifs de référence à partir des facteurs de vue calculés par le MCRT, tout en respectant la conservation de l'énergie.

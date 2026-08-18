@@ -1,12 +1,12 @@
-
 \subsection{Le modèle des facteurs de vue d'ordre 1}
-Les facteurs de vue sont introduit dans le but de simplifier l'écriture de \ref{def:irra}. L'intérêt est d'identifier des facteurs géométriques qui décrivent le couplage. d'ordre 1 repose sur l'hypothèse d'\textbf{uniformité de la radiosité sur une surface}. Cette hypothèse permet d'introduire des $\overline{J_i^1} \; [W/m^2]$, et de faire apparaître un terme géométrique $f_{ij}$ dans la Formule \ref{def:irra}. On a alors pour $\forall i$:
+
+Les facteurs de vue sont introduits dans le but de simplifier l'écriture de l'irradiance (Équation~\ref{def:irra}), en faisant apparaître des facteurs purement géométriques qui décrivent le couplage radiatif entre surfaces. Cette simplification repose sur une hypothèse supplémentaire, propre au modèle dit \emph{d'ordre 1} : l'\textbf{uniformité de la radiosité sur chaque surface}. Sous cette hypothèse, la radiosité de la surface $i$ ne dépend plus de la position $\vec{r}_i$ mais se réduit à une valeur moyenne $\overline{J_i^1}$~[W/m²]. Elle permet de faire apparaître un terme géométrique $f_{ij}$ dans l'expression de l'irradiance, tel que pour $\forall i$ :
 
 \begin{equation}
     G_i(\vec{r_i}) = \sum_{j = 1}^{n} \overline{J_j}^1 f_{ij}(\vec{r_i}) \quad \text{avec } f_{ij}(\vec{r_i}) =\frac{1}{\pi} \int_{A_i} d^2(\vec{r_j})\bigg[\frac{cos(\theta_{ij})cos(\theta_{ji})}{||\vec{r_i}-\vec{r_j}||^2} \chi{(\vec{r_i},\vec{r_j})}\bigg] 
 \end{equation}
 
-L'intégration sur la surface $i$ permet d'obtenir une approximation à l'ordre 1 de la fraction de radiation quittant la surface $i$ intercepté par la surface $j$. Cette quantité est appelée facteur de vue (\textit{les termes de facteurs de forme ou facteurs de configuration sont aussi trouvés dans la littérature}).
+L'intégration sur la surface $i$ permet d'obtenir une approximation à l'ordre 1 de la fraction du rayonnement quittant la surface $i$ interceptée par la surface $j$. Cette quantité est appelée facteur de vue (\textit{les termes de facteur de forme ou facteur de configuration sont aussi trouvés dans la littérature}).
 
 \begin{equation}
     \label{def:fv}
@@ -14,7 +14,7 @@ L'intégration sur la surface $i$ permet d'obtenir une approximation à l'ordre 
 \end{equation}
 
 
-Les hypothèses faites reviennent à considérer un problème d'éclairement entre différentes surface. La connaissance des facteurs de vue permet alors de reformuler l'équation \ref{def:radiosite} pour exprimer les radiosités en fonction de la variable température : 
+L'hypothèse de radiosité uniforme revient ainsi à ramener le problème radiatif continu à un problème d'éclairement mutuel entre un nombre fini de surfaces. La connaissance des facteurs de vue permet alors de reformuler l'équation \ref{def:radiosite} pour exprimer les radiosités en fonction de la seule variable température :
 
 \begin{equation}
     \overline{J_i^1} = \epsilon_i \sigma \overline{T}^4_i  + \rho_i \sum_{j=1}^{n} \overline{J_j^1} F_{ij}
@@ -27,17 +27,16 @@ On remarque par ailleurs que les facteurs de vue respectent des propriétés phy
 \begin{equation}    
     \left\lbrace
     \begin{array}{r c c c  }
-    
       \forall i ,\forall j, A_i F_{ij} & = & A_j F_{ji} & \text{(relation de réciprocité)}\\
       \forall i , \sum_{j = 1}^n F_{ij} & = & 1 & \text{(relation de fermeture)}\\ 
       \forall i ,\forall j, F_{ij} & \geq & 0 & \text{(positivité)}
     \end{array}\right.
+    \label{eq:contraintes}
 \end{equation}
-\label{def:fv}
 
-Enfin, l'Equation \ref{eq:qr} qui permet de définir le flux radiatif devient :
+Enfin, l'Équation \ref{eq:qr} qui définit le flux radiatif devient :
+
 \begin{equation}
     \forall \vec{r}_i \in \text{Surface}_i,\quad q_i(\vec{r}_i) =  \overline{J}_i^1  -  \sum_{j=1}^{n} \overline{J_j^1} F_{ij} \quad = \quad \epsilon_i \sigma \overline{T}^4_i  - \epsilon_i \sum_{j=1}^{n} \overline{J_j^1} F_{ij}
     \label{eq:nice_qr}
 \end{equation}
-

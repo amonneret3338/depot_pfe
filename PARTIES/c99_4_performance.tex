@@ -1,0 +1,60 @@
+Cette annexe regroupe les résultats des mesures de performances réalisées sur la bibliothèque \textsc{Embree}. Les tableaux présentés ci-dessous constituent les données utilisées pour l'analyse des performances développée au Chapitre~\ref{chap:implementation}.
+
+\subsection{Influence de la taille des paquets de rayons}
+
+Le Tableau~\ref{tab:packet_perf} présente le temps d'exécution obtenu pour différentes tailles de paquets de rayons. Le facteur d'accélération (\emph{speedup}) est calculé par rapport à une exécution sans vectorisation, correspondant à un traitement rayon par rayon ($N_p=1$).
+
+\begin{table}[H]
+\centering
+\caption{Influence de la taille des paquets sur le temps d'exécution pour $10^6$ rayons.}
+\label{tab:packet_perf}
+\begin{tabular}{ccc}
+\toprule
+Taille du paquet & Temps (ms) & Speedup \\
+\midrule
+1  & 439\,561 & 1.00 \\
+2  & 229\,972 & 1.91 \\
+4  & 125\,643 & 3.50 \\
+8  &  71\,149 & 6.18 \\
+16 &  43\,593 & 10.08 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+L'augmentation de la taille des paquets permet de réduire progressivement le temps de calcul grâce au traitement simultané de plusieurs rayons par les unités vectorielles du processeur.
+
+\subsection{Influence du parallélisme}
+
+Le Tableau~\ref{tab:thread_perf} présente les temps d'exécution mesurés en fonction du nombre de fils d'exécution pour une simulation de $10^6$ rayons. Les valeurs de \emph{speedup} et d'efficacité parallèle sont calculées relativement à l'exécution séquentielle.
+\red{mettre les bonnes valeurs}
+\begin{table}[H]
+\centering
+\caption{Influence du nombre de fils d'exécution sur les performances.}
+\label{tab:thread_perf}
+\begin{tabular}{cccc}
+\toprule
+Nombre de fils &
+Temps (ms) &
+Speedup &
+Efficacité (\%) \\
+\midrule
+1  & 42\,630 & 1.00 & 100.0 \\
+2  & 17\,643 & 2.42 & 120.8 \\
+4  & 8\,812  & 4.84 & 120.9 \\
+6  & 5\,937  & 7.18 & 119.7 \\
+8  & 4\,521  & 9.43 & 117.9 \\
+10 & 3\,621  & 11.77 & 117.7 \\
+12 & 2\,997  & 14.22 & 118.5 \\
+14 & 2\,584  & 16.50 & 117.8 \\
+18 & 2\,129  & 20.02 & 111.2 \\
+22 & 1\,766  & 24.14 & 109.7 \\
+26 & 1\,541  & 27.66 & 106.4 \\
+30 & 1\,381  & 30.87 & 102.9 \\
+34 & 1\,315  & 32.42 & 95.4 \\
+38 & 1\,185  & 35.97 & 94.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Les résultats montrent une diminution importante du temps de calcul avec l'augmentation du nombre de fils d'exécution. L'efficacité parallèle reste élevée sur l'ensemble des configurations étudiées, bien qu'une diminution progressive apparaisse lorsque le nombre de fils devient important.
+
