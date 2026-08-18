@@ -1,7 +1,13 @@
-\red{les figure arrivent}
-pourquoi pas rajouter les matrice en cpp/ python pour qu'on s'en serve facilementq
+Cette annexe rassemble les matrices de facteurs de vue de référence utilisées pour la vérification du code, pour chacune des géométries analytiques considérées dans ce rapport. Pour chaque géométrie, la convention de numérotation des faces est illustrée, puis la matrice de facteurs de vue théorique associée est donnée. Ces matrices sont également fournies en Section~\ref{anx:code_matrices} sous forme de code Python, prêtes à être réutilisées directement dans des scripts de vérification.
+
 \subsection{Parallélépipède}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.66\linewidth]{PICTURES/c1/para.png}
+    \caption{Convention de numérotation des faces du parallélépipède et de son patron.}
+    \label{fig:notation_para}
+\end{figure}
 
 \begin{equation}
 \mathbf{F}=
@@ -16,8 +22,15 @@ pourquoi pas rajouter les matrice en cpp/ python pour qu'on s'en serve facilemen
 \label{eq:FV_parallelepipede}
 \end{equation}
 
-
 \subsection{Sphères concentriques}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.33\linewidth]{PICTURES/c3/schema_concentrique.png}
+    \caption{Convention de numérotation des faces pour les sphères concentriques (1 : sphère intérieure, 2 : sphère extérieure).}
+    \label{fig:notation_spheres}
+\end{figure}
+
 \begin{equation}
 \mathbf{F}=
 \begin{bmatrix}
@@ -28,6 +41,13 @@ pourquoi pas rajouter les matrice en cpp/ python pour qu'on s'en serve facilemen
 \end{equation}
 
 \subsection{Rectangle}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.5\linewidth]{PICTURES/c3/schema_rectangle.png}
+    \caption{Convention de numérotation des faces du rectangle.}
+    \label{fig:notation_rectangle}
+\end{figure}
 
 \begin{equation}
 \mathbf{F}=
@@ -40,7 +60,6 @@ pourquoi pas rajouter les matrice en cpp/ python pour qu'on s'en serve facilemen
 \label{eq:FV_rectangle}
 \end{equation}
 
-
 \subsection{Cercles concentriques}
 
 \begin{equation}
@@ -52,9 +71,20 @@ pourquoi pas rajouter les matrice en cpp/ python pour qu'on s'en serve facilemen
 \label{eq:FV_cercles_concentriques}
 \end{equation}
 
-
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.33\linewidth]{PICTURES/c3/schema_concentrique.png}
+    \caption{Convention de numérotation des faces pour les cercles concentriques (1 : cercle intérieur, 2 : cercle extérieur).}
+    \label{fig:notation_spheres}
+\end{figure}
 \subsection{Howell 5.22}
+Géométrie extraite de la partie HOMEWORK 4.27 de \cite{howell}, reprise dans l'exercie 5.22 du même ouvrage.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.25\linewidth]{PICTURES/c3/schema_howell522.png}
+    \caption{Convention de numérotation des faces pour la configuration Howell 5.22.}
+    \label{fig:notation_howell522}
+\end{figure}
 
 \begin{equation}
 \mathbf{F}=
@@ -67,3 +97,46 @@ pourquoi pas rajouter les matrice en cpp/ python pour qu'on s'en serve facilemen
 \end{bmatrix}.
 \label{eq:FV_cercle_carre}
 \end{equation}
+
+\subsection{Implémentation des matrices de référence}
+\label{anx:code_matrices}
+
+Les matrices de facteurs de vue présentées ci-dessus sont fournies ci-après sous forme de code directement réutilisable, en Python et en C++, pour faciliter leur intégration dans de futurs scripts de vérification.
+
+\begin{lstlisting}[language=Python, caption={Matrices de facteurs de vue de référence (Python).}, label={lst:fv_python}]
+import numpy as np
+
+F_parallelepipede = np.array([
+    [0.000000, 0.232853, 0.232853, 0.232853, 0.232853, 0.068590],
+    [0.116426, 0.000000, 0.240636, 0.285875, 0.240636, 0.116426],
+    [0.116426, 0.240636, 0.000000, 0.240636, 0.285875, 0.116426],
+    [0.116426, 0.285875, 0.240636, 0.000000, 0.240636, 0.116426],
+    [0.116426, 0.240636, 0.285875, 0.240636, 0.000000, 0.116426],
+    [0.068590, 0.232853, 0.232853, 0.232853, 0.232853, 0.000000],
+])
+
+F_spheres_concentriques = np.array([
+    [0.000000, 1.000000],
+    [0.111111, 0.888889],
+])
+
+F_rectangle = np.array([
+    [0.000000, 0.381966, 0.236068, 0.381966],
+    [0.190983, 0.000000, 0.190983, 0.618034],
+    [0.236068, 0.381966, 0.000000, 0.381966],
+    [0.190983, 0.618034, 0.190983, 0.000000],
+])
+
+F_cercles_concentriques = np.array([
+    [0.000000, 1.000000],
+    [0.500000, 0.500000],
+])
+
+F_howell_5_22 = np.array([
+    [0.000000, 0.250000, 0.250000, 0.250000, 0.250000],
+    [0.399924, 0.000000, 0.249981, 0.100114, 0.249981],
+    [0.399924, 0.249981, 0.000000, 0.249981, 0.100114],
+    [0.399924, 0.100114, 0.249981, 0.000000, 0.249981],
+    [0.399924, 0.249981, 0.100114, 0.249981, 0.000000],
+])
+\end{lstlisting}

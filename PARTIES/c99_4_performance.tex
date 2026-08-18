@@ -1,8 +1,13 @@
-Cette annexe regroupe les résultats des mesures de performances réalisées sur la bibliothèque \textsc{Embree}. Les tableaux présentés ci-dessous constituent les données utilisées pour l'analyse des performances développée au Chapitre~\ref{chap:implementation}.
+Cette annexe regroupe les résultats des mesures de performances réalisées pour évaluer l'utilisation de la bibliothèque \textsc{Embree} dans le calcul Monte Carlo. Deux leviers d'optimisation, complémentaires, sont étudiés séparément : la vectorisation du traitement des rayons par paquets (Section~\ref{anx:packet}), et la parallélisation du calcul par fils d'exécution (Section~\ref{anx:thread}). Toutes les mesures présentées sont réalisées pour une simulation de $10^6$ rayons.
 
 \subsection{Influence de la taille des paquets de rayons}
+\label{anx:packet}
 
-Le Tableau~\ref{tab:packet_perf} présente le temps d'exécution obtenu pour différentes tailles de paquets de rayons. Le facteur d'accélération (\emph{speedup}) est calculé par rapport à une exécution sans vectorisation, correspondant à un traitement rayon par rayon ($N_p=1$).
+\textsc{Embree} permet de traiter simultanément plusieurs rayons regroupés en un même paquet, afin d'exploiter les instructions vectorielles (SIMD) des processeurs modernes. Le Tableau~\ref{tab:packet_perf} présente le temps d'exécution obtenu pour différentes tailles de paquets, ainsi que le facteur d'accélération (\emph{speedup}) associé, défini par rapport à un traitement rayon par rayon ($N_p=1$), c'est-à-dire sans vectorisation :
+
+\begin{equation}
+S(N_p)=\frac{t(N_p=1)}{t(N_p)}.
+\end{equation}
 
 \begin{table}[H]
 \centering
@@ -15,46 +20,87 @@ Taille du paquet & Temps (ms) & Speedup \\
 1  & 439\,561 & 1.00 \\
 2  & 229\,972 & 1.91 \\
 4  & 125\,643 & 3.50 \\
-8  &  71\,149 & 6.18 \\
-16 &  43\,593 & 10.08 \\
+8  & 71\,149  & 6.18 \\
+16 & 43\,593  & 10.08 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-L'augmentation de la taille des paquets permet de réduire progressivement le temps de calcul grâce au traitement simultané de plusieurs rayons par les unités vectorielles du processeur.
+L'augmentation de la taille des paquets entraîne une diminution systématique du temps de calcul : le passage de $N_p=1$ à $N_p=16$ réduit le temps d'exécution d'un facteur proche de 10, résultat cohérent avec l'utilisation des instructions vectorielles par \textsc{Embree}, qui permettent de traiter plusieurs rayons simultanément par une même instruction lorsque leur traitement repose sur des opérations similaires.
+
+Le gain observé n'est cependant pas strictement proportionnel à la taille du paquet : un paquet deux fois plus grand ne conduit pas nécessairement à un temps de calcul deux fois plus faible. Cet écart s'explique par le fait que le traitement d'un rayon ne se résume pas à des opérations vectorisables ; certaines étapes du calcul restent communes à l'ensemble du traitement ou nécessitent un traitement individuel. Le gain effectivement obtenu dépend également de l'organisation des données en mémoire et de la capacité du processeur à exploiter efficacement les instructions vectorielles disponibles.
+
+La Figure~\ref{fig:packet_time} confirme cette analyse en présentant l'évolution du temps de calcul en fonction du nombre de rayons simulés, pour chaque taille de paquet. Le temps de calcul croît de façon approximativement linéaire avec le nombre de rayons — comportement attendu pour une méthode de Monte Carlo, où chaque rayon constitue un échantillon supplémentaire indépendant à traiter. L'intérêt de la vectorisation se traduit alors principalement par une réduction de la pente de cette évolution.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\linewidth]{PICTURES/c2/packet_time_vs_rays.pdf}
+\caption{Temps d'exécution en fonction du nombre de rayons pour différentes tailles de paquets.}
+\label{fig:packet_time}
+\end{figure}
+
+Ces résultats justifient l'utilisation systématique du traitement par paquets dans la suite du travail : la vectorisation réduit significativement le coût de calcul par rayon sans modifier l'algorithme physique du Monte Carlo, et constitue ainsi une première étape d'optimisation particulièrement adaptée à un calcul reposant sur un grand nombre d'échantillons indépendants.
 
 \subsection{Influence du parallélisme}
+\label{anx:thread}
 
-Le Tableau~\ref{tab:thread_perf} présente les temps d'exécution mesurés en fonction du nombre de fils d'exécution pour une simulation de $10^6$ rayons. Les valeurs de \emph{speedup} et d'efficacité parallèle sont calculées relativement à l'exécution séquentielle.
-\red{mettre les bonnes valeurs}
+Au-delà de la vectorisation, le calcul Monte Carlo se prête naturellement à la parallélisation, les différents rayons pouvant, en première approximation, être simulés indépendamment les uns des autres. Le Tableau~\ref{tab:thread_perf} présente les temps d'exécution mesurés en fonction du nombre de fils d'exécution. Le facteur d'accélération $S$ et l'efficacité parallèle $\eta$ sont définis par rapport à l'exécution sur un seul fil :
+
+\begin{equation}
+S(N_{\mathrm{th}}) = \frac{t(N_{\mathrm{th}}=1)}{t(N_{\mathrm{th}})},
+\qquad
+\eta(N_{\mathrm{th}}) = \frac{S(N_{\mathrm{th}})}{N_{\mathrm{th}}}.
+\end{equation}
+
+L'efficacité $\eta$ mesure dans quelle proportion l'augmentation du nombre de fils se traduit effectivement par une réduction du temps de calcul, une valeur de $100\,\%$ correspondant à une accélération parfaitement linéaire.
+
 \begin{table}[H]
 \centering
-\caption{Influence du nombre de fils d'exécution sur les performances.}
+\caption{Influence du nombre de fils d'exécution sur les performances pour $10^6$ rayons.}
 \label{tab:thread_perf}
 \begin{tabular}{cccc}
 \toprule
-Nombre de fils &
-Temps (ms) &
-Speedup &
-Efficacité (\%) \\
+Nombre de fils & Temps (ms) & Speedup & Efficacité (\%) \\
 \midrule
-1  & 42\,630 & 1.00 & 100.0 \\
-2  & 17\,643 & 2.42 & 120.8 \\
-4  & 8\,812  & 4.84 & 120.9 \\
-6  & 5\,937  & 7.18 & 119.7 \\
-8  & 4\,521  & 9.43 & 117.9 \\
-10 & 3\,621  & 11.77 & 117.7 \\
-12 & 2\,997  & 14.22 & 118.5 \\
-14 & 2\,584  & 16.50 & 117.8 \\
-18 & 2\,129  & 20.02 & 111.2 \\
-22 & 1\,766  & 24.14 & 109.7 \\
-26 & 1\,541  & 27.66 & 106.4 \\
-30 & 1\,381  & 30.87 & 102.9 \\
-34 & 1\,315  & 32.42 & 95.4 \\
-38 & 1\,185  & 35.97 & 94.7 \\
+1  & 34\,106 & 1.00  & 100.0 \\
+2  & 17\,479 & 1.95  & 97.6 \\
+4  & 8\,650  & 3.94  & 98.6 \\
+6  & 5\,827  & 5.85  & 97.6 \\
+8  & 4\,401  & 7.75  & 96.9 \\
+10 & 3\,489  & 9.78  & 97.8 \\
+12 & 2\,907  & 11.74 & 97.8 \\
+14 & 2\,528  & 13.49 & 96.4 \\
+18 & 2\,065  & 16.52 & 91.8 \\
+22 & 1\,667  & 20.46 & 93.0 \\
+26 & 1\,492  & 22.86 & 88.0 \\
+30 & 1\,350  & 25.26 & 84.2 \\
+34 & 1\,237  & 27.57 & 81.1 \\
+38 & 1\,136  & 30.02 & 79.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Les résultats montrent une diminution importante du temps de calcul avec l'augmentation du nombre de fils d'exécution. L'efficacité parallèle reste élevée sur l'ensemble des configurations étudiées, bien qu'une diminution progressive apparaisse lorsque le nombre de fils devient important.
+Deux régimes se distinguent dans ces résultats. Jusqu'à une dizaine de fils, l'efficacité reste proche de $100\,\%$ : l'accélération est presque linéaire, avec par exemple un facteur $9.78$ pour 10 fils, soit une efficacité de $97.8\,\%$. Au-delà, l'efficacité diminue progressivement, bien que le calcul continue de bénéficier de chaque fil supplémentaire : pour 38 fils, le facteur d'accélération atteint $30.02$, pour une efficacité de $79.0\,\%$.
 
+Cette dégradation progressive de l'efficacité est un comportement classique des applications parallèles. Une accélération parfaitement linéaire ne peut être obtenue que si l'ensemble du calcul est parallélisable et si les ressources matérielles restent disponibles en quantité suffisante. À mesure que le nombre de fils augmente, les coûts associés à la gestion du parallélisme, à l'accès aux ressources partagées et aux échanges avec la hiérarchie mémoire deviennent progressivement plus importants ; la limite du nombre de fils matériels disponibles sur la machine utilisée constitue également un facteur déterminant lorsque le nombre de fils s'en approche.
+
+Ces deux grandeurs sont représentées à la Figure~\ref{fig:parallel_perf} : la première courbe montre la diminution du temps d'exécution, tandis que la seconde permet de visualiser directement l'écart à l'accélération idéale.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.52\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/execution_time.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\includegraphics[width=\linewidth]{PICTURES/c2/parallel_speedup.pdf}
+\end{minipage}
+\caption{Influence du parallélisme sur le temps d'exécution et l'accélération du calcul Monte Carlo.}
+\label{fig:parallel_perf}
+\end{figure}
+
+\subsection{Synthèse}
+
+La combinaison du traitement vectorisé des rayons et de leur exécution en parallèle permet d'exploiter deux niveaux de parallélisme complémentaires, disponibles sur les processeurs modernes : la vectorisation agit à l'intérieur du traitement de chaque rayon, tandis que le parallélisme par fils répartit simultanément les rayons entre plusieurs unités de calcul. Ensemble, ces deux mécanismes permettent de réduire significativement le coût numérique associé au grand nombre d'échantillons requis par la méthode de Monte Carlo, et justifient leur utilisation conjointe dans le code développé au cours de ce stage.

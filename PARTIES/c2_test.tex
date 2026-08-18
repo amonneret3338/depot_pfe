@@ -89,8 +89,8 @@ Cette organisation réduit considérablement le nombre de tests d'intersection e
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{PICTURES/c2/bvh.png}
-    \caption{Principe d'une \emph{Bounding Volume Hierarchy} (BVH). Les triangles sont regroupés dans une hiérarchie de boîtes englobantes permettant d'éliminer rapidement les régions de l'espace non traversées par un rayon.}
+    \includegraphics[width=0.8\linewidth]{PICTURES/c2/bvh.png}
+    \caption{Principe d'une \emph{Bounding Volume Hierarchy} (BVH).}
     \label{fig:bvh}
 \end{figure}
 
@@ -151,7 +151,7 @@ p(\omega)=\frac{\cos\theta}{\pi},
 0 \leq \theta \leq \frac{\pi}{2}.
 \end{equation}
 
-Cette distribution reproduit la loi d'émission lambertienne et constitue le choix naturel pour le calcul Monte Carlo des facteurs de vue, puisqu'elle est directement compatible avec les hypothèses physiques retenues dans cette étude \cite{Howell}. Son échantillonnage est réalisé selon la méthode classique par inversion de la fonction de répartition \cite{Pharr2018}.
+Cette distribution reproduit la loi d'émission lambertienne et constitue le choix naturel pour le calcul Monte Carlo des facteurs de vue, puisqu'elle est directement compatible avec les hypothèses physiques retenues dans cette étude. Son échantillonnage est réalisé selon la méthode classique par inversion de la fonction de répartition \cite{Pharr2018}.
 
 
 
@@ -161,10 +161,10 @@ Afin d'éviter les auto-intersections lors de l'émission d'un nouveau rayon dep
 
 La Figure \ref{fig:offset} illustre le cas où la position calculée $p_{calc}$ est en "dehors" de la géométrie. La position théorique $p_{th}$ étant pile à l'interface. La position corrigée $p_{cor}$ est bien un décalage dans la direction de la normale de la surface.
 
-Ces obversations ne sont pas présentées dans ce rapport. Mais l'approximation flottante des points d'intersection a notamment peut être mis à jour sur des géométries très simples. Les auto-inserections pouvant atteindre $75$~\% des rayons émis sur une face. Il est important de noter que cette correction est bien plus robuste que l'outils inhérent à la librairie \ttt{EMBREE}.
+Ces obversations ne sont pas présentées dans ce rapport. Mais l'approximation flottante des points d'intersection a notamment peut être mis à jour sur des géométries très simples. Les auto-inserections pouvant atteindre $75$~\% des rayons émis sur une face. Il est important de noter que cette correction est bien plus robuste que l'outils inhérent à la librairie \emb.
 
 \subsection{Cas pathologique de tirage aux intersections de deux groupes}
-De la même manière, un rayon peut être échantilloné sortant de la géométrie. Ce cas n'a lieu que lorsque le point est suffisamment proche d'une arrête d'un triangle, et que la frontière correspond à l'extérieur de la géométrie. La solution trouvée décale le rayon vers l'opposé la projection de la direction dans le plan d'émission (voir Figure \ref{fig:offset}). La probablité d'un tel tirage est extrêment faible. De plus, la correction est minime et ne change pas l'identité de la face récéptrice dans les conditions normales d'utilisation\footnote{La taille caratéristique du système doit être plus grande que le $\micro m$} de \ETT.
+De la même manière, un rayon peut être échantilloné sortant de la géométrie. Ce cas n'a lieu que lorsque le point est suffisamment proche d'une arrête d'un triangle, et que la frontière correspond à l'extérieur de la géométrie. La solution développée décale le rayon vers l'opposé la projection de la direction dans le plan d'émission (voir Figure \ref{fig:offset}). La probablité d'un tel tirage est extrêment faible. De plus, la correction est minime et ne change pas l'identité de la face récéptrice dans les conditions normales d'utilisation\footnote{La taille caratéristique du système doit être plus grande que le $\micro m$} du code.
 \begin{figure}[H]
 \centering
 

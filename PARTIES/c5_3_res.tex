@@ -2,7 +2,7 @@
 
 Avant d'exploiter les résultats de température issus des simulations, deux vérifications préliminaires ont été menées afin de s'assurer de la cohérence physique du montage numérique.
 
-La première concerne le profil de puissance imposé dans le combustible. La puissance volumique déposée devant suivre un profil axial en cosinus, représentatif de la distribution de puissance neutronique le long d'un crayon, le profil de température visible sur la Figure \ref{fig:profil} montre une bonne adéquation des résultats de la simulation avec les attentes.
+La première concerne le profil de puissance imposé dans le combustible. La puissance volumique déposée devant suivre un profil axial en cosinus, représentatif de la distribution de puissance neutronique le long d'un crayon, le profil de température obtenu au centre du crayon central (Figure~\ref{fig:profil}) est comparé à ce profil attendu et montre une bonne adéquation avec les résultats de la simulation.
 
 \begin{figure}[H]
 \centering
@@ -10,62 +10,88 @@ La première concerne le profil de puissance imposé dans le combustible. La pui
 \caption{Profil axial de température au centre du crayon central.}
 \label{fig:profil}
 \end{figure}
-La seconde vérification porte sur la conservation globale de l'énergie au sein du système. En régime stationnaire, la puissance totale déposée dans le combustible doit être intégralement évacuée par les mécanismes de transfert thermique du domaine, à savoir la conduction vers la paroi et la convection au sein du fluide caloporteur. Le bilan global de puissance s'écrit ainsi :
+
+La seconde vérification porte sur la conservation globale de l'énergie au sein du système. En régime stationnaire, la puissance totale déposée dans le combustible doit être intégralement évacuée par les mécanismes de transfert thermique du domaine, à savoir le rayonnement et la diffusion thermique à travers les parois du domaine. Le bilan global de puissance s'écrit ainsi :
 
 \begin{equation}
-    P_{\mathrm{volumique}} = P_{\mathrm{sortant}}
+    P_{\mathrm{déposée}} = P_{\mathrm{sortante}}, \qquad \text{avec } P_{\mathrm{sortante}} = P_{\mathrm{rad}} + P_{\mathrm{diffusion}},
     \label{eq:bilan_puissance}
 \end{equation}
 
-où $P_{\mathrm{déposée}}$ désigne la puissance volumique totale injectée dans le combustible, et $P_{\mathrm{sortant}} = P_{\mathrm{rad}} + P_{\mathrm{diffusion}}$ les puissances évacuées par les parois du domaine. Cette égalité a été vérifiée sur la plupart des cas étudiés, avec un écart relatif entre la dizaine de $pcm$ au $\%$, confirmant même dans le pire des cas la cohérence du bilan thermique global de la simulation.
+où $P_{\mathrm{déposée}}$ désigne la puissance volumique totale injectée dans le combustible, $P_{\mathrm{rad}}$ la puissance évacuée par rayonnement et $P_{\mathrm{diffusion}}$ celle évacuée par diffusion thermique à travers les parois du domaine. Cette égalité a été vérifiée sur la plupart des cas étudiés, avec un écart relatif compris entre quelques dizaines de pcm et $1\,\%$ selon les cas, confirmant, même dans la configuration la moins favorable, la cohérence du bilan thermique global de la simulation.
 
 \subsection{Conséquence de l'hypothèse de radiosité uniforme}
+\label{sec:consequence_radiosite}
+
+Cette sous-section étudie la sensibilité des résultats à la discrétisation radiative $N_z$ (voir Section~\ref{part:...}), pour les trois niveaux de puissance introduits précédemment. L'objectif est de déterminer, pour chaque cas, le niveau de discrétisation à partir duquel les températures minimale, maximale et moyenne des crayons de l'assemblage cessent d'évoluer de façon significative — autrement dit, le niveau de raffinement au-delà duquel le biais lié à l'hypothèse de radiosité uniforme devient négligeable.
+
+\subsubsection*{Cas $\overline{T} \approx 925{,}7$~K}
+
+La Figure~\ref{fig:temperature3MW} compare les champs de température obtenus pour une discrétisation grossière ($N_z=2$) et fine ($N_z=20$), ainsi que leur écart. La Figure~\ref{fig:convergence3MW} présente l'évolution de l'écart relatif des températures minimale, maximale et moyenne par rapport à la solution la plus fine, en fonction de $N_z$.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T925/assembly_2.pdf}
 \includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T925/assembly_20.pdf}
 \includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T925/assembly_diff_2_vs_20.pdf}
-
- \caption{Températures minimum, maximum et moyenne dans le cas $\overline{T}=925.7$~K}
- \label{fig:temperature3MW}
+\caption{Champs de température pour $\overline{T}=925{,}7$~K : discrétisation grossière $N_z=2$ (haut), discrétisation fine $N_z=20$ (milieu), et écart entre les deux (bas).}
+\label{fig:temperature3MW}
 \end{figure}
-
-
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth]{PICTURES/c5couplage/T925/convergence_relative_vs_20.pdf}
-
- \caption{Convergence relative des températures dans le cas $\overline{T}=925.7$~K}
- \label{fig:convergence3MW}
+\caption{Convergence relative des températures minimale, maximale et moyenne en fonction de $N_z$, par rapport à la solution obtenue pour $N_z=20$, dans le cas $\overline{T}=925{,}7$~K.}
+\label{fig:convergence3MW}
 \end{figure}
 
+\subsubsection*{Cas $\overline{T} \approx 981{,}4$~K}
 
-
+Les Figures~\ref{fig:temperature4MW} et \ref{fig:convergence4MW} présentent les mêmes résultats pour le second niveau de puissance étudié.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1000/assembly_2.pdf}
 \includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1000/assembly_20.pdf}
 \includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1000/assembly_diff_2_vs_20.pdf}
-
- \caption{Températures minimum, maximum et moyenne dans le cas $\overline{T}=981.4$~K}
- \label{fig:temperature4MW}
+\caption{Champs de température pour $\overline{T}=981{,}4$~K : discrétisation grossière $N_z=2$ (haut), discrétisation fine $N_z=20$ (milieu), et écart entre les deux (bas).}
+\label{fig:temperature4MW}
 \end{figure}
-
-
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth]{PICTURES/c5couplage/T1000/convergence_relative_vs_20.pdf}
-
- \caption{Convergence relative des températures dans le cas $\overline{T}=981.4$~K}
- \label{fig:convergence4MW}
+\caption{Convergence relative des températures minimale, maximale et moyenne en fonction de $N_z$, par rapport à la solution obtenue pour $N_z=20$, dans le cas $\overline{T}=981{,}4$~K.}
+\label{fig:convergence4MW}
 \end{figure}
 
+\subsubsection*{Cas $\overline{T} \approx 1817$~K}
 
-\subsection{Etude de l'écart entre le point chaud et la température moyenne}
-Le Tableau~\ref{tab:tmoy_tmax} rassemble, pour les trois niveaux de puissance étudiés, la température moyenne $T_{\mathrm{moy}}$ et la température maximale $T_{\mathrm{max}}$ obtenues sur le crayon central. On observe que l'écart entre $T_{\mathrm{max}}$ et $T_{\mathrm{moy}}$ croît avec le niveau de puissance déposée, aussi bien en valeur absolue qu'en proportion de la température moyenne. L'intérêt de ce résultat ne réside cependant pas dans ces trois seules valeurs, dont le nombre reste insuffisant pour en tirer une conclusion générale, mais dans la démarche qu'elles illustrent : la capacité à quantifier, à partir d'une simulation CFD 3D complète, l'écart entre température moyenne et température de point chaud pour une configuration donnée. Une telle relation, une fois établie sur un nombre suffisant de cas, ouvrirait la voie à l'estimation de la température de point chaud d'un système à partir de sa seule température moyenne, cette dernière étant directement accessible par des modèles à zones plus simples et bien moins coûteux en temps de calcul que la simulation CFD 3D complète.
+Les Figures~\ref{fig:temperature45MW} et \ref{fig:convergence45MW} présentent les mêmes résultats pour le cas de puissance le plus élevé. La discrétisation grossière de référence est ici $N_z=4$ plutôt que $N_z=2$, \red{j'essaye de faire converger pour 2}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1800/assembly_4.pdf}
+\includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1800/assembly_20.pdf}
+\includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1800/assembly_diff_4_vs_20.pdf}
+\caption{Champs de température pour $\overline{T}=1817$~K : discrétisation grossière $N_z=4$ (haut), discrétisation fine $N_z=20$ (milieu), et écart entre les deux (bas).}
+\label{fig:temperature45MW}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{PICTURES/c5couplage/T1800/convergence_relative_vs_20.pdf}
+\caption{Convergence relative des températures minimale, maximale et moyenne en fonction de $N_z$, par rapport à la solution obtenue pour $N_z=20$, dans le cas $\overline{T}=1817$~K.}
+\label{fig:convergence45MW}
+\end{figure}
+
+\subsubsection*{Synthèse}
+
+Dans les trois cas étudiés, la convergence en fonction de $N_z$ suit une tendance similaire : \red{compléter — par exemple, décroissance monotone de l'écart relatif, ordre de grandeur du $N_z$ à partir duquel l'écart devient inférieur à un seuil donné (ex. 1\,\%), et comparaison de la vitesse de convergence entre les trois niveaux de puissance (la convergence est-elle plus lente pour le cas le plus chaud ?)}. Cette bonne convergence, observée quel que soit le niveau de puissance déposée, confirme qu'un raffinement modéré de la discrétisation radiative suffit à s'affranchir du biais introduit par l'hypothèse de radiosité uniforme, y compris dans le régime de température le plus exigeant.
+
+\subsection{Étude de l'écart entre le point chaud et la température moyenne}
+
+Le Tableau~\ref{tab:tmoy_tmax} rassemble, pour les trois niveaux de puissance étudiés, la température moyenne $T_{\mathrm{moy}}$ et la température maximale $T_{\mathrm{max}}$ obtenues sur le crayon central, une fois la convergence en $N_z$ atteinte. On observe que l'écart entre $T_{\mathrm{max}}$ et $T_{\mathrm{moy}}$ croît avec le niveau de puissance déposée, aussi bien en valeur absolue qu'en proportion de la température moyenne. L'intérêt de ce résultat ne réside cependant pas dans ces trois seules valeurs, dont le nombre reste insuffisant pour en tirer une conclusion générale, mais dans la démarche qu'elles illustrent : la capacité à quantifier, à partir d'une simulation CFD 3D convergée, l'écart entre température moyenne et température de point chaud pour une configuration donnée. Une telle relation, une fois établie sur un nombre suffisant de cas, ouvrirait la voie à l'estimation de la température de point chaud d'un système à partir de sa seule température moyenne, cette dernière étant directement accessible par des modèles à zones plus simples et bien moins coûteux en temps de calcul que la simulation CFD 3D complète.
 
 \begin{table}[H]
 \centering
@@ -81,7 +107,5 @@ Cas & Puissance volumique~[$\mathrm{MW/m^3}$] & $T_{\mathrm{moy}}$~[K] & $T_{\ma
 \caption{Températures moyenne et maximale du crayon central pour les trois niveaux de puissance étudiés.}
 \label{tab:tmoy_tmax}
 \end{table}
-
-
 
 \subsection{Conclusion}

@@ -12,7 +12,3 @@
 *.synctex.gz
 
 # Répertoires
-../Tools/
-meshes/
-../utils/
-../tutoTRUST/
