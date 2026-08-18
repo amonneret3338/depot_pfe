@@ -1,5 +1,5 @@
-\section*{Introduction}
-\subsection*{Contexte technologique}
+\chapter{Introduction}
+\section{Contexte technologique}
 
 Les transferts radiatifs présentent une forte dépendance à la température. La loi de Stefan-Boltzmann montre que la puissance surfacique émise par un corps noir est proportionnelle à la quatrième puissance de sa température absolue. À titre d'exemple, cette puissance passe d'environ 420~W\,m$^{-2}$ à température ambiante à près de 75~kW\,m$^{-2}$ pour une température de 800~°C. Le rayonnement thermique constitue ainsi un mode de transfert de chaleur prépondérant dès lors que les températures deviennent élevées.
 
@@ -9,7 +9,7 @@ Si le rayonnement thermique constitue ainsi un mécanisme central du fonctionnem
 
 Que ce soit en régime nominal ou accidentel, l'étude de ces phénomènes radiatifs repose sur une complémentarité entre les approches expérimentales et la simulation numérique. Cette dernière constitue un outil essentiel pour analyser et prédire les échanges thermiques au sein de systèmes complexes, où les mécanismes de conduction, de convection et de rayonnement peuvent être fortement couplés. La modélisation du transfert radiatif nécessite notamment de prendre en compte la nature du milieu traversé : dans un milieu transparent, le rayonnement se propage sans interaction avec le matériau, tandis que dans un milieu semi-transparent ou participant, les phénomènes d'absorption, d'émission et de diffusion modifient profondément les échanges énergétiques. Le choix d'une approche de modélisation adaptée à ces différents régimes constitue ainsi un enjeu majeur pour la simulation des systèmes à haute température, en particulier dans le contexte des réacteurs nucléaires de nouvelle génération.
 
-\subsection*{Enjeu du stage}
+\section{Enjeu du stage}
 
 Face à ces enjeux, la simulation des échanges radiatifs entre surfaces opaques séparées par un milieu transparent constitue un besoin identifié pour la modélisation des systèmes à haute température. Cette configuration, représentative de nombreux dispositifs industriels et notamment de certains modèles de milieux poreux, repose sur l'hypothèse d'un milieu n'absorbant ni n'émettant, dans lequel les échanges radiatifs sont gouvernés principalement par les interactions entre surfaces. La modélisation de ces interactions présente cependant une difficulté propre : dès que les géométries considérées deviennent complexes et tridimensionnelles, comme c'est le cas au sein d'un cœur de réacteur, les méthodes analytiques classiques ne suffisent plus. Les approches de type Monte Carlo par lancer de rayons (\textit{Monte Carlo Ray Tracing}, MCRT) apportent une réponse à cette limite, en permettant de traiter des configurations géométriques arbitraires.
 

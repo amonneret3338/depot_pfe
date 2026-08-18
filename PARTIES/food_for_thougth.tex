@@ -4,12 +4,39 @@
 \rightline{Author}
 
 
-\vfill
-\leftline{\LARGE \bfseries Resume } 
-\leftline{ A long time ago in a galaxy far, far away}
-\red{à compléter}
+\newpage
 
+\newpage
+\vfill
+\leftline{\LARGE \bfseries Résumé } 
+\vspace{-13pt}
+
+Le rayonnement thermique constitue un mécanisme de transfert de chaleur prépondérant dès lors que les températures deviennent élevées, en fonctionnement nominal dans les réacteurs à haute température de type HTGR comme en situation accidentelle dans les réacteurs à eau légère. Sa simulation dans des géométries tridimensionnelles complexes constitue un enjeu pour la plateforme multiphysique TRUST, développée au CEA.
+
+Ce stage, réalisé au CEA de Saclay, porte sur la vérification et la validation d'un outil de génération des facteurs de vue par lancer de rayons Monte Carlo (\ETT) et sur son couplage avec \trust. À partir d'une maquette héritée d'un précédent stage, limitée aux géométries 3D et aux résultats peu fiables, le travail a consisté à consolider les fondements du code (C++), à étendre ses fonctionnalités aux géométries 2D et aux surfaces réflectives, et à optimiser ses performances (vectorisation, parallélisation).
+
+Une démarche de vérification systématique a ensuite été menée, combinant comparaisons à des solutions analytiques, à un catalogue de configurations de référence et à un code tiers (\pcr), via une métrique d'erreur quadratique moyenne relative. L'influence de la discrétisation géométrique sur la précision des facteurs de vue a également été quantifiée, notamment pour des géométries à contour courbe.
+
+Enfin, l'outil a été appliqué à un cas d'étude couplé représentatif, un assemblage de crayons combustible simulé en 3D sous TRUST, démontrant la faisabilité de la chaîne de simulation complète et permettant de quantifier le biais introduit par l'hypothèse de radiosité uniforme sur les températures moyenne, minimale et maximale du système.
+
+\vspace{6pt}
+\leftline{\LARGE \bfseries Abstract } 
+\vspace{-13pt}
+Thermal radiation is a dominant heat transfer mechanism whenever temperatures become high, under nominal operating conditions in High Temperature Gas-cooled Reactors (HTGR) as well as under accidental conditions in light water reactors. Simulating these radiative exchanges in complex three-dimensional geometries is a key challenge for the multiphysics platform TRUST, developed at the CEA.
+
+This internship, carried out at CEA Saclay, focuses on the verification and validation of a view factor generation tool based on Monte Carlo ray tracing (\ETT), and on its coupling with \trust. Starting from a prototype inherited from a previous internship, limited to 3D geometries and with unreliable results, the work consisted in consolidating the foundations of the code (C++), extending its functionalities to 2D geometries and reflective surfaces, and optimizing its performance (vectorization, parallelization).
+
+A systematic verification process was then carried out, combining comparisons with analytical solutions, a catalogue of reference configurations, and a third-party code (\pcr), using a relative root mean square error metric. The influence of geometric discretization on the accuracy of view factors was also quantified, in particular for geometries with curved boundaries.
+
+Finally, the tool was applied to a representative coupled case study, a fuel pin assembly simulated in 3D under \trust, demonstrating the feasibility of the full simulation chain and allowing the bias introduced by the uniform radiosity assumption on the mean, minimum, and maximum temperatures of the system to be quantified.
 \newpage
 
 \section*{Remerciements}
-encadrants, SALOME, TRUST, +labo pour les nombreux débug et ma formation continue 
+
+Je tiens à remercier chaleureusement mes trois encadrants, Romain Le Tellier, Élie Saikali et Ansar Calloo, qui ont choisi de me faire confiance pour ce stage, qui s'ouvre aujourd'hui sur une thèse. Leur exigence autant que leur accompagnement tout au long de ce projet augurent de très bonnes années à venir. L'opportunité qu'ils m'offrent de me situer à l'interface de plusieurs domaines constitue, et constituera, un terreau riche pour la suite de mon travail. J'ai une pensée particulière pour Ansar, qui m'avait déjà aiguillé en deuxième année et sans qui je ne serais probablement pas arrivé jusqu'à ce stage.
+
+Je remercie également l'équipe TRUST, ainsi que Christophe Bourcier qui m'a accompagné tout au long de mon stage pour monter en compétence respectivement sur \trust et sur \salome. Leur aide m'a été précieuse et m'a permis de mettre en place, dans les derniers temps du stage alors que le temps venait à manquer, un cas d'étude exigeant.
+
+Enfin, je remercie les membres de mon laboratoire pour l'ensemble des discussions qui m'ont permis de faire mes premiers pas dans le monde de l'analyse numérique et du calcul haute performance, ainsi que le « bureau des thésards », dont le soutien quotidien nous a tirés vers le haut et dont l'écoute attentive a été et sera précieuse pour ma formation.
+
+

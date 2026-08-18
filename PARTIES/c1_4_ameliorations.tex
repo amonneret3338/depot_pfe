@@ -6,10 +6,10 @@ L'article de Robert P. Taylor, R.~Luck et B.~K. Hedge~\cite{hypersensitive} met 
 Il devient donc nécessaire de maîtriser la précision des facteurs de vue calculés, et non uniquement de disposer d'une estimation ponctuelle : c'est cet enjeu qui motive le recours à des algorithmes de renforcement, présentés dans la section suivante.
 
 \subsection{Algorithmes de renforcement}
-
+\label{part:renforcement}
 Les résultats obtenus par la méthode de lancer de $N$ rayons permettent une bonne approximation des facteurs de vue, avec une précision liée à l'estimateur en $\frac{1}{\sqrt{N}}$ caractéristique des méthodes de Monte Carlo. Des méthodes de correction~\cite{renforcement95}, qui reposent sur les propriétés géométriques des facteurs de vue, permettent d'améliorer la convergence de la matrice vers la matrice théorique. Même si nous disposons aujourd'hui d'une plus grande puissance de calcul qu'à l'époque où ces études ont été menées, l'enjeu reste toujours d'utiliser la méthode la moins coûteuse en temps de calcul, en particulier pour des géométries comportant un grand nombre de surfaces, où la matrice des facteurs de vue devient rapidement volumineuse.
 
-L'algorithme de correction (\textit{enforcement algorithm}) permet de corriger la matrice de facteurs de vue obtenue par le calcul Monte Carlo afin qu'elle satisfasse les propriétés physiques de réciprocité et de fermeture présentées précédemment. Plusieurs stratégies de correction sont étudiées dans \cite{renforcement}, notamment une approche directe et une méthode fondée sur l'optimisation au sens des moindres carrés. Les auteurs montrent que cette dernière offre les meilleurs résultats en termes de précision tout en limitant la variance introduite par la correction. Elle est donc retenue dans ce travail pour construire une matrice de facteurs de vue respectant au mieux les contraintes physiques du problème.
+L'algorithme de correction (\textit{enforcement algorithm}) permet de corriger la matrice de facteurs de vue obtenue par le calcul Monte Carlo afin qu'elle satisfasse les propriétés physiques de réciprocité et de fermeture présentées précédemment. Plusieurs stratégies de correction sont étudiées dans \cite{renforcement95}, notamment une approche directe et une méthode fondée sur l'optimisation au sens des moindres carrés. Les auteurs montrent que cette dernière offre les meilleurs résultats en termes de précision tout en limitant la variance introduite par la correction. Elle est donc retenue dans ce travail pour construire une matrice de facteurs de vue respectant au mieux les contraintes physiques du problème.
 
 \subsubsection{Algorithme naïf}
 
@@ -43,10 +43,23 @@ $$\begin{bmatrix}
                 F_{31} & F_{32} & F_{33} 
         \end{bmatrix}$$
 
-Cette méthode a l'avantage de la simplicité et d'un faible coût de calcul, mais elle ne garantit pas que la matrice obtenue soit optimale au sens d'un critère de distance à la matrice brute initiale : les deux corrections successives (réciprocité puis fermeture) peuvent se contredire partiellement, la seconde étape pouvant dégrader la réciprocité fraîchement imposée par la première.
+Cette méthode a l'avantage de la simplicité et d'un faible coût de calcul. Elle ne garantit cependant pas la positivité de la matrice corrigée obtenue. En effet, pour $i \neq j$, la correction de réciprocité définit $\tilde{F}_{ij}$ et $\tilde{F}_{ji}$ par une moyenne pondérée par les aires :
+
+\begin{equation}
+    A_i \tilde{F}_{ij} = A_j \tilde{F}_{ji} = \frac{A_i F_{ij} + A_j F_{ji}}{A_i + A_j},
+\end{equation}
+
+puis la correction de fermeture impose, pour chaque surface $i$,
+
+\begin{equation}
+    \tilde{F}_{ii} = 1 - \sum_{j \neq i} \tilde{F}_{ij}.
+\end{equation}
+
+Rien ne garantit alors que $\tilde{F}_{ii}$ ainsi obtenu reste positif : si la somme $\sum_{j \neq i} \tilde{F}_{ij}$ dépasse l'unité, en raison des erreurs statistiques accumulées sur les termes hors diagonale lors de l'étape de réciprocité, le terme diagonal corrigé devient négatif, ce qui est physiquement impossible.
+
 
 \subsubsection{Algorithme des moindres carrés}
-
+\red{à rebosser d'ici le jour J}
 La méthode des moindres carrés reformule la correction des facteurs de vue comme un problème d'optimisation sous contraintes. On cherche la matrice corrigée $F$ qui minimise l'écart quadratique pondéré à la matrice brute $F^0$ issue du calcul Monte Carlo :
 
 \begin{equation}
@@ -96,4 +109,4 @@ Les facteurs de vue bruts $f^0$ ne vérifiant pas exactement les contraintes, l'
     \label{eq:solution_x}
 \end{equation}
 
-Le vecteur des facteurs de vue corrigés $f$, reconstruit à partir des équations~\eqref{eq:solution_particuliere}, \eqref{eq:solution_homogene} et \eqref{eq:solution_x}, constitue alors la projection de $f^0$ sur l'espace des solutions vérifiant exactement les contraintes de fermeture et de réciprocité. Contrairement à l'algorithme naïf, cette approche traite l'ensemble des $n^2$ facteurs de vue de façon symétrique et cohérente, sans privilégier arbitrairement une partie de la matrice (comme le fait l'algorithme naïf en ne conservant que les termes au-dessus de la diagonale) ni recourir à un processus itératif de convergence incertaine (comme l'algorithme de Leersum).
+Le vecteur des facteurs de vue corrigés $f$, reconstruit à partir des équations~\eqref{eq:solution_particuliere}, \eqref{eq:solution_homogene} et \eqref{eq:solution_x}, constitue alors la projection de $f^0$ sur l'espace des solutions vérifiant exactement les contraintes de fermeture et de réciprocité. Contrairement à l'algorithme naïf, cette approche traite l'ensemble des $n^2$ facteurs de vue de façon symétrique et cohérente, sans privilégier arbitrairement une partie de la matrice (comme le fait l'algorithme naïf en ne conservant que les termes au-dessus de la diagonale) ni recourir à un processus itératif de convergence incertaine (comme l'algorithme de Leersum). Cette rigueur a cependant un coût : le vecteur $f$ comportant $n^2$ composantes, la matrice $N_b^T N_b$ à inverser dans l'équation~\eqref{eq:solution_x} est de taille de l'ordre de $n^2 \times n^2$, ce qui conduit à une complexité de calcul évoluant en $\mathcal{O}(n^4)$. Cette méthode est ainsi vraisemblablement inadaptée à des cas 3D de grande taille, pour lesquels le nombre de surfaces $n$ peut être élevé.

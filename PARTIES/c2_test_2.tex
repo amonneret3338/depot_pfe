@@ -229,8 +229,7 @@ Le calcul fournit les flux radiatifs suivants :
 
 \begin{table}[H]
 \centering
-\caption{Flux radiatifs obtenus pour l'exemple 5.5 de \cite{howell}.}
-\label{tab:flux_howell55}
+
 \begin{tabular}{lc}
 \toprule
 Surface & Flux radiatif (W.m$^{-2}$) \\
@@ -240,9 +239,11 @@ Demi-cylindre extérieur 1 & $-1.9994\times10^{5}$ \\
 Demi-cylindre extérieur 2 & $-9.9792\times10^{4}$ \\
 \bottomrule
 \end{tabular}
+\caption{Flux radiatifs obtenus pour l'exemple 5.5 de \cite{howell}.}
+\label{tab:flux_howell55}
 \end{table}
 
-Les flux obtenus sont en accord avec la solution de référence de \cite{howell}. Le bilan énergétique est vérifié avec une erreur inférieure à $10^{-4}$~W.m$^{-2}$, ce qui confirme la conservation de l'énergie lors du calcul.
+Les flux obtenus sont en accord, aux deux chiffres significatifs près, avec la solution de référence de \cite{howell} : les valeurs calculées coïncident avec celles données dans le Tableau~\ref{tab:flux_howell55}, dont la précision se limite à deux chiffres significatifs. Il est à noter qu'aucune méthode de correction des facteurs de vue, telle que celles présentées en Section~\ref{part:renforcement} (réciprocité, fermeture, moindres carrés), n'a été appliquée pour ce calcul : les facteurs de vue utilisés sont directement ceux issus de l'estimation Monte Carlo brute, avec un écart-type maximal de $10^{-3}$ ($10^6$ rayons) sur les coefficients de la matrice $F$. L'accord obtenu avec la solution de référence, sans recours à une étape de correction, illustre ainsi la bonne convergence statistique des facteurs de vue estimés pour ce niveau d'échantillonnage. De plus, le bilan énergétique est vérifié avec une erreur inférieure à $10^{-4}$~W.m$^{-2}$, ce qui confirme la conservation de l'énergie lors du calcul.
 
 \subsubsection{Pastille combustible dans une cavité carrée}
 
@@ -264,6 +265,6 @@ q_{\mathrm{fuel}}
 ~\mathrm{W.m^{-1}},
 \]
 
-en accord avec la valeur de référence donnée par \cite{howell}. Les flux nets obtenus sur les différentes surfaces satisfont également le bilan énergétique, l'écart sur la fermeture du système restant inférieur à $10^{-4}$~W.m$^{-1}$.
+en accord avec la valeur de référence donnée par \cite{howell}. Comme pour le cas précédent, aucune méthode de correction des facteurs de vue n'a été appliquée pour ce calcul : les facteurs de vue utilisés sont directement ceux issus de l'estimation Monte Carlo brute, avec un écart-type maximal de $10^{-3}$ ($10^6$ rayons) sur les coefficients de la matrice $F$. L'accord obtenu avec la solution de référence, là encore sans recours à une étape de correction, confirme la bonne convergence statistique des facteurs de vue pour ce niveau d'échantillonnage. Les flux nets obtenus sur les différentes surfaces satisfont également le bilan énergétique, l'écart sur la fermeture du système restant inférieur à $10^{-4}$~W.m$^{-1}$.
 
-Ces deux autres cas de vérification montrent que la résolution du système de radiosités permet de retrouver les flux radiatifs de référence à partir des facteurs de vue calculés par le MCRT, tout en respectant la conservation de l'énergie.
+Ces deux cas de vérification montrent que la résolution du système de radiosités permet de retrouver les flux radiatifs de référence à partir des facteurs de vue calculés par le MCRT, sans recours à une correction de ces derniers, tout en respectant la conservation de l'énergie.

@@ -1,3 +1,7 @@
+\ETT fonctionne à partir d'un maillage, et non de la géométrie exacte du système modélisé, ce qui constitue une source d'erreur non négligeable pour des géométries courbées. Cette sous-section quantifie cette erreur dans le cas de deux cercles concentriques, choisi car il permet d'établir une expression analytique de référence pour l'erreur géométrique commise, et de la comparer directement à l'erreur observée sur les facteurs de vue.
+
+\subsection{Erreur géométrique induite par la discrétisation d'un cercle}
+
 Le contour de chaque cercle est discrétisé par un polygone régulier inscrit. La longueur d'un côté de ce polygone est donnée par
 
 \begin{equation}
@@ -51,3 +55,69 @@ L'erreur relative introduite par cette approximation géométrique est donc
      {N_2\sin\left(\pi/N_2\right)}.
 \label{eq:err_ratio_perimetre}
 \end{equation}
+
+\subsection{Application aux cercles concentriques}
+
+L'exemple étudié est celui de deux cercles concentriques, de rayons $100~u.a.$ et $200~u.a.$. Ce cas a été choisi car il permet de relier directement l'erreur géométrique établie ci-dessus à l'erreur commise sur les facteurs de vue : d'une manière analogue à celle développée en Section~\ref{part:calcul_anal}, les facteurs de vue sont dans cette configuration directement liés au ratio des périmètres, $F_{outer \rightarrow inner}= \frac{P_{inner}}{P_{outer}}$.
+
+Le Tableau~\ref{tab:err_ratio_perimeter} présente, pour trois niveaux de discrétisation des cercles, l'erreur géométrique $\varepsilon_P$ obtenue à partir de l'équation~\eqref{eq:err_ratio_perimetre}, ainsi que l'erreur effectivement observée sur les facteurs de vue calculés par \ETT. Les trois niveaux de maillage correspondants sont illustrés à la Figure~\ref{fig:circles_mesh}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+$N_{inner}$ & $N_{outer}$ &
+$P_ {inner}^{(N)}/P_{outer}^{(N)}$ &
+Erreur géométrique (\%) &
+Erreur \ETT (\%)\\
+\midrule
+12  & 14   & 0.488793 & $2.2\times10^{-2}$ & $2.8\times10^{-3}$ \\
+79  & 157  & 0.499934 & $1.3\times10^{-4}$ & $2.0\times10^{-4}$ \\
+628 & 1000 & 0.499997 & $6.3\times10^{-6}$ & $2.5\times10^{-6}$ \\
+\bottomrule
+\end{tabular}
+\caption{Comparaison entre l'erreur géométrique sur le rapport des périmètres et l'erreur observée sur les facteurs de vue.}
+\label{tab:err_ratio_perimeter}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{0.32\textwidth}
+\centering
+\includegraphics[width=0.66\linewidth]{PICTURES/c2/circles_Coarse.png}
+\small\textbf{(a) Maillage très grossier}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\textwidth}
+\centering
+\includegraphics[width=0.66\linewidth]{PICTURES/c2/circles_coarse.png}
+\small\textbf{(b) Maillage raffiné}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.32\textwidth}
+\centering
+\includegraphics[width=0.66\linewidth]{PICTURES/c2/circles_fine.png}
+\small\textbf{(c) Maillage très raffiné}
+\end{minipage}
+\caption{Maillages des cercles concentriques pour les trois niveaux de discrétisation étudiés.}
+\label{fig:circles_mesh}
+\end{figure}
+
+Ces résultats montrent que l'erreur géométrique induite par la discrétisation du contour décroît rapidement avec le raffinement du maillage. Alors que le maillage le plus grossier conduit à une erreur de l'ordre de $2\,\%$ sur le rapport des périmètres, celle-ci devient inférieure à $10^{-4}$ dès le second niveau de discrétisation, et satisfaisante pour le maillage le plus fin. On observe par ailleurs un très bon accord entre l'erreur géométrique théorique et l'erreur effectivement observée sur les facteurs de vue, ce qui confirme que cette dernière est bien pilotée par l'approximation du contour circulaire par un polygone. Il faut garder en tête le problème d'hyper-sensibilité évoqué au Paragraphe~\ref{part:hypersens} et insister sur l'importance de la précision des facteurs de vue.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

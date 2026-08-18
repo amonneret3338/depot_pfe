@@ -96,8 +96,7 @@ Dans le cadre de ce stage, l'étude se limite au couplage entre la conduction da
 
 Afin de vérifier le couplage entre le solveur thermique \trust et le module de calcul radiatif développé au cours de ce stage, les résultats obtenus sont comparés à ceux de la maquette de référence \texttt{pyMCRAD}. Cette dernière constitue un cas de validation pertinent puisqu'elle implémente le même modèle physique de conduction-rayonnement en milieu transparent pour des géométries bidimensionnelles.
 
-Le cas considéré représente une rangée infinie de crayons combustibles modélisée par un motif élémentaire de dix crayons. Les conditions de périodicité suivant la direction verticale permettent de reproduire un milieu infini, le motif étant illustré à la Figure~\ref{fig:domaine}. Les facteurs de vue sont cette fois calculés directement à partir du maillage par le module MCRT, puis utilisés dans la résolution thermique sous \trust.
-
+Le cas considéré représente une rangée infinie de crayons combustibles modélisée par un motif élémentaire de dix crayons, tel qu'introduit par Rubiolo \cite{rubiolo2000} pour l'étude du transfert thermique en milieu poreux dans le contexte des réacteurs nucléaires en situation accidentelle. Les conditions de périodicité suivant la direction verticale permettent de reproduire un milieu infini, le motif étant illustré à la Figure~\ref{fig:domaine}. Les facteurs de vue sont cette fois calculés directement à partir du maillage par le module MCRT, puis utilisés dans la résolution thermique sous \trust.
 \begin{figure}[H]
 
 \begin{minipage}{0.2\textwidth}

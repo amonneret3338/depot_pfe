@@ -21,8 +21,15 @@ Kook Han, Y.~Feng, and D.R.J. Owen.
 
 \bibitem{howell}
 J.~R. Howell, M.~P. Menguc, K.~Daun, and R.~Siegel.
-\newblock {\em Thermal Radiation Heat Transfer (7th ed.)}.
-\newblock CRC Press, 2020.
+\newblock {\em Thermal Radiation Heat Transfer (5th ed.)}.
+\newblock CRC Press, 2011.
+
+\bibitem{lorenzo}
+Bulgarelli Lorenzo.
+\newblock Development and application of a radiative heat transport library
+  using embree ray-tracing technology in triocfd/trust thermo-hydraulic
+  simulations.
+\newblock Master's thesis, Politecnico di Torino, 2025/2026.
 
 \bibitem{methods_fv}
 HA. Shukla Pranav~Patel Manoj Kumar~Gupta, Kuldip J~Bumtariya and Ziauddin
@@ -67,6 +74,12 @@ J.~Costa~Sallés R.~Le~Tellier and C.~Brayer.
 \newblock A comprehensive analysis of lumped enclosure models’ biases for
   evaluating inter-assembly radiative heat transfer in accident simulation.
 \newblock {\em Nuclear Engineering and Design}, 433(433), 2025.
+
+\bibitem{rubiolo2000}
+Pablo Rubiolo.
+\newblock {\em Mod{\'e}lisation du transfert thermique dans un milieu poreux :
+  application aux r{\'e}acteurs nucl{\'e}aires en situation accidentelle}.
+\newblock Ph.d. dissertation, Aix-Marseille 1, January 2000.
 
 \bibitem{saikali2025trust}
 Elie Saikali, Adrien Bruneton, Pierre Ledac, and Remi Bourgeois.
