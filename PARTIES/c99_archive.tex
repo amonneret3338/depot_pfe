@@ -1,0 +1,227 @@
+\newcommand{\NomEleve}{Antonin MONNERET}
+
+\newcommand{\Filiere}{
+Génie Énergétique et Nucléaire
+}
+
+\newcommand{\Formation}{
+Grenoble INP -- Phelma
+}
+
+\newcommand{\AnneeUniversitaire}{
+2025--2026
+}
+
+\newcommand{\TitreStage}{
+Développement, vérification et étude d'un modèle de transfert
+radiatif en milieu transparent pour la plateforme \texttt{TRUST}
+}
+
+\newcommand{\PeriodeStage}{
+Du 30/03/2026 au 21/08/2026
+}
+
+\newcommand{\Entreprise}{
+Commissariat aux Énergies Atomiques et aux Énergies Nouvelles (CEA)
+}
+
+\newcommand{\Laboratoire}{
+DES/ISAS/DM2S/SGLS/LCAN
+}
+
+\newcommand{\AdresseEntreprise}{
+CEA Paris-Saclay\\
+91190 Saint-Aubin
+}
+
+%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%
+
+
+% ============================================================
+% EN-TÊTE
+% ============================================================
+
+\begin{center}
+
+\begin{minipage}{0.42\textwidth}
+    \centering
+    \includegraphics[width=0.6\linewidth]{PICTURES/GINPPhelma.png}
+\end{minipage}%
+\hfill
+\begin{minipage}{0.42\textwidth}
+    \centering
+    \includegraphics[width=0.4\linewidth]{PICTURES/CEA_logo_nouveau.png}
+\end{minipage}
+
+
+
+{\large\bfseries \TitreStage\par}
+
+\vspace{0.2cm}
+
+{\normalsize \PeriodeStage\par}
+
+\end{center}
+
+\vspace{0.5cm}
+
+% ============================================================
+% 1 -- IDENTITÉ DE L'ÉLÈVE
+% ============================================================
+
+\section*{1. Identité de l'élève}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{4cm} X}
+Élève & \NomEleve \\
+Filière & \Filiere \\
+Formation & \Formation \\
+Année universitaire & \AnneeUniversitaire \\
+\end{tabularx}
+
+
+% ============================================================
+% 2 -- ENTREPRISE / LABORATOIRE
+% ============================================================
+
+\section*{2. Entreprise / laboratoire d'accueil}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{4cm} X}
+Entreprise / organisme & \Entreprise \\
+Laboratoire / unité & \Laboratoire \\
+Adresse postale & \AdresseEntreprise \\
+\end{tabularx}
+
+
+% ============================================================
+% 3 -- ENCADREMENT
+% ============================================================
+
+\section*{3. Encadrement}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{4cm} X}
+
+Maîtres de stage &
+Ansar Calloo -- \href{mailto:ansar.calloo@cea.fr}
+{ansar.calloo@cea.fr}
+\\
+&
+Romain Le Tellier -- \href{mailto:romain.letellier@cea.fr}
+{romain.letellier@cea.fr}
+\\
+&
+Élie Saïkali -- \href{mailto:elie.saikali@cea.fr}
+{elie.saikali@cea.fr}
+\\[0.15cm]
+
+Tuteur Master &
+Merle Esla -- \href{mailto:merle@lpsc.in2p3.fr}
+{merle@lpsc.in2p3.fr}
+\\
+
+Tuteur école &
+Giovanni Ghigliotti --
+\href{mailto:ghigliotti@lpsc.in2p3.fr}
+{ghigliotti@lpsc.in2p3.fr}
+
+\end{tabularx}
+
+
+% ============================================================
+% 4 -- DESCRIPTIF INITIAL DU STAGE
+% ============================================================
+
+\section*{4. Descriptif du stage initialement validé}
+
+Le stage porte sur l'étude du transfert de chaleur par rayonnement
+entre solides, considérés comme des surfaces grises, opaques et
+diffuses, au travers d'un milieu transparent. La résolution du
+problème couplé de conduction et de rayonnement s'appuie sur la
+plateforme \texttt{TRUST}, utilisée pour la résolution de la
+conduction dans les solides et du problème thermique couplé, ainsi
+que sur la maquette logicielle \texttt{embree2TRUST}, dédiée au
+calcul des facteurs de vue entre surfaces par une méthode de Monte
+Carlo par lancer de rayons.
+
+Le travail initialement prévu s'articule autour des étapes
+suivantes :
+
+\begin{itemize}[leftmargin=1.5cm]
+
+    \item \textbf{Prise en main de \texttt{TRUST} :} étude de la
+    plateforme pour la réalisation de calculs couplés
+    conduction--rayonnement, notamment à travers les applications
+    2D réalisées dans le cadre des accidents de réacteurs à eau
+    légère, ainsi que l'utilisation de \texttt{pyMCRAD} pour le
+    calcul des facteurs de vue ;
+
+    \item \textbf{Prise en main et état des lieux de
+    \texttt{embree2TRUST} :} compréhension de la maquette logicielle
+    existante, de son architecture et de ses fonctionnalités, ainsi
+    que de la méthode de Monte Carlo par lancer de rayons utilisée
+    pour le calcul des facteurs de vue. Cette étape comprend
+    notamment la mise en place de tests de vérification unitaire
+    plus complets, par exemple autour de conditions de symétrie
+    faisant intervenir une réflexion spéculaire ;
+
+    \item \textbf{Développement et amélioration de
+    \texttt{embree2TRUST} :} complétion de l'outil selon plusieurs
+    axes, notamment le développement d'algorithmes de correction des
+    facteurs de vue permettant d'imposer les relations de
+    réciprocité, l'utilisation directe des maillages surfaciques
+    sans recours au maillage volumique du milieu transparent, ainsi
+    que l'amélioration générale de la maquette logicielle ;
+
+    \item \textbf{Mise en place de cas tests :} développement et
+    réalisation de cas tests en deux et trois dimensions afin
+    d'évaluer les performances de \texttt{embree2TRUST} et de
+    vérifier les calculs thermiques couplés réalisés avec
+    \texttt{TRUST}.
+    
+\end{itemize}
+
+
+% ============================================================
+% 5 -- MOYENS MIS À DISPOSITION
+% ============================================================
+
+\section*{5. Moyens mis à disposition}
+
+Les moyens mis à disposition dans le cadre du stage comprennent :
+
+\begin{itemize}[leftmargin=1.5cm]
+
+    \item un poste de travail au sein du laboratoire ainsi qu'un
+    accès aux moyens de calcul du CEA, notamment au cluster
+    \texttt{Orcus} ;
+
+    \item les environnements et logiciels nécessaires au
+    développement et à la simulation : \texttt{TRUST}, \texttt{C++},
+    \texttt{Intel Embree}, \texttt{Intel TBB} et \textsc{Salome}
+    pour la génération et le traitement des géométries et des
+    maillages ;
+
+    \item l'accès à la documentation scientifique et technique,
+    aux ressources internes du CEA ainsi qu'aux outils nécessaires
+    à la vérification et à l'analyse des résultats.
+
+\end{itemize}
+
+
+% ============================================================
+% 6 -- ENCADREMENT COMPLÉMENTAIRE
+% ============================================================
+
+\section*{6. Encadrement complémentaire}
+
+En complément des maîtres de stage, le travail a été réalisé dans
+un environnement scientifique permettant des échanges réguliers
+avec les ingénieurs, chercheurs, doctorants et membres de l'équipe
+impliqués dans le développement et l'utilisation de la plateforme
+\texttt{TRUST} et le mailleur \texttt{SALOME}.
+
+Cet environnement a notamment permis de bénéficier d'un
+accompagnement sur les aspects liés à la physique du transfert
+radiatif, au développement logiciel, à l'utilisation de
+\texttt{TRUST}, aux méthodes numériques et à la vérification
+des modèles.
+

@@ -89,7 +89,7 @@ Cette organisation réduit considérablement le nombre de tests d'intersection e
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{PICTURES/c2/bvh.png}
+    \includegraphics[width=0.6\linewidth]{PICTURES/c2/bvh.png}
     \caption{Principe d'une \emph{Bounding Volume Hierarchy} (BVH).}
     \label{fig:bvh}
 \end{figure}
@@ -99,64 +99,27 @@ Cette organisation réduit considérablement le nombre de tests d'intersection e
 
 \section{Échantillonnage des rayons}
 
-L'estimateur de Monte Carlo utilisé dans cette étude repose sur un échantillonnage direct des variables aléatoires intervenant dans la définition du facteur de vue. Les lois de probabilité sont choisies de manière à reproduire les distributions physiques de l'émission diffuse tout en conservant un poids unitaire pour chaque rayon. Cette stratégie correspond à l'approche dite de \textit{Monte Carlo analogue} (\textit{analog Monte Carlo}) couramment utilisée pour le calcul des facteurs de vue et des échanges radiatifs \cite{howell}.
-
-L'émission d'un rayon est définie par le tirage de son point d'origine sur la surface émettrice, puis de sa direction dans l'hémisphère orienté par la normale locale.
+L'estimateur de Monte Carlo utilisé dans cette étude repose sur un échantillonnage direct des variables aléatoires intervenant dans la définition du facteur de vue. Les lois de probabilité sont choisies de manière à reproduire les distributions physiques de l'émission diffuse tout en conservant un poids unitaire pour chaque rayon. Cette stratégie correspond à l'approche dite de \textit{Monte Carlo analogue} couramment utilisée pour le calcul des facteurs de vue et des échanges radiatifs \cite{howell}. L'émission d'un rayon est définie par le tirage de son point d'origine sur la surface émettrice, puis de sa direction dans l'hémisphère orienté par la normale locale.
 
 \paragraph{Échantillonnage de la position}
 
-Chaque surface est discrétisée par un ensemble de triangles. Afin d'obtenir une densité uniforme sur l'ensemble de la surface, le triangle $T_i$ est sélectionné avec une probabilité proportionnelle à son aire,
+Chaque surface est discrétisée par un ensemble de triangles. Afin d'obtenir une densité uniforme sur l'ensemble de la surface, le triangle $T_i$ est sélectionné avec une probabilité proportionnelle à son aire $P(T_i)=\frac{A_i}{A_{\mathrm{tot}}}$ où $A_i$ est l'aire du triangle $T_i$ et $A_{\mathrm{tot}}$ l'aire totale de la surface.
 
-\begin{equation}
-P(T_i)=\frac{A_i}{A_{\mathrm{tot}}},
-\end{equation}
+Une fois le triangle sélectionné, le point d'émission est généré uniformément à l'intérieur de celui-ci au moyen de coordonnées barycentriques. La densité conditionnelle vaut alors $p(\mathbf{x}\mid T_i)=\frac{1}{A_i}$ ce qui garantit une distribution uniforme sur l'ensemble de la surface indépendamment de la discrétisation du maillage. L'utilisation des coordonnées barycentriques constitue une méthode classique pour réaliser cet échantillonnage uniforme sur des maillages triangulaires \cite{Pharr2018}.
 
-où $A_i$ est l'aire du triangle $T_i$ et $A_{\mathrm{tot}}$ l'aire totale de la surface.
+\paragraph{Échantillonnage de la direction}
 
-Une fois le triangle sélectionné, le point d'émission est généré uniformément à l'intérieur de celui-ci au moyen de coordonnées barycentriques. La densité conditionnelle vaut alors
-
-\begin{equation}
-p(\mathbf{x}\mid T_i)=\frac{1}{A_i}.
-\end{equation}
-
-La densité de probabilité globale est donc
-
-\begin{equation}
-p(\mathbf{x})
-=
-P(T_i)\,
-p(\mathbf{x}\mid T_i)
-=
-\frac{A_i}{A_{\mathrm{tot}}}
-\frac{1}{A_i}
-=
-\frac{1}{A_{\mathrm{tot}}},
-\end{equation}
-
-ce qui garantit une distribution uniforme sur l'ensemble de la surface indépendamment de la discrétisation du maillage. L'utilisation des coordonnées barycentriques constitue une méthode classique pour réaliser cet échantillonnage uniforme sur des maillages triangulaires \cite{Pharr2018}.
-
-\paragraph{cchantillonnage de la direction}
-
-Sous l'hypothèse de surfaces diffuses grises, les rayons sont émis suivant une loi de Lambert. L'angle azimutal $\varphi$ est ainsi tiré uniformément dans l'intervalle $[0,2\pi]$,
-
-\begin{equation}
-\varphi \sim \mathcal{U}(0,2\pi),
-\end{equation}
-
-tandis que l'angle polaire $\theta$ suit une distribution cosinus dont la densité de probabilité par unité d'angle solide est
-
-\begin{equation}
+Sous l'hypothèse de surfaces diffuses grises, les rayons sont émis suivant une loi de Lambert. L'angle azimutal $\varphi$ est ainsi tiré uniformément dans l'intervalle $[0,2\pi]$,tandis que l'angle polaire $\theta$ suit une distribution cosinus dont la densité de probabilité par unité d'angle solide est $
 p(\omega)=\frac{\cos\theta}{\pi},
 \qquad
-0 \leq \theta \leq \frac{\pi}{2}.
-\end{equation}
+0 \leq \theta \leq \frac{\pi}{2}$.
 
 Cette distribution reproduit la loi d'émission lambertienne et constitue le choix naturel pour le calcul Monte Carlo des facteurs de vue, puisqu'elle est directement compatible avec les hypothèses physiques retenues dans cette étude. Son échantillonnage est réalisé selon la méthode classique par inversion de la fonction de répartition \cite{Pharr2018}.
 
 
 
-\section{Compensation de l'approximation flottante sur l'origine du point}
-\subsection{De manière systématique}
+\section{Compensation de l'approximation flottante.}
+\subsection{De manière systématique sur l'origine du rayon}
 Afin d'éviter les auto-intersections lors de l'émission d'un nouveau rayon depuis un point d'impact, il est nécessaire de décaler légèrement son origine le long de la normale géométrique à la surface. Une approche couramment employée consiste à appliquer un décalage de longueur fixe $\varepsilon$. Cependant, cette méthode dépend de l'échelle géométrique du problème et ne garantit pas une élimination robuste des auto-intersections. Wächter et Binder \cite{Wachter2019} montrent qu'un décalage adaptatif obtenu en modifiant directement la représentation en virgule flottante des coordonnées du point d'intersection permet de produire un déplacement proportionnel à la précision numérique locale. Cette approche est ainsi pratiquement invariante vis-à-vis de l'échelle de la scène, ne nécessite aucun réglage de paramètre et limite efficacement les artefacts numériques tout en conservant un surcoût de calcul négligeable.
 
 La Figure \ref{fig:offset} illustre le cas où la position calculée $p_{calc}$ est en "dehors" de la géométrie. La position théorique $p_{th}$ étant exactement sur l'interface. La position corrigée $p_{cor}$ est bien un décalage dans la direction de la normale de la surface.
@@ -184,7 +147,7 @@ De la même manière, un rayon peut être échantillonné sortant de la géomét
 \small\textbf{(b) Décalage des rayons sortants}
 \end{minipage}
 
-\caption{Illustration en 2D des décalages nécessaires pour corriger l'imprécision flottante de la position calculée .}
+\caption{Illustration en 2D des décalages nécessaires pour corriger l'imprécision flottante.}
 \label{fig:offset}
 
 \end{figure}

@@ -2,94 +2,8 @@
 
 Une grande diversité de méthodes de résolution des facteurs de vue existe. L'objectif de cette étude n'est pas de les comparer entre elles, mais de retenir la plus adaptée à un contexte de géométries complexes. Le travail de synthèse de Manoj Kumar Gupta et al.~\cite{methods_fv} souligne ainsi l'incompatibilité des méthodes de \itt{Hottel's cross string} et \itt{Unit Sphere and Hemicube Method}, développée dans~\cite{howell}, avec un contexte de réacteurs français ou européens. La première méthode est utile en cas de milieu 2D~\cite{Hajji2015}, ou par exemple pour des géométries caractéristiques des réacteurs à lit de boulets (\itt{Pebble Bed Reactor})~\cite{pbr9}. La seconde, la méthode de la sphère unité, présente quant à elle la particularité notable de pouvoir être évaluée expérimentalement -- une propriété assez rare parmi les méthodes de calcul de facteurs de vue pour mériter d'être soulignée -- mais elle n'atteint pas les seuils de précision requis pour la présente étude.
 
-La diversité des méthodes restantes illustrée par le Tableau~\ref{tab:methods} ne sera pas abordée en profondeur. La méthode retenue pour ce travail est la méthode de Monte Carlo Ray Tracing qui est reconnue pour sa généricité. Deux autres méthodes sont néanmoins présentées dans la suite de cette section, afin de comprendre comment sont établis les facteurs de vue pour des géométries simples.
+La diversité des méthodes restantes ne sera pas abordée en profondeur. La méthode retenue pour ce travail est la méthode de Monte Carlo Ray Tracing qui est reconnue pour sa généricité. Deux autres méthodes sont néanmoins présentées dans la suite de cette section, afin de comprendre comment sont établis les facteurs de vue pour des géométries simples.
 
-\begin{table}[ht]
-\centering
-
-\renewcommand{\arraystretch}{1.}
-\setlength{\tabcolsep}{3pt}
-\scriptsize
-\begin{tabular}{p{2.2cm}cccccc}
-
-\textbf{Criterion} &
-\textbf{Integration} &
-\textbf{Unit Sphere} &
-\textbf{Cross-String} &
-\textcolor{codegreen}{\textbf{Monte Carlo}} &
-\textbf{Ray Casting} &
-\textbf{Matrix} \\
-
-\hline
-\hline
-
-Computational cost&
-Low&
-Medium&
-Low&
-High&
-\textcolor{red}{Very high}&
-Low\\
-\hline
-
-Ray-tracing required &
-No&
-Yes&
-No&
-Yes&
-Yes&
-No\\
-\hline
-
-Required expertise &
-Integration&
-Integration&
-Geometry&
-Probability&
-Programming&
-Linear algebra\\
-\hline
-
-Analytical formulation &
-complex&
-Simple&
-Simple&
-Very complex&
-Complex& 
-\textcolor{red}{Simple}\\
-\hline
-
-Applicable to multiple surfaces &
-\textcolor{red}{No}&
-\textcolor{red}{No}&
-\textcolor{red}{No}&
-Yes&
-Yes&
-Yes\\
-\hline
-
-Applicable to closed enclosures &
-No&
-No&
-No&
-Yes&
-\textcolor{red}{No}&
-Yes\\
-\hline
-
-Typical geometries &
-Simple&
-Simple&
-2D / curved&
-Ours&
-General&
-Closed enclosures\\
-\hline
-
-\end{tabular}\\
-\caption{Comparison of common methods for view factor computation. Adapted from \cite{methods_fv}}
-\label{tab:methods}
-\end{table}
 La première sous-partie développe un exemple de résolution directe de l'intégrale et montre les limites de cette méthode, bien qu'elle soit la plus précise. La seconde sous-partie donne les grandes lignes d'une résolution astucieuse des facteurs de vue pour des géométries arrangeantes. Enfin, la dernière sous-partie insiste sur la méthode de Monte Carlo comme méthode de référence pour les géométries complexes.
 
 \subsection{Méthode d'intégration directe : résolution de l'intégrale}
@@ -98,21 +12,16 @@ Afin d'évaluer la faisabilité d'une résolution intégrale directe des facteur
 
 L'exploitation de la géométrie du problème permet toutefois de simplifier significativement cette expression. En introduisant les coordonnées relatives entre les deux faces et en utilisant une propriété de convolution, l'intégrale quadruple est ramenée à une intégrale double sur les distances relatives. Cette transformation met en évidence un facteur de pondération géométrique représentant la densité des paires de points associées à une même séparation.
 
-L'intégrale obtenue est ensuite traitée analytiquement par introduction d'une fonction auxiliaire dépendant d'un paramètre, puis par décomposition du terme de pondération en contributions élémentaires. Cette démarche conduit à une expression analytique du facteur de vue entre deux faces opposées du cube :
+L'intégrale obtenue est ensuite traitée analytiquement par introduction d'une fonction auxiliaire dépendant d'un paramètre, puis par décomposition du terme de pondération en contributions élémentaires. Cette démarche conduit à une expression analytique du facteur de vue :
 
 \begin{equation}
-F_{16}=\frac{2}{\pi} \left[ \ln\left(\frac{2}{\sqrt{3}}\right) +2\sqrt{2}\arctan\left(\frac{1}{\sqrt{2}}\right)-\frac{\pi}{2} \right]
+F_{16}=\frac{2}{\pi} \left[ \ln\left(\frac{2}{\sqrt{3}}\right) +2\sqrt{2}\arctan\left(\frac{1}{\sqrt{2}}\right)-\frac{\pi}{2} \right] \simeq 0.1998.
 \end{equation}
 
-La valeur numérique obtenue est :
-
-\begin{equation}
-F_{16}\simeq 0.1998.
-\end{equation}
 
 Cette valeur est cohérente avec celle du catalogue de configurations de référence établi par Howell \cite{howell} \url{https://www.thermalradiation.net/indexCat.html}, qui rassemble les expressions analytiques de facteurs de vue pour un grand nombre de géométries élémentaires et constitue une référence usuelle pour la vérification de codes de calcul radiatif.
 
-Ce résultat montre qu'une résolution intégrale directe est réalisable pour des géométries simples et fortement symétriques. Néanmoins, la complexité des manipulations analytiques nécessaires, même dans le cas élémentaire du cube, illustre les difficultés d'une telle approche pour des géométries plus générales. Cette difficulté est encore accrue dès lors que les surfaces considérées ne sont pas mutuellement entièrement visibles : la présence d'effets d'ombrage, c'est-à-dire l'occultation partielle d'une surface par une autre partie de la géométrie, introduit une dépendance du domaine d'intégration à la configuration géométrique globale, rendant la mise en œuvre analytique de ces formules impraticable dans le cas de géométries complexes. Cette observation justifie le recours à des méthodes numériques dédiées au calcul des facteurs de vue dans les configurations complexes.
+Ce résultat montre qu'une résolution intégrale directe est réalisable pour des géométries simples et fortement symétriques. Néanmoins, la complexité des manipulations analytiques nécessaires, même dans le cas élémentaire du cube, illustre les difficultés d'une telle approche pour des géométries plus générales. Cette difficulté est encore accrue dès lors que les surfaces considérées ne sont pas mutuellement entièrement visibles : la présence d'effets d'ombrage, introduit une dépendance du domaine d'intégration à la configuration géométrique globale, rendant la mise en œuvre analytique de ces formules impraticable dans le cas de géométries complexes. Cette observation justifie le recours à des méthodes numériques dédiées au calcul des facteurs de vue dans les configurations complexes.
 
 \subsection{Méthode algébrique : utilisation des propriétés géométriques}
 \label{part:calcul_anal}
@@ -125,19 +34,13 @@ Prenons un parallélépipède à base carré de côté 1, et de hauteur 2 dont l
 \begin{equation}
 F_{11} + \sum_{j=2}^5 F_{1j} + F_{16} = 1, \quad \text{avec}  F_{12} =  F_{13} = F_{14} = F_{15}
 \end{equation}
-Soit, 
-\begin{equation}
-0 + 4\times F_{12} + F_{16} = 1
-\end{equation}
-D'où $F_{12} = 0.2329$.
 
 La relation de fermeture la face 2 donne donne :
 \begin{equation}
 F_{21} + 2\times  F_{23} + F_{24} + F_{26} = 1
 \end{equation}
-D'où $F_{23} = F_{25} = 0.2406$.
 
-Enfin,
+d'où,
 \[
 \mathbf{F}=
 \begin{bmatrix}
@@ -171,7 +74,7 @@ On considère un hémisphère $HS(\vec{r_i}, \vec{n_i})$, conformément à la Fi
 
 où $\vec{\Omega_i} \in HS(\vec{r_i}, \vec{n_i})$ et les angles associés $\theta_i$ et $\varphi_i$ sont les angles d'azimut et de zenith associés à la direction du rayon. La fonction indicatrice $1_{A_j}(\vec{r_i}, \vec{\Omega_i})$ vaut 1 si le rayon partant de $\vec{r_i}$ dans la direction $\vec{\Omega_i}$ intercepte la surface $A_j$, et 0 sinon.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width = 0.3\linewidth]{PICTURES/HS_schema.png}
     \caption{Illustration des notations géométriques introduites à l'Équation \ref{def:fv_mcrt}}

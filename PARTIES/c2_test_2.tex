@@ -6,41 +6,14 @@
 
 Toutes les études réalisées dans ce chapitre reposent sur la même méthodologie. Les facteurs de vue théoriques sont établis à partir de la Référence~\cite{howell} et sont disponibles en Annexe~\ref{anx:fv}.
 
-Afin d'évaluer quantitativement la qualité des matrices de facteurs de vue obtenues par le code de Monte Carlo Ray Tracing, celles-ci sont comparées à une matrice de référence $F^{\mathrm{ref}}$. L'écart est mesuré via une erreur quadratique moyenne relative (\textit{Relative Root Mean Square Error}, RRMSE), définie à partir de l'erreur relative élémentaire.
-
-Pour chaque coefficient non négligeable de la matrice de référence, l'erreur relative est définie par :
+Afin d'évaluer quantitativement la qualité des matrices de facteurs de vue obtenues par le code de Monte Carlo Ray Tracing, celles-ci sont comparées à une matrice de référence $F^{\mathrm{ref}}$ via une erreur quadratique moyenne relative (\textit{Relative Root Mean Square Error}, RRMSE). Pour chaque coefficient non négligeable de la matrice de référence, l'erreur relative élémentaire est définie par $\varepsilon_{ij} = (F_{ij}^{\mathrm{calc}} - F_{ij}^{\mathrm{ref}})/F_{ij}^{\mathrm{ref}}$. Afin d'éviter les divisions par des valeurs nulles ou numériquement négligeables, seuls les coefficients vérifiant $\left|F_{ij}^{\mathrm{ref}}\right| > \varepsilon_{\mathrm{th}} = 10^{-15}$ sont retenus dans le calcul, l'ensemble des indices satisfaisant cette condition étant noté $\Omega$. La métrique globale est alors définie comme la racine de la moyenne des carrés des erreurs relatives :
 
 \begin{equation}
-\varepsilon_{ij} =
-\frac{
-F_{ij}^{\mathrm{calc}} - F_{ij}^{\mathrm{ref}}
-}{
-F_{ij}^{\mathrm{ref}}
-}.
+\mathrm{RRMSE} = \sqrt{\frac{1}{|\Omega|} \sum_{(i,j)\in \Omega} \varepsilon_{ij}^{2}}.
+\label{eq:rrmse}
 \end{equation}
 
-Afin d'éviter les divisions par des valeurs nulles ou numériquement négligeables, seuls les coefficients vérifiant
-
-\begin{equation}
-\left|F_{ij}^{\mathrm{ref}}\right| > \varepsilon_{\mathrm{th}},
-\qquad \text{avec } \varepsilon_{\mathrm{th}} = 10^{-15},
-\end{equation}
-
-sont retenus dans le calcul. L'ensemble des indices satisfaisant cette condition est noté $\Omega$.
-
-La métrique globale est ensuite définie comme la racine de la moyenne des carrés des erreurs relatives :
-
-\begin{equation}
-\mathrm{RRMSE}
-=
-\sqrt{
-\frac{1}{|\Omega|}
-\sum_{(i,j)\in \Omega}
-\varepsilon_{ij}^{2}
-}.
-\end{equation}
-
-Cette grandeur fournit une mesure globale, sans dimension, de l'écart entre la matrice calculée et la matrice de référence. Une valeur nulle correspond à une concordance exacte, tandis qu'une augmentation de cette métrique traduit une dégradation progressive de l'accord entre les deux solutions. Cette grandeur est utilisée dans la suite du chapitre pour analyser la convergence et la qualité des résultats en fonction des paramètres de simulation, pour trois familles de géométries : des configurations tridimensionnelles (Section~\ref{part:verif3D}), des configurations bidimensionnelles (Section~\ref{part:2Dcomp}), et des configurations comportant des faces réflectives (Section~\ref{part:verifmiroir}).
+Cette grandeur fournit une mesure globale, sans dimension, de l'écart entre la matrice calculée et la matrice de référence : une valeur nulle correspond à une concordance exacte, tandis qu'une augmentation traduit une dégradation progressive de l'accord entre les deux solutions. Le RRMSE est utilisé dans la suite du chapitre pour analyser la convergence et la qualité des résultats pour trois familles de géométries : configurations 3D (Section~\ref{part:verif3D}), 2D (Section~\ref{part:2Dcomp}), et à faces réflectives (Section~\ref{part:verifmiroir}).
 
 \subsection{Résultats}
 
@@ -121,115 +94,36 @@ Pour les six cas de vérification des facteurs de vue présentés dans le rappor
 
 
 \section{Vérifications des flux radiatifs}
+
 \subsection{Calcul des flux radiatifs}
 
-Une fois les facteurs de vue calculés, ceux-ci sont utilisés pour déterminer les flux radiatifs échangés entre les différentes surfaces. Le calcul repose sur la méthode expliquée plus tôt dans \ref{eq:systeme_radiosite}.
+Une fois les facteurs de vue calculés, ceux-ci sont utilisés pour déterminer les flux radiatifs échangés entre les surfaces, à partir du système de radiosités introduit en Équation~\ref{def:radio} :
+$J_i = \varepsilon_i \sigma T_i^4 + (1-\varepsilon_i)\sum_{j=1}^{N} F_{ij}J_j$,
+où $\varepsilon_i$ est l'émissivité de la surface $i$, $T_i$ sa température, $\sigma$ la constante de Stefan-Boltzmann et $F_{ij}$ le facteur de vue entre les surfaces $i$ et $j$.
 
-On peut reformuler l'Equation \ref{def:radio} pour obtenir le système d'équation suivant:
-
-\begin{equation}
-J_i
-=
-\varepsilon_i \sigma T_i^4
-+
-(1-\varepsilon_i)
-\sum_{j=1}^{N}
-F_{ij}J_j,
-\label{eq:radiosity}
-\end{equation}
-
-où $\varepsilon_i$ est l'émissivité de la surface, $T_i$ sa température, $\sigma$ la constante de Stefan-Boltzmann et $F_{ij}$ le facteur de vue entre les surfaces $i$ et $j$.
-
-En introduisant le vecteur des radiosités $\mathbf{J}$, le vecteur des températures élevées à la puissance quatre $\mathbf{T}^4$ ainsi que la matrice diagonale des émissivités
+En introduisant le vecteur des radiosités $\mathbf{J}$, le vecteur $\mathbf{T}^4$ et la matrice diagonale des émissivités $\mathbf{E}=\mathrm{diag}(\varepsilon_1,\ldots,\varepsilon_N)$, ce système se réécrit sous forme matricielle :
 
 \begin{equation}
-\mathbf{E}
-=
-\mathrm{diag}(\varepsilon_1,\ldots,\varepsilon_N),
-\end{equation}
-
-le système peut être réécrit sous forme matricielle :
-
-\begin{equation}
-\left[
-\mathbf{I}
--
-(\mathbf{I}-\mathbf{E})\mathbf{F}
-\right]
-\mathbf{J}
-=
-\mathbf{E}\sigma\mathbf{T}^4.
+\left[\mathbf{I} - (\mathbf{I}-\mathbf{E})\mathbf{F}\right]\mathbf{J} = \mathbf{E}\sigma\mathbf{T}^4.
 \label{eq:systeme_radiosite}
 \end{equation}
 
-La matrice
+La matrice $\mathbf{A} = \mathbf{I} - (\mathbf{I}-\mathbf{E})\mathbf{F}$, construite à partir des facteurs de vue et des émissivités, permet ainsi de résoudre ce système linéaire pour obtenir les radiosités de l'ensemble des surfaces. Le flux radiatif net quittant chaque surface s'en déduit par $q_i = J_i - \sum_{j=1}^{N} F_{ij}J_j$, soit sous forme matricielle $\mathbf{q} = (\mathbf{I}-\mathbf{F})\mathbf{J}$, ce qui conduit à l'expression finale :
 
 \begin{equation}
-\mathbf{A}
-=
-\mathbf{I}
--
-(\mathbf{I}-\mathbf{E})\mathbf{F}
-\end{equation}
-
-est construite à partir des facteurs de vue et des émissivités. Le système linéaire est ensuite résolu afin de déterminer les radiosités de l'ensemble des surfaces.
-
-Le flux radiatif net quittant chaque surface est finalement obtenu par
-
-\begin{equation}
-q_i
-=
-J_i
--
-\sum_{j=1}^{N}
-F_{ij}J_j,
-\end{equation}
-
-soit, sous forme matricielle,
-
-\begin{equation}
-\mathbf{q}
-=
-(\mathbf{I}-\mathbf{F})\mathbf{J},
-\end{equation}
-
-ce qui conduit à l'expression finale
-
-\begin{equation}
-\mathbf{q}
-=
-(\mathbf{I}-\mathbf{F})
-\left[
-\mathbf{I}
--
-(\mathbf{I}-\mathbf{E})\mathbf{F}
-\right]^{-1}
-\mathbf{E}\sigma\mathbf{T}^4.
+\mathbf{q} = (\mathbf{I}-\mathbf{F})\left[\mathbf{I} - (\mathbf{I}-\mathbf{E})\mathbf{F}\right]^{-1} \mathbf{E}\sigma\mathbf{T}^4.
 \label{eq:q_final}
 \end{equation}
-
-
 \subsection{Vérification du calcul des flux radiatifs}
 
-La méthode de calcul des flux radiatifs a été vérifiée à partir de deux cas de référence issus de \cite{howell}. Ces exemples permettent de vérifier l'utilisation des facteurs de vue calculés par le MCRT dans la résolution des échanges radiatifs entre surfaces diffuses grises.
+La méthode de calcul des flux radiatifs a été vérifiée à partir de deux cas de référence issus de \cite{howell}, permettant de vérifier l'utilisation des facteurs de vue calculés par le MCRT dans la résolution des échanges radiatifs entre surfaces diffuses grises. Dans les deux cas, aucune méthode de correction des facteurs de vue (Section~\ref{part:renforcement}) n'a été appliquée : les facteurs de vue utilisés sont directement ceux issus de l'estimation Monte Carlo brute, avec un écart-type maximal de $10^{-3}$ ($10^6$ rayons) sur les coefficients de la matrice $F$.
 
 \subsubsection{Deux cylindres concentriques infinis}
 
-Le premier cas correspond à l'exemple 5.5 de \cite{howell}. Il s'agit de deux cylindres concentriques infinis, le cylindre extérieur étant divisé en deux demi-cylindres maintenus à des températures différentes.
-
-Les températures imposées sont
-
-\[
-T_{\mathrm{int}}=1700~\mathrm{K}, \qquad
-T_{\mathrm{ext},1}=1207~\mathrm{K}, \qquad
-T_{\mathrm{ext},2}=1415~\mathrm{K}.
-\]
-
-Le calcul fournit les flux radiatifs suivants :
+Le premier cas correspond à l'exemple 5.5 de \cite{howell} : deux cylindres concentriques infinis, le cylindre extérieur étant divisé en deux demi-cylindres maintenus à des températures différentes, avec $T_{\mathrm{int}}=1700$~K, $T_{\mathrm{ext},1}=1207$~K et $T_{\mathrm{ext},2}=1415$~K.
 
 \begin{table}[H]
 \centering
-
 \begin{tabular}{lc}
 \toprule
 Surface & Flux radiatif (W.m$^{-2}$) \\
@@ -243,28 +137,10 @@ Demi-cylindre extérieur 2 & $-9.9792\times10^{4}$ \\
 \label{tab:flux_howell55}
 \end{table}
 
-Les flux obtenus sont en accord, aux deux chiffres significatifs près, avec la solution de référence de \cite{howell} : les valeurs calculées coïncident avec celles données dans le Tableau~\ref{tab:flux_howell55}, dont la précision se limite à deux chiffres significatifs. Il est à noter qu'aucune méthode de correction des facteurs de vue, telle que celles présentées en Section~\ref{part:renforcement} (réciprocité, fermeture, moindres carrés), n'a été appliquée pour ce calcul : les facteurs de vue utilisés sont directement ceux issus de l'estimation Monte Carlo brute, avec un écart-type maximal de $10^{-3}$ ($10^6$ rayons) sur les coefficients de la matrice $F$. L'accord obtenu avec la solution de référence, sans recours à une étape de correction, illustre ainsi la bonne convergence statistique des facteurs de vue estimés pour ce niveau d'échantillonnage. De plus, le bilan énergétique est vérifié avec une erreur inférieure à $10^{-4}$~W.m$^{-2}$, ce qui confirme la conservation de l'énergie lors du calcul.
+Les flux obtenus sont en accord, aux deux chiffres significatifs près, avec la solution de référence de \cite{howell}, dont la précision se limite à deux chiffres significatifs. Cet accord, obtenu sans correction des facteurs de vue, illustre leur bonne convergence statistique pour ce niveau d'échantillonnage. Le bilan énergétique est par ailleurs vérifié avec une erreur inférieure à $10^{-4}$~W.m$^{-2}$.
 
 \subsubsection{Pastille combustible dans une cavité carrée}
 
-Le second cas correspond à l'exercice 5.22 de \cite{howell}. Il représente une pastille cylindrique placée au centre d'une cavité carrée. Trois parois de la cavité sont maintenues à température nulle tandis que les surfaces rayonnantes possèdent une émissivité de 0,5.
+Le second cas correspond à l'exercice 5.22 de \cite{howell} : une pastille cylindrique placée au centre d'une cavité carrée, dont trois parois sont maintenues à température nulle, les surfaces rayonnantes ayant une émissivité de 0,5. Les températures imposées sont $T_{\mathrm{fuel}}=1000$~K et $T_{\mathrm{parois}}=674, 0, 0, 0$~K. Le flux radiatif calculé pour la pastille est $q_{\mathrm{fuel}} = 8.4473\times10^{4}$~W.m$^{-1}$, en accord avec la valeur de référence de \cite{howell}. Comme pour le cas précédent, cet accord confirme la bonne convergence statistique des facteurs de vue bruts utilisés. Les flux nets satisfont également le bilan énergétique, avec un écart sur la fermeture du système inférieur à $10^{-4}$~W.m$^{-1}$.
 
-Les températures imposées sont
-
-\[
-T_{\mathrm{fuel}}=1000~\mathrm{K}, \qquad
-T_{\mathrm{parois}}=674~\mathrm{K},\,0~\mathrm{K},\,0~\mathrm{K},\,0~\mathrm{K}.
-\]
-
-Le flux radiatif calculé pour la pastille est
-
-\[
-q_{\mathrm{fuel}}
-=
-8.4473\times10^{4}
-~\mathrm{W.m^{-1}},
-\]
-
-en accord avec la valeur de référence donnée par \cite{howell}. Comme pour le cas précédent, aucune méthode de correction des facteurs de vue n'a été appliquée pour ce calcul : les facteurs de vue utilisés sont directement ceux issus de l'estimation Monte Carlo brute, avec un écart-type maximal de $10^{-3}$ ($10^6$ rayons) sur les coefficients de la matrice $F$. L'accord obtenu avec la solution de référence, là encore sans recours à une étape de correction, confirme la bonne convergence statistique des facteurs de vue pour ce niveau d'échantillonnage. Les flux nets obtenus sur les différentes surfaces satisfont également le bilan énergétique, l'écart sur la fermeture du système restant inférieur à $10^{-4}$~W.m$^{-1}$.
-
-Ces deux cas de vérification montrent que la résolution du système de radiosités permet de retrouver les flux radiatifs de référence à partir des facteurs de vue calculés par le MCRT, sans recours à une correction de ces derniers, tout en respectant la conservation de l'énergie.
+Ces deux cas montrent ainsi que la résolution du système de radiosités permet de retrouver les flux radiatifs de référence à partir des facteurs de vue bruts calculés par le MCRT, sans recours à une correction, tout en respectant la conservation de l'énergie.

@@ -1,0 +1,106 @@
+% ============================================================
+% PREMIÈRE PARTIE : SEMAINES 1 À 10
+% ============================================================
+
+\begin{figure}[H]
+\centering
+
+\begin{ganttchart}[
+    vgrid,
+    hgrid,
+    x unit=1cm,
+    y unit chart=0.5cm,
+    bar height=0.6,
+    bar/.style={fill=blue!45},
+    bar label font=\footnotesize,
+    milestone/.style={fill=red!70},
+    milestone label font=\footnotesize,
+    title height=1,
+    title label font=\bfseries\footnotesize,
+    title/.style={fill=gray!25},
+    group label font=\bfseries\footnotesize
+]{1}{10}
+
+\gantttitle{Semaines 1 à 10}{10} \\
+\gantttitlelist{1,...,10}{1} \\
+
+\ganttbar{\tiny Étude bibliographique}{1}{4} \\
+\ganttbar{\tiny Rédaction du rapport bibliographique}{1}{4} \\
+\ganttbar{\tiny Compréhension de la physique du transfert radiatif}{1}{8} \\
+\ganttbar{\tiny Prise en main du code hérité \texttt{embree2TRUST}}{3}{6} \\
+
+\ganttbar{\tiny Développement : correction de la physique}{5}{7} \\
+\ganttbar{\tiny Développement : extension 2D}{8}{10} \\
+\ganttbar{\tiny Développement : faces réflectives}{10}{10} \\
+
+\ganttbar{\tiny Vérification : numérique}{4}{10} \\
+\ganttbar{\tiny Vérification : solutions analytiques}{8}{10} \\
+
+\ganttmilestone{Journée au LJLL}{2} \\
+\ganttmilestone{Formation \trust}{3} \\
+
+\end{ganttchart}
+
+\caption{Diagramme de Gantt du déroulement du stage -- semaines 1 à 10.}
+\label{fig:gantt_1_10}
+\end{figure}
+Une journée de formation au LJLL a notamment été suivie durant la deuxième semaine du stage
+\footnote{\url{https://www.ljll.fr/wp-content/uploads/2026/03/programme_MathNeut_2026.pdf}}.
+
+% ============================================================
+% DEUXIÈME PARTIE : SEMAINES 11 À 20
+% ============================================================
+
+\begin{figure}[H]
+\centering
+
+\begin{ganttchart}[
+    vgrid,
+    hgrid,
+    x unit=1cm,
+    y unit chart=0.5cm,
+    bar height=0.6,
+    bar/.style={fill=blue!45},
+    bar label font=\footnotesize,
+    milestone/.style={fill=red!70},
+    milestone label font=\footnotesize,
+    title height=1,
+    title label font=\bfseries\footnotesize,
+    title/.style={fill=gray!25},
+    group label font=\bfseries\footnotesize
+]{1}{10}
+
+\gantttitle{Semaines 11 à 20}{10} \\
+\gantttitlelist{11,...,20}{1} \\
+
+% S11-13
+\ganttbar{\tiny Développement : faces réflectives}{1}{3} \\
+
+% S13-16
+\ganttbar{\tiny Développement : corrections numériques}{3}{6} \\
+
+% S11-15
+\ganttbar{\tiny Vérification : solutions analytiques}{1}{5} \\
+
+% S13-16
+\ganttbar{\tiny Vérification : PyMCRad}{3}{6} \\
+
+% S17
+\ganttbar{\tiny Génération des scripts de maillage : \textsc{Salome}}{6}{7} \\
+
+% S18
+\ganttbar{\tiny Génération des scripts de simulation : \trust}{8}{8} \\
+
+% S19-20
+\ganttbar{\tiny Balayage des simulations : $N_z$, 3 niveaux de puissance}{9}{10} \\
+\ganttbar{\tiny Rédaction du rapport}{7}{10} \\
+
+\ganttmilestone{Bonne compréhension du code}{2} \\
+\ganttmilestone{Bonne vérification du code}{4} \\
+\ganttmilestone{Présentation croisée -- Cadarache}{6} \\
+
+\end{ganttchart}
+
+\caption{Diagramme de Gantt du déroulement du stage -- semaines 11 à 20.}
+\label{fig:gantt_11_20}
+\end{figure}

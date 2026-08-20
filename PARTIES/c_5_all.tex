@@ -2,23 +2,24 @@
 
 Les travaux de \cite{romain25} s'inscrivent dans une approche de calcul à zones couplant conduction et rayonnement, où chaque surface est caractérisée par une unique température moyenne. Cette approche, bien qu'efficace, ne permet pas de rendre compte des écarts de température au sein d'une même surface, écarts pourtant susceptibles d'être significatifs dans des configurations à forte hétérogénéité de puissance.
 
-Cette étude se place dans une perspective différente et complémentaire : il ne s'agit plus de raffiner un modèle à zones, mais d'exploiter directement les capacités de la simulation CFD 3D pour accéder, en plus de la température moyenne $T_{\mathrm{moy}}$, aux températures extrémales $T_{\mathrm{max}}$ et $T_{\mathrm{min}}$ d'une géométrie représentative d'un assemblage de crayons combustible. L'objectif de ce chapitre est ainsi de démontrer la faisabilité d'une étude 3D exigeante sur une telle configuration, de quantifier le biais introduit par la discrétisation géométrique des surfaces sur ces trois grandeurs et d'estimer l'écart entre le point chaud et la température moyenne.
+Cette étude se place dans une perspective différente et complémentaire : il ne s'agit plus de raffiner un modèle à zones, mais d'exploiter directement les capacités de la simulation CFD 3D pour accéder, en plus de la température moyenne $T_{\mathrm{moy}}$, aux températures extrémales $T_{\mathrm{max}}$ et $T_{\mathrm{min}}$ d'une géométrie représentative d'un assemblage de crayons combustible. L'objectif de ce chapitre est ainsi de \textbf{démontrer la faisabilité d'une étude 3D exigeante}, \textbf{de quantifier le biais de convergence} de la disctétisation des faces radiatives introduit par les hypothèses du modèle rayonnement en milieu transparent et d'étudier \textbf{l'écart entre le point chaud de  l'assemblage et sa température moyenne}.
 
 
 \section{Mise en place numérique}
 
 \subsection{Description de la configuration étudiée}
 
-La configuration étudiée est représentative d'un assemblage de crayons combustible, organisé selon un réseau carré de $5\times5$ crayons (soit $25$ crayons au total). Les paramètres géométriques de cet assemblage sont résumés dans le Tableau~\ref{tab:geom_assemblage}, et le domaine de calcul est illustré à la Figure~\ref{fig:domaine}.
+La configuration étudiée est représentative d'un assemblage de crayons combustible, organisé selon un réseau carré de $5\times5$ crayons. Les paramètres géométriques de cet assemblage sont résumés dans le Tableau~\ref{tab:geom_assemblage}, et le domaine de calcul est illustré à la Figure~\ref{fig:domaine}.
 
 \begin{table}[H]
 \centering
+\renewcommand{\arraystretch}{1.0}
 \begin{tabular}{lcc}
 \toprule
 Paramètre & Symbole & Valeur \\
 \midrule
 Nombre de crayons (réseau $5\times5$) & $N_{\mathrm{pins}}$ & $25$ \\
-Pas du réseau & $p$ & $16{,}26$~mm \\
+Pas du réseau (centre à centre)& $p$ & $16{,}26$~mm \\
 Rayon d'un crayon & $R$ & $6{,}26$~mm \\
 Hauteur active d'un crayon & $H$ & $250{,}4$~mm \\
 \bottomrule
@@ -64,7 +65,7 @@ Coefficient de dilatation thermique & $\beta_{\mathrm{th}}$~[$\mathrm{K^{-1}}$] 
 
 \subsection{Maillage}
 
-Le maillage surfacique des crayons est généré à l'aide de l'algorithme \texttt{MG-CADSurf} de la plateforme \textsc{Salome}, avec une taille de maille cible comprise entre $2$~mm et $10$~mm. Ce maillage de surface constitue le support du calcul des facteurs de vue par lancer de rayons. Le maillage volumique du domaine fluide, nécessaire à la résolution du problème thermohydraulique dans \textsc{Trust}, est ensuite généré à partir de ce maillage surfacique à l'aide de l'algorithme tétraédrique \texttt{MG-Tetra}, et comporte environ $1{,}2$ million d'éléments. La Figure~\ref{fig:mesh} présente une coupe horizontale et une coupe verticale de ce maillage.
+Le maillage surfacique des crayons est généré à l'aide de l'algorithme \texttt{MG-CADSurf} de la plateforme \textsc{Salome}, avec une taille de maille cible comprise entre $2$~mm et $10$~mm ; la section circulaire de chaque crayon y est approximée par un polygone à $N_\theta = 16$ côtés, valeur maximale de discrétisation radiale atteignable compte tenu des limitations des outils de simulation utilisés. Ce maillage de surface constitue le support du calcul des facteurs de vue par lancer de rayons, et offre une bonne approximation de la géométrie cylindrique. Le maillage volumique du domaine fluide, nécessaire à la résolution du problème thermohydraulique dans \textsc{Trust}, est ensuite généré à partir de ce maillage surfacique à l'aide de l'algorithme tétraédrique \texttt{MG-Tetra}, et comporte environ $1{,}2$ million d'éléments. La Figure~\ref{fig:mesh} présente une coupe horizontale et une coupe verticale de ce maillage.
 
 \begin{figure}[H]
 \centering
@@ -81,46 +82,16 @@ Le maillage surfacique des crayons est généré à l'aide de l'algorithme \text
 \label{fig:mesh}
 \end{figure}
 
-Afin d'étudier l'effet de la discrétisation géométrique sur les résultats, la surface de chaque crayon est en outre discrétisée, pour les besoins du calcul radiatif, selon $N_\theta$ secteurs angulaires et $N_z$ tranches axiales, formant ainsi $N_\theta \times N_z$ sous-surfaces élémentaires par crayon. Le nombre de secteurs angulaires est fixé à $N_\theta = 16$ pour l'ensemble de cette étude. Le nombre de tranches axiales $N_z$, seul paramètre variable, est balayé sur la plage résumée dans le Tableau~\ref{tab:nz_values}, afin de quantifier le biais introduit par l'hypothèse de radiosité uniforme.
+\subsection{Discrétisation des faces radiatives}
 
-\begin{table}[H]
-\centering
-\begin{tabular}{lc}
-\toprule
-Paramètre & Valeurs testées \\
-\midrule
-$N_z$ & $2, 4, 6, \dots, 20$ \\
-\bottomrule
-\end{tabular}
-\caption{Valeurs du nombre de tranches axiales $N_z$ étudiées.}
-\label{tab:nz_values}
-\end{table}
+Cette étude se concentre sur l'effet du raffinement axial de la discrétisation radiative, la sensibilité à la discrétisation radiale ayant déjà été étudiée en 2D par \cite{romain25}. La surface de chaque crayon est ainsi découpée, pour les besoins du calcul radiatif, en $N_\theta \times N_z$ sous-surfaces élémentaires, chacune résultant du croisement d'un secteur angulaire, hérité des $N_\theta = 16$ faces planes du maillage géométrique, avec une tranche axiale parmi les $N_z$ retenues. Le nombre de secteurs angulaires $N_\theta = 16$, fixé par des limitations des outils \salome et \trust, reste ainsi constant pour l'ensemble de cette étude. Seul le nombre de tranches axiales $N_z$ — paramètre propre à la discrétisation radiative, indépendant du maillage volumique — est varié, sur la plage $2, 4, \dots, 20$, afin de quantifier le biais introduit par l'hypothèse de radiosité uniforme au sein de chaque sous-surface.
 
 
 \subsection{Stratégie de résolution numérique}
 
-Le problème thermohydraulique couplé est résolu dans \textsc{Trust} par une méthode de volumes finis. Bien que l'objectif de cette étude soit d'obtenir l'état stationnaire du système, \textsc{Trust} résout ce problème par une approche de marche en temps : le schéma numérique fait converger la solution vers un point fixe stationnaire par intégration temporelle successive, plutôt que par une résolution directe du problème stationnaire.
+Le problème thermohydraulique couplé est résolu dans \textsc{Trust} par une méthode de volumes finis. Bien que l'objectif de cette étude soit d'obtenir l'état stationnaire du système, \textsc{Trust} résout ce problème par une approche de marche en temps : le schéma numérique fait converger la solution vers un point fixe stationnaire par intégration temporelle successive.
 
-Le schéma retenu est un schéma d'Euler implicite, dont le pas de temps $\mathrm{d}t$ est piloté automatiquement entre les bornes $\mathrm{d}t_{\mathrm{min}}$ et $\mathrm{d}t_{\mathrm{max}}$ par un facteur de sécurité \texttt{facsec}. Ce facteur ajuste le pas de temps à chaque itération en fonction de la vitesse de convergence du solveur implicite, permettant d'accélérer la marche en temps tant que la convergence du système linéaire reste satisfaisante. Les principaux paramètres du schéma sont résumés dans le Tableau~\ref{tab:solveur}.
-
-\begin{table}[H]
-\centering
-\begin{tabular}{lcc}
-\toprule
-Paramètre & Symbole/mot-clé & Valeur \\
-\midrule
-Pas de temps minimal & $\mathrm{d}t_{\mathrm{min}}$ & $10^{-3}$~s \\
-Pas de temps maximal & $\mathrm{d}t_{\mathrm{max}}$ & $10^{3}$~s \\
-Facteur de sécurité & \texttt{facsec} & $10^{7}$ -- $10^{8}$ \\
-Facteur de sécurité maximal & \texttt{facsec\_max} & $10^{8}$ -- $10^{9}$ \\
-Seuil de convergence (solveur linéaire) & -- & $10^{-1}$ \\
-Seuil de convergence (schéma implicite) & -- & $10^{-1}$ \\
-Seuil de stationnarité & \texttt{seuil\_statio} & $10^{-5}$ \\
-\bottomrule
-\end{tabular}
-\caption{Paramètres du schéma temporel implicite utilisé pour la convergence vers l'état stationnaire.}
-\label{tab:solveur}
-\end{table}
+Le schéma retenu est un schéma d'Euler implicite, dont le pas de temps $\mathrm{d}t$ est piloté automatiquement entre les bornes $\mathrm{d}t_{\mathrm{min}}$ et $\mathrm{d}t_{\mathrm{max}}$ par un facteur de sécurité \texttt{facsec}. Ce facteur ajuste le pas de temps à chaque itération en fonction de la vitesse de convergence du solveur implicite, permettant d'accélérer la marche en temps tant que la convergence du système linéaire reste satisfaisante. Les principaux paramètres du schéma sont résumés en Annexe~ref{tab:solveur}.
 
 La valeur de \texttt{facsec} retenue, très supérieure à l'unité, illustre bien la nature de cette stratégie : le pas de temps n'est plus piloté par un critère de précision physique de la dynamique transitoire, mais uniquement par la vitesse à laquelle le solveur implicite parvient à converger à chaque itération. Cette approche revient ainsi à utiliser l'intégration temporelle comme un simple outil numérique permettant d'atteindre efficacement l'état stationnaire recherché, sans chercher à représenter fidèlement une éventuelle dynamique transitoire réelle du système. Le calcul est considéré comme convergé lorsque l'évolution de la solution entre deux pas de temps successifs devient inférieure au seuil de stationnarité \texttt{seuil\_statio}.
 
@@ -135,7 +106,7 @@ La première concerne le profil de puissance imposé dans le combustible. La pui
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\linewidth]{PICTURES/c5couplage/lineout.png}
+\includegraphics[width=0.4\linewidth]{PICTURES/c5couplage/lineout.png}
 \caption{Profil axial de température au centre du crayon central.}
 \label{fig:profil}
 \end{figure}
@@ -148,14 +119,17 @@ La seconde vérification porte sur la conservation globale de l'énergie au sein
 \end{equation}
 
 où $P_{\mathrm{déposée}}$ désigne la puissance volumique totale injectée dans le combustible, $P_{\mathrm{rad}}$ la puissance évacuée par rayonnement et $P_{\mathrm{diffusion}}$ celle évacuée par diffusion thermique à travers les parois du domaine. Cette égalité a été vérifiée sur l'ensemble des cas étudiés, avec un écart relatif compris entre quelques dizaines de pcm et $1\,\%$ selon les cas, confirmant, même dans la configuration la moins favorable, la cohérence du bilan thermique global de la simulation.
+
+
 \subsection{Sensibilité à la discrétisation axiale}
 \label{sec:consequence_radiosite}
 
-La sensibilité de la solution thermique à la discrétisation axiale est étudiée pour trois niveaux de puissance représentatifs : $3$, $4$ et $45~\mathrm{MW/m^3}$, correspondant respectivement à des températures moyennes du crayon central d'environ $925$~K, $980$~K et $1817$~K. Le paramètre $N_z$ désigne le nombre de sous-géométries issues de la décomposition du domaine selon l'axe $z$. Il ne s'agit pas d'un raffinement du maillage au sens numérique du terme, mais d'une discrétisation spatiale de la représentation des propriétés thermiques et radiatives : à chaque sous-géométrie est associée une température uniforme, qui sert de température effective dans le calcul des échanges radiatifs.
+La sensibilité de la solution thermique à la discrétisation axiale est étudiée pour trois niveaux de puissance représentatifs : $3$, $4$ et $45~\mathrm{MW/m^3}$, correspondant respectivement à des températures moyennes du crayon central d'environ $925$~K, $980$~K et $1817$~K. Le paramètre $N_z$ désigne le nombre de découpes selon l'axe $z$ des crayons; il ne s'agit pas d'un raffinement du maillage au sens numérique du terme, mais d'une discrétisation de la représentation des propriétés thermiques et radiatives, chaque sous-géométrie se voyant associer une température uniforme servant de température effective dans le calcul des échanges radiatifs.
 
 Cette distinction est essentielle dans le cas étudié, où la puissance volumique suit un profil axial en cosinus, maximal au centre du domaine actif (Figure~\ref{fig:profil}). Une faible valeur de $N_z$ revient à homogénéiser thermiquement des portions axiales étendues du champ de température, tandis qu'une valeur élevée permet de résoudre les variations axiales locales. L'objectif de cette section est de quantifier l'influence de cette discrétisation sur les échanges radiatifs et sur le champ de température résultant.
 
-Pour chaque niveau de puissance, les températures minimale, maximale et moyenne sont comparées à la solution de référence obtenue pour $N_z=20$. L'écart relatif est défini par
+Pour chaque niveau de puissance, les températures minimale, maximale et moyenne sont comparées à la solution de référence obtenue pour $N_z=20$, à partir de l'écart relatif
+
 \begin{equation}
 \varepsilon_T(N_z)
 =
@@ -163,25 +137,22 @@ Pour chaque niveau de puissance, les températures minimale, maximale et moyenne
 {T(N_z=20)}.
 \end{equation}
 
-Avant d'analyser les résultats, il est utile de préciser l'origine physique de l'erreur introduite par cette représentation. Le flux surfacique émis par rayonnement obéit à la loi suivante (\ref{eq:nice_qr}),
-\begin{equation}
-\epsilon_i \sigma \overline{T}^4_i  - \epsilon_i \sum_{j=1}^{n} \overline{J_j^1} F_{ij}
-\label{eq:stefan}
-\end{equation}
-où $\varepsilon$ est l'émissivité de la surface et $\sigma$ la constante de Stefan--Boltzmann. Le caractère convexe de la fonction $T \mapsto T^4$ implique, d'après l'inégalité de Jensen, que pour toute distribution de température non uniforme sur une surface $A$,
+Avant d'analyser les résultats, il est utile de préciser l'origine physique de l'erreur introduite par cette représentation. Le flux surfacique net émis par rayonnement obéit, d'après l'Équation~\eqref{eq:nice_qr}, à \ref{def:radio}. Le caractère convexe de la fonction $T \mapsto T^4$ implique, d'après l'inégalité de Jensen, que pour toute distribution de température non uniforme discrétisée en $M$ éléments de surface égale au sein d'une sous-géométrie,
+
 \begin{equation}
 \overline{T^4}
 =
-\frac{1}{A}\int_A T^4\,\mathrm{d}A
+\frac{1}{M}\sum_{k=1}^{M} T_k^4
 \;>\;
 \overline{T}^{\,4},
 \qquad
-\overline{T} = \frac{1}{A}\int_A T\,\mathrm{d}A,
+\overline{T} = \frac{1}{M}\sum_{k=1}^{M} T_k,
 \label{eq:jensen}
 \end{equation}
-l'égalité n'étant atteinte que pour un champ uniforme. La représentation d'une sous-géométrie par une température uniforme sous-estime donc systématiquement la puissance radiative émise dès qu'un gradient thermique est présent, et cette sous-estimation croît avec l'amplitude des variations de température au sein de la sous-géométrie. Cette inégalité constitue le fondement physique de l'ensemble des écarts discutés dans cette section.
 
-\subsubsection*{Cas $\overline{T} \approx 925{,}7~\mathrm{K}$}
+l'égalité n'étant atteinte que pour un champ uniforme ($T_k$ identique $\forall k$).
+
+\subsubsection{Cas $\overline{T} \approx 925{,}7~\mathrm{K}$}
 
 La Figure~\ref{fig:temperature3MW} compare les champs de température obtenus avec $N_z=4$ et $N_z=20$, ainsi que leur différence. La Figure~\ref{fig:convergence3MW} présente l'évolution, en fonction de $N_z$, des écarts relatifs des températures minimale, maximale et moyenne par rapport à la solution de référence.
 
@@ -203,9 +174,9 @@ La Figure~\ref{fig:temperature3MW} compare les champs de température obtenus av
 \label{fig:convergence3MW}
 \end{figure}
 
-La Figure~\ref{fig:convergence3MW} met en évidence une convergence des trois grandeurs vers la solution de référence lorsque $N_z$ augmente : l'accroissement du nombre de sous-géométries permet de résoudre de plus en plus finement les variations thermiques axiales. Par exemple à partir de $N_z=14$, les écarts relatifs sont de l'ordre de $10^{-3}$, ce qui indique une bonne convergence du modèle.
+La Figure~\ref{fig:convergence3MW} met en évidence une convergence des trois grandeurs vers la solution de référence lorsque $N_z$ augmente : l'accroissement du raffinement axial permet de résoudre de plus en plus finement les variations thermiques axiales. Par exemple à partir de $N_z=14$, les écarts relatifs sont de l'ordre de $10^{-3}$, ce qui indique une bonne convergence du modèle.
 
-Cette convergence s'interprète directement à la lumière de l'inégalité~\eqref{eq:jensen}. Dans chaque sous-géométrie, les propriétés radiatives sont évaluées à partir d'une température de surface uniforme. Une discrétisation axiale grossière assimile donc une portion étendue du profil thermique à une température unique, ce qui sous-estime la puissance rayonnée. Lorsque $N_z$ augmente, l'étendue axiale représentée par chaque température diminue, l'écart $\overline{T^4}-\overline{T}^{\,4}$ se réduit, et le bilan radiatif calculé tend vers celui du champ continu. Le raffinement axial ne constitue donc pas une simple amélioration géométrique : il détermine la fidélité avec laquelle le champ de température est \og vu \fg{} par le modèle radiatif.
+Cette convergence s'interprète directement à la lumière de l'inégalité~\eqref{eq:jensen}. Dans chaque sous-géométrie, les propriétés radiatives sont évaluées à partir d'une température de surface uniforme. Une discrétisation axiale grossière assimile donc une portion étendue du profil thermique à une température unique, ce qui sous-estime la puissance rayonnée. Lorsque $N_z$ augmente, l'étendue axiale représentée par chaque température diminue, l'écart $\overline{T^4}-\overline{T}^{\,4}$ se réduit, et le bilan radiatif calculé tend vers celui du champ continu. Le raffinement axial ne constitue donc pas une simple amélioration: il détermine la fidélité avec laquelle le champ de température est \og vu \fg{} par le modèle radiatif.
 
 La comparaison des champs de la Figure~\ref{fig:temperature3MW} montre par ailleurs que cette approximation ne modifie pas la structure thermique globale de l'assemblage : le crayon central demeure le plus chaud et les quatre crayons d'angle les plus froids, quelle que soit la valeur de $N_z$. Cette organisation spatiale est imposée par la géométrie de l'assemblage et par la configuration des échanges entre surfaces. La discrétisation axiale ne fait donc que moduler localement les niveaux de température, sans remettre en cause la hiérarchie thermique entre les crayons.
 
@@ -236,32 +207,12 @@ Il convient enfin de s'assurer que ces écarts ne proviennent pas de la précisi
 \end{equation}
 Cette incertitude est inférieure d'au moins un ordre de grandeur aux écarts relatifs obtenus pour les discrétisations les plus grossières. Les différences observées entre les solutions sont donc bien attribuables à la discrétisation axiale et à son influence sur la représentation des échanges radiatifs, et non à une convergence insuffisante du solveur.
 
-Pour ce niveau de puissance, un raffinement jusqu'à $N_z=14$ suffit ainsi à obtenir une représentation axiale convergée. Au-delà, la poursuite du raffinement devient peu pertinente, l'erreur de discrétisation étant déjà faible devant les autres sources d'incertitude du modèle : le choix de $N_z$ résulte d'un compromis entre la précision du bilan radiatif et le coût de calcul.
-\subsubsection*{Cas $\overline{T} \approx 981{,}4~\mathrm{K}$}
+Pour ce niveau de puissance, un raffinement jusqu'à $N_z=14$ suffit ainsi à obtenir une représentation peu baisée la poursuite du raffinement devient peu pertinente, l'erreur de discrétisation étant déjà faible devant les autres sources d'incertitude du modèle : le choix de $N_z$ résulte d'un compromis entre la précision du bilan radiatif et le coût de calcul.
 
-La Figure~\ref{fig:temperature4MW} compare les champs de température obtenus avec $N_z=4$ et $N_z=20$, ainsi que leur différence. La Figure~\ref{fig:convergence4MW} présente l'évolution des écarts relatifs des températures minimale, maximale et moyenne en fonction de $N_z$, par rapport à la solution de référence.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1000/assembly_4.pdf}
+\subsubsection{Cas $\overline{T} \approx 981{,}4~\mathrm{K}$}
 
-\includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1000/assembly_20.pdf}
-
-\includegraphics[width=0.8\linewidth]{PICTURES/c5couplage/T1000/assembly_diff_4_vs_20.pdf}
-\caption{Champs de température pour $\overline{T}=981{,}4~\mathrm{K}$ : $N_z=4$ (haut), $N_z=20$ (milieu) et différence entre les deux champs (bas).}
-\label{fig:temperature4MW}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.7\linewidth]{PICTURES/c5couplage/T1000/convergence_relative_vs_20.pdf}
-\caption{Écart relatif des températures minimale, maximale et moyenne en fonction de $N_z$, par rapport à la référence $N_z=20$, pour $\overline{T}=981{,}4~\mathrm{K}$.}
-\label{fig:convergence4MW}
-\end{figure}
-
-Comme pour le niveau de puissance précédent, on observe une convergence vers la solution de référence, sans modification de la structure thermique globale : le crayon central demeure le plus chaud et les crayons d'angle les plus froids. La discrétisation axiale ne modifie là encore que les niveaux locaux de température.
-
-La hiérarchie des écarts est également conservée, mais leur amplitude augmente légèrement : $T_{\max}$ est surestimée jusqu'à $0{,}9\,\%$ (contre $0{,}7\,\%$ précédemment), tandis que $T_{\min}$ et $\overline{T}$ sont sous-estimées jusqu'à $4\,\%$ et $0{,}5\,\%$ respectivement.
+Comme pour le cas précédent, la solution converge vers l'état de référence $N_z=20$ sans modification de la structure thermique globale (crayon central le plus chaud, crayons d'angle les plus froids). Les résultats détaillés sont disponibles en Annexe~\ref{annexe:resultats}. L'amplitude des écarts augmente cependant légèrement avec le niveau de puissance, restant néanmoins concentrée sur les températures extrêmes (Tableau~\ref{tab:ecarts_discretisation_axiale_4MW}), conformément à la sensibilité en $T^4$ des échanges radiatifs. La convergence du solveur ($\sim 10^{-4}$ d'incertitude relative) reste très inférieure à ces écarts, confirmant qu'ils sont bien imputables à la discrétisation axiale.
 
 \begin{table}[H]
 \centering
@@ -278,18 +229,7 @@ $\overline{T}$ & Sous-estimation & $-0{,}5\,\%$ \\
 \end{tabular}
 \end{table}
 
-Cette amplification est cohérente avec la physique du transfert radiatif. D'une part, la dépendance en $T^4$ de la loi de Stefan--Boltzmann~\eqref{eq:stefan} confère au flux radiatif une sensibilité relative à la température quatre fois supérieure à celle de la température elle-même, puisque $\mathrm{d}q_{\mathrm{rad}}/q_{\mathrm{rad}} = 4\,\mathrm{d}T/T$ : à erreur relative de représentation constante, l'erreur sur le bilan radiatif croît avec le niveau de température. D'autre part, l'augmentation de la puissance accentue les gradients thermiques au sein des sous-géométries, ce qui élargit l'écart de l'inégalité~\eqref{eq:jensen} et dégrade d'autant la représentativité d'une température homogénéisée. Comme précédemment, l'erreur se concentre sur les températures extrêmes, tandis que la température moyenne bénéficie de compensations spatiales.
-
-La vérification de la convergence du solveur conduit à la même conclusion que pour le cas précédent : avec une température moyenne stabilisée à $0{,}1~\mathrm{K}$ près, l'incertitude relative associée est de l'ordre de
-\begin{equation}
-\frac{0{,}1}{981{,}4}
-\approx 1{,}0\times10^{-4},
-\end{equation}
-soit au moins un ordre de grandeur en dessous des écarts mesurés, qui atteignent plusieurs pourcents sur $T_{\min}$. Les écarts observés sont donc bien imputables à la discrétisation axiale.
-
-Ce deuxième niveau de puissance confirme ainsi les conclusions établies précédemment : la solution converge vers un état indépendant de $N_z$ lorsque la discrétisation s'affine, la structure thermique globale est préservée, et l'erreur de représentation radiative s'amplifie modérément avec le niveau de température, conformément à la sensibilité en $T^4$ des échanges radiatifs.
-
-\subsubsection*{Cas $\overline{T} \approx 1817~\mathrm{K}$}
+\subsubsection{Cas $\overline{T} \approx 1817~\mathrm{K}$}
 
 La Figure~\ref{fig:temperature45MW} compare les champs de température obtenus avec $N_z=4$ et $N_z=20$, ainsi que leur différence. La Figure~\ref{fig:convergence45MW} présente l'évolution des écarts relatifs en fonction de $N_z$, par rapport à la solution de référence.
 
@@ -332,11 +272,9 @@ Ces résultats constituent une rupture nette par rapport aux deux niveaux de pui
 
 Ce changement de régime résulte de l'augmentation simultanée du niveau de température et des gradients thermiques. À cette puissance, les écarts de température entre régions de l'assemblage deviennent considérables ; une sous-géométrie couvrant une portion axiale étendue regroupe alors des zones dont les températures diffèrent fortement, et l'écart $\overline{T^4}-\overline{T}^{\,4}$ de l'inégalité~\eqref{eq:jensen} croît d'autant. La température homogénéisée cesse d'être représentative des conditions locales, et l'erreur commise sur le bilan radiatif devient suffisamment importante pour modifier le champ thermique lui-même.
 
-L'écart spectaculaire sur $T_{\min}$ s'interprète dans ce cadre. La température d'une région froide est fixée par le bilan entre la puissance radiative reçue des surfaces chaudes environnantes, ses propres pertes et les transferts conductifs. La sous-estimation systématique des émissions des surfaces chaudes --- conséquence directe de l'inégalité~\eqref{eq:jensen} appliquée à des sous-géométries fortement hétérogènes --- fausse donc l'ensemble des flux incidents sur la région froide. L'erreur se propage ainsi à travers le réseau des échanges radiatifs et y est amplifiée par le fait que les zones froides échangent simultanément avec plusieurs surfaces voisines : les erreurs commises sur chacune d'elles se cumulent dans le bilan local.
+Cette propagation explique également que la température moyenne soit désormais affectée de manière non négligeable. Un écart de $5\,\%$ ne peut plus relever d'une perturbation locale s'annulant par compensation spatiale : il traduit une modification du bilan radiatif suffisamment significative pour déplacer l'équilibre thermique global de l'assemblage.
 
-Cette propagation explique également que la température moyenne soit désormais affectée de manière non négligeable. Un écart de $5\,\%$ ne peut plus relever d'une perturbation locale s'annulant par compensation spatiale : il traduit une modification du bilan radiatif suffisamment ample pour déplacer l'équilibre thermique global de l'assemblage.
-
-La température maximale reste, à l'inverse, comparativement moins sensible, son écart ne passant que de $0{,}9\,\%$ à $3\,\%$. Cette asymétrie entre $T_{\min}$ et $T_{\max}$ montre que l'erreur de discrétisation ne dépend pas seulement du niveau absolu de température, mais aussi de la position de la région considérée dans le réseau d'échanges radiatifs : les régions froides, réceptrices nettes du rayonnement de nombreuses surfaces, cumulent les erreurs de représentation de leur environnement, tandis que le point chaud n'est affecté que par l'erreur commise sur sa propre sous-géométrie.
+La température maximale reste comme pour les autres cas moins sensible, son écart ne passant que de $0{,}9\,\%$ à $3\,\%$.
 
 Comme pour les cas précédents, la convergence du solveur ne saurait expliquer ces écarts : avec une température moyenne stabilisée à $0{,}1~\mathrm{K}$ près, l'incertitude relative associée est de l'ordre de
 \begin{equation}

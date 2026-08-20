@@ -1,2 +1,43 @@
 
-\newacronym{etr}{ETR}{Équation de Transfert Radiatif}
+%\newacronym{etr}{ETR}{Équation de Transfert Radiatif}
+\section*{Glossaire}
+\addcontentsline{toc}{chapter}{Glossaire}
+
+
+\textbf{Bounding Volume Hierarchy (BVH)} — Structure de données hiérarchique utilisée par \textsc{Embree} pour accélérer la recherche d'intersections rayon-géométrie. Elle regroupe les éléments du maillage dans des boîtes englobantes imbriquées, permettant d'écarter rapidement de larges portions de la géométrie sans tester chaque triangle individuellement.
+
+\textbf{Corium} — Mélange de matériaux fondus (combustible, gaines, structures) formé lors de la fusion du cœur d'un réacteur en situation accidentelle grave, notamment lors d'un accident de perte de réfrigérant primaire.
+
+\textbf{\emb} — Bibliothèque logicielle développée pour l'accélération des calculs d'intersection rayon-géométrie sur architecture CPU, utilisée dans ce rapport pour le traitement géométrique des trajectoires de rayons du module Monte Carlo.
+
+\textbf{\ETT} — Nom du module de calcul radiatif par lancer de rayons Monte Carlo développé au cours de ce stage, couplé à la plateforme \trust.
+
+\textbf{Facteur de vue} — Grandeur géométrique sans dimension représentant la fraction du rayonnement quittant une surface qui est interceptée par une autre surface. Noté $F_{ij}$, il dépend uniquement de la géométrie relative des deux surfaces considérées.
+
+\textbf{Facteurs de Gebhart} — Modèle de calcul à zones prenant en compte les réflexions multiples entre surfaces, mentionné dans le cadre des travaux antérieurs sur le couplage conduction-rayonnement.
+
+\textbf{Hypersensibilité (problème hyper-sensible)} — Caractéristique de certains problèmes radiatifs pour lesquels une faible erreur sur les facteurs de vue engendre une erreur bien plus importante sur le flux radiatif après propagation, nécessitant une précision très fine des facteurs de vue (par exemple $10^{-4}$ pour obtenir $5\,\%$ de précision sur le flux dans certains cas).
+
+\textbf{HTGR / VHTR} — \textit{High Temperature Gas-cooled Reactor} / \textit{Very High Temperature Reactor} : filières de réacteurs nucléaires utilisant l'hélium comme caloporteur et le graphite comme modérateur, fonctionnant à des températures de sortie comprises entre $750\,^\circ$C et $950\,^\circ$C.
+
+\textbf{Hypothèse de Boussinesq} — Approximation couramment utilisée en mécanique des fluides, consistant à négliger les variations de masse volumique du fluide sauf dans le terme de flottabilité (gravité), simplifiant ainsi la résolution des écoulements à convection naturelle.
+
+\textbf{MG-CADSurf / MG-Tetra} — Algorithmes de maillage de la plateforme \salome, utilisés respectivement pour générer le maillage surfacique (triangulaire) et le maillage volumique (tétraédrique) des géométries étudiées.
+
+\textbf{Monte Carlo Ray Tracing (MCRT)} — Méthode numérique de calcul des facteurs de vue et des échanges radiatifs par lancer aléatoire d'un grand nombre de rayons, particulièrement adaptée aux géométries tridimensionnelles complexes.
+
+\textbf{PyMCRad} — Code de référence utilisé pour la vérification par comparaison des résultats du module développé au cours de ce stage.
+
+\textbf{Radiosité} — Grandeur ($J$, en W/m²) représentant l'ensemble de l'énergie rayonnée quittant une surface, somme de sa puissance émissive propre et de la fraction réfléchie du rayonnement incident (irradiance).
+
+\textbf{Radiosité uniforme (hypothèse, modèle d'ordre 1)} — Hypothèse selon laquelle la radiosité est supposée constante sur l'ensemble d'une surface donnée, ce qui permet d'introduire les facteurs de vue mais introduit un biais d'autant plus important que la surface présente de forts gradients de température.
+
+\textbf{RRMSE (\textit{Relative Root Mean Square Error})} — Métrique d'erreur quadratique moyenne relative, utilisée dans ce rapport pour quantifier globalement l'écart entre une matrice de facteurs de vue calculée et une matrice de référence.
+
+\textbf{\salome} — Plateforme logicielle du CEA utilisée pour la génération de maillages (surfaciques et volumiques) et le prétraitement géométrique des cas de simulation, notamment via le format de fichier \texttt{.med}.
+
+\textbf{Star-Engine} — Moteur de lancer de rayons développé par la société Meso-Star, s'appuyant sur \textsc{Embree}, dont l'observation a motivé le choix de cette bibliothèque pour le développement du module \ETT.
+
+\textbf{\trust} — Plateforme multiphysique de calcul scientifique développée au CEA, utilisée pour la résolution des problèmes thermohydrauliques couplés à la simulation radiative dans ce rapport.
+
+\textbf{TRISO} — Type de particule combustible enrobée (\textit{TRi-structural ISOtropic}) utilisée dans les réacteurs HTGR, offrant une bonne stabilité thermique et mécanique.

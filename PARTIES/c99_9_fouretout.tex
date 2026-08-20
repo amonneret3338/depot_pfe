@@ -64,3 +64,146 @@ B_{ij} = F_{ij} \epsilon_j + \sum_{k=1}^n F_{ik} (1 - \epsilon_k) B_{kj}
 Q_i = q_i A_i = A_i \epsilon_i \sigma T_i^4 - \sum_{j=1}^nA_j\epsilon_j \sigma T_j^4 B_{ij}
 \end{equation}
 
+
+La méthode des moindres carrés reformule la correction des facteurs de vue comme un problème d'optimisation sous contraintes. On cherche la matrice corrigée $F$ qui minimise l'écart quadratique pondéré à la matrice brute $F^0$ issue du calcul Monte Carlo :
+
+\begin{equation}
+    y = \sum_{i=1}^{n} \sum_{j=1}^{n} w_{ij} \left(F_{ij} - F_{ij}^0\right)^2
+    \label{eq:moindre_carre}
+\end{equation}
+
+où les poids $w_{ij}$ permettent de pondérer chaque terme selon l'incertitude associée à son estimation Monte Carlo (les facteurs de vue estimés à partir d'un plus grand nombre de rayons pouvant par exemple se voir attribuer un poids plus élevé). Cette minimisation est soumise aux contraintes de fermeture et de réciprocité, qui s'écrivent sous forme d'égalités linéaires :
+
+\begin{equation}
+    \forall i, \quad \sum_{j=1}^{n} F_{ij} = 1 
+    \label{eq:contrainte_fermeture}
+\end{equation}
+
+\begin{equation}
+    \forall i \neq j, \quad A_j F_{ji} - A_i F_{ij} = 0
+    \label{eq:contrainte_reciprocite}
+\end{equation}
+
+Une contrainte de positivité $F_{ij} \geq 0$ peut également être ajoutée si nécessaire, transformant le problème en un programme quadratique sous contrainte d'inégalité.
+
+Plutôt que de résoudre ce problème par des méthodes générales de programmation non linéaire, \cite{renforcement95} propose une résolution reposant sur une interprétation géométrique du problème. Les facteurs de vue sont réorganisés sous la forme d'un vecteur colonne $f$ (obtenu en empilant les lignes de la matrice $F^0$), ce qui permet de réécrire les contraintes de fermeture et de réciprocité~\ref{eq:contraintes} sous la forme d'un système linéaire :
+
+\begin{equation}
+    R \cdot f = c
+    \label{eq:systeme_contraintes}
+\end{equation}
+
+La solution de ce système peut être décomposée en deux composantes orthogonales : une solution particulière $f_{row}$, appartenant à l'espace ligne de $R$ et de norme minimale, donnée par
+
+\begin{equation}
+    f_{row} = R^T (R R^T)^{-1} c
+    \label{eq:solution_particuliere}
+\end{equation}
+
+et une composante homogène appartenant au noyau de $R$, qui s'exprime comme une combinaison linéaire des vecteurs d'une base $N_b$ de ce noyau :
+
+\begin{equation}
+    f - f_{row} = N_b x
+    \label{eq:solution_homogene}
+\end{equation}
+
+Les facteurs de vue bruts $f^0$ ne vérifiant pas exactement les contraintes, l'équation~\eqref{eq:solution_homogene} n'admet pas de solution exacte : le vecteur de poids $x$ est alors déterminé au sens des moindres carrés, en projetant l'écart $(f^0 - f_{row})$ sur le noyau de $R$ :
+
+\begin{equation}
+    x = (N_b^T N_b)^{-1} N_b^T (f^0 - f_{row})
+    \label{eq:solution_x}
+\end{equation}
+
+Le vecteur des facteurs de vue corrigés $f$, reconstruit à partir des équations~\eqref{eq:solution_particuliere}, \eqref{eq:solution_homogene} et \eqref{eq:solution_x}, constitue alors la projection de $f^0$ sur l'espace des solutions vérifiant exactement les contraintes de fermeture et de réciprocité. Contrairement à l'algorithme naïf, cette approche traite l'ensemble des $n^2$ facteurs de vue de façon symétrique et cohérente, sans privilégier arbitrairement une partie de la matrice (comme le fait l'algorithme naïf en ne conservant que les termes au-dessus de la diagonale) ni recourir à un processus itératif de convergence incertaine (comme l'algorithme de Leersum). Cette rigueur a cependant un coût : le vecteur $f$ comportant $n^2$ composantes, la matrice $N_b^T N_b$ à inverser dans l'équation~\eqref{eq:solution_x} est de taille de l'ordre de $n^2 \times n^2$, ce qui conduit à une complexité de calcul évoluant en $\mathcal{O}(n^4)$. Cette méthode est ainsi vraisemblablement inadaptée à des cas 3D de grande taille, pour lesquels le nombre de surfaces $n$ peut être élevé.
+
+
+
+
+
+\section{taleau comparaitf}
+\begin{table}[ht]
+\centering
+
+\renewcommand{\arraystretch}{1.}
+\setlength{\tabcolsep}{3pt}
+\scriptsize
+\begin{tabular}{p{2.2cm}cccccc}
+
+\textbf{Criterion} &
+\textbf{Integration} &
+\textbf{Unit Sphere} &
+\textbf{Cross-String} &
+\textcolor{codegreen}{\textbf{Monte Carlo}} &
+\textbf{Ray Casting} &
+\textbf{Matrix} \\
+
+\hline
+\hline
+
+Computational cost&
+Low&
+Medium&
+Low&
+High&
+\textcolor{red}{Very high}&
+Low\\
+\hline
+
+Ray-tracing required &
+No&
+Yes&
+No&
+Yes&
+Yes&
+No\\
+\hline
+
+Required expertise &
+Integration&
+Integration&
+Geometry&
+Probability&
+Programming&
+Linear algebra\\
+\hline
+
+Analytical formulation &
+complex&
+Simple&
+Simple&
+Very complex&
+Complex& 
+\textcolor{red}{Simple}\\
+\hline
+
+Applicable to multiple surfaces &
+\textcolor{red}{No}&
+\textcolor{red}{No}&
+\textcolor{red}{No}&
+Yes&
+Yes&
+Yes\\
+\hline
+
+Applicable to closed enclosures &
+No&
+No&
+No&
+Yes&
+\textcolor{red}{No}&
+Yes\\
+\hline
+
+Typical geometries &
+Simple&
+Simple&
+2D / curved&
+Ours&
+General&
+Closed enclosures\\
+\hline
+
+\end{tabular}\\
+\caption{Comparison of common methods for view factor computation. Adapted from \cite{methods_fv}}
+\label{tab:methods}
+\end{table}

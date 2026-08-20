@@ -16,3 +16,40 @@ Face à ces enjeux, la simulation des échanges radiatifs entre surfaces opaques
 C'est dans cette perspective que s'inscrit le présent stage, dont l'objectif est de développer et d'intégrer, au sein de la plateforme multiphysique TRUST \cite{saikali2025trust}, un module de calcul radiatif fondé sur cette approche, capable d'évaluer les échanges entre surfaces dans des configurations 2D et 3D représentatives des systèmes étudiés, et de se coupler aux autres mécanismes de transfert thermique déjà modélisés dans le code. Ce développement ne part pas d'une page blanche : il s'appuie sur une première maquette réalisée lors d'un précédent stage, capable de traiter des géométries tridimensionnelles mais ne permettant ni le traitement des géométries 2D, ni la prise en compte de faces réflectives, et dont les résultats ne présentaient pas un niveau de fiabilité suffisant. Les travaux ici présentés ont ainsi consisté à consolider les fondements numériques et logiciels de cette maquette, à étendre ses capacités fonctionnelles, puis à vérifier rigoureusement la précision de ses résultats, afin d'aboutir à un outil robuste et exploitable pour la simulation de problèmes thermiques couplés.
  
 Ce rapport est organisé de la manière suivante. Le premier chapitre présente les fondements physiques du transfert radiatif dans les hypothèses retenues (Section~\ref{part:c1}). Le deuxième  et le troisième chapitre décrivent respectivement le développement du code de lancer de rayons (Section~\ref{part:c2}) et la vérification du module développé au moyen de solutions analytiques (Section~\ref{part:c2_bis}). Le quatrième chapitre (Section~\ref{part:c3}) traite du couplage avec la conduction et la comparison avec \pcr  un module de référence pour le lancer de rayon. Enfin, le dernier chapitre étudie l'influence de la discrétisation des faces rayonnantes sur la convergence des résultats et l'écart entre le point chaud et la température moyenne (Section~\ref{part:c5}).
+
+
+% ============================================================
+% PRÉSENTATION DU SERVICE D'ACCUEIL
+% ============================================================
+
+\section{Présentation du service d'accueil}
+
+Le stage est réalisé au sein du \textbf{Service de Génie Logiciel et
+de Simulation (SGLS)} du CEA, dont les activités visent à développer
+et maintenir des compétences de pointe dans les domaines du génie
+logiciel, de la simulation numérique et du calcul intensif. Le service
+accompagne les équipes métiers du CEA dans le développement, la
+maintenance et l'optimisation de leurs outils de simulation, tout en
+contribuant à leur adaptation aux architectures de calcul.
+
+Le SGLS s'appuie notamment sur plusieurs domaines de compétence :
+le génie logiciel et les outils de développement, les outils de
+maillage et de visualisation, le couplage de codes multiphysiques et
+multi-échelles, le calcul intensif (\textit{HPC}), l'analyse numérique,
+ainsi que les méthodes de science des données et d'intelligence
+artificielle appliquées à la simulation.
+
+Cette activité repose sur une articulation entre recherche et
+développement amont et implémentation opérationnelle, ainsi qu'entre
+plateformes génériques et outils dédiés aux applications métiers.
+Le service est organisé autour de plusieurs laboratoires, dont le
+\textbf{LESIM}, spécialisé dans les environnements de simulation,
+les maillages, le pré- et post-traitement et le couplage de codes,
+et le \textbf{LCAN}, dédié au calcul intensif et à l'analyse
+numérique. Cette organisation favorise la transversalité et le
+travail en interaction avec les équipes métiers du CEA.
+
+Le stage s'inscrit ainsi dans les activités du service liées au
+développement d'outils de simulation numérique et à leur intégration
+dans des plateformes de calcul multiphysique.
+
