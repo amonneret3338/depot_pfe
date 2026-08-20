@@ -303,6 +303,7 @@ avec $A$, $C$ et $\tau$ des paramètres ajustés sur les données. Cette express
 
 \begin{table}[H]
 \centering
+\renewcommand{\arraystretch}{0.66}
 \begin{tabular}{cccc}
 \toprule
 Puissance volumique~[$\mathrm{MW/m^3}$] & $T_{\mathrm{moy}}$~[K] & $T_{\mathrm{max}}$~[K] & Écart relatif $\frac{T_{\mathrm{max}} - T_{\mathrm{moy}}}{T_{\mathrm{moy}}}$ \\
@@ -323,8 +324,8 @@ $45$ & $1817$    & $2475$ & $36{,}21\,\%$ \\
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\linewidth]{PICTURES/c5couplage/hot_spot.pdf}
-\caption{Modélisation de l'écart de la température maximale par rapport à la température moyenne.}
+\includegraphics[width=0.52\linewidth]{PICTURES/c5couplage/hot_spot.pdf}
+\caption{Modéle de l'écart de la température maximale par rapport à la température moyenne.}
 \label{fig:hotspot}
 \end{figure}
 
@@ -333,7 +334,7 @@ $45$ & $1817$    & $2475$ & $36{,}21\,\%$ \\
 
 Ce chapitre a permis de démontrer la faisabilité d'une étude CFD 3D couplée conduction--rayonnement sur une géométrie représentative d'un assemblage de crayons combustible en réseau $5\times5$. À travers une campagne de simulations paramétriques, trois résultats principaux ont été mis en évidence.
 
-\textbf{Premièrement}, la discrétisation axiale des surfaces dans le calcul radiatif constitue un paramètre déterminant pour la précision du bilan thermique global. L'inégalité de Jensen, appliquée à la loi de Stefan--Boltzmann, fournit le cadre théorique permettant de comprendre pourquoi l'homogénéisation de la température par sous-géométrie sous-estime systématiquement la puissance radiative émise dès qu'un gradient thermique est présent. Cette sous-estimation se propage à travers le réseau d'échanges radiatifs et affecte de manière significative les températures du système et mérite d'être étudié en profondeur.
+\textbf{Premièrement}, la discrétisation axiale des surfaces dans le calcul radiatif constitue un paramètre déterminant pour la précision du bilan thermique global. L'inégalité de Jensen, appliquée à la loi de Stefan--Boltzmann, fournit le cadre théorique permettant de comprendre pourquoi les hypothèses conduisant au facteurs de vue d'ordre 1 sous-estime systématiquement la puissance radiative émise dès qu'un gradient thermique est présent. Cette sous-estimation se propage à travers le réseau d'échanges radiatifs et affecte de manière significative les températures du système et mérite d'être étudié en profondeur.
 
 \textbf{Deuxièmement}, l'amplitude de l'erreur induite par une discrétisation grossière croît fortement avec le niveau de puissance déposée. Aux faibles puissances ($3$ et $4~\mathrm{MW/m^3}$), un nombre de tranches axiales $N_z = 14$ suffit à garantir des écarts relatifs inférieurs au pour cent sur la température moyenne et aux températures extrêmes. En revanche, à forte puissance ($45~\mathrm{MW/m^3}$), une discrétisation identique conduit à des écarts de $52\,\%$ sur $T_{\min}$ et de $5\,\%$ sur $\overline{T}$, traduisant une modification du bilan thermique global de l'assemblage. Le choix de $N_z$ ne peut donc pas être fixé une fois pour toutes : il doit être adapté au régime thermique considéré.
 
